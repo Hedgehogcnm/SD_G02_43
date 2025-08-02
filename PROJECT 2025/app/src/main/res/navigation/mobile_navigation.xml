@@ -14,7 +14,8 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.project2025.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="KaiFeedCat Feeder"
+        android:gravity="center"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment

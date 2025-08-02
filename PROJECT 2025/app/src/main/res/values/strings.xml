@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">Project2025</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home">Camera</string>
+    <string name="title_dashboard">Device</string>
+    <string name="title_notifications">Profile</string>
+
+        <string name="day_sun">Sun</string>
+        <string name="day_mon">Mon</string>
+        <string name="day_tue">Tue</string>
+        <string name="day_wed">Wed</string>
+        <string name="day_thu">Thu</string>
+        <string name="day_fri">Fri</string>
+        <string name="day_sat">Sat</string>
+
+
 </resources>
