@@ -1,37 +1,37 @@
-package com.example.project2025.ui.dashboard;
+package com.example.project2025.ui.notifications;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.project2025.databinding.FragmentHomeBinding;
+import com.example.project2025.databinding.FragmentMenuBinding;
+import com.example.project2025.ui.dashboard.ScheduleBottomSheet;
 
-import android.widget.ImageView;
+public class NotificationFragment extends Fragment {
 
-
-public class DashboardFragment extends Fragment {
-
-    private FragmentHomeBinding binding;
+    private FragmentMenuBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        NotificationViewModel notificationViewModel =
+                new ViewModelProvider(this).get(NotificationViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentMenuBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ImageView createAlarmBtn = binding.alarm;
-        createAlarmBtn.setOnClickListener(v -> {
-            ScheduleBottomSheet bottomSheet = new ScheduleBottomSheet();
+        ImageView createGearBtn = binding.gear;
+        createGearBtn.setOnClickListener(v -> {
+            SettingProfile bottomSheet = new SettingProfile();
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
         });
+
 
         return root;
     }

@@ -17,8 +17,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Firebase auth
     FirebaseAuth auth;
     FirebaseUser user;
+
+    // Debug switch — true: skip login, false: need login
+    private static final boolean DEBUG_SKIP_LOGIN = true;
 
     private ActivityMainBinding binding;
 
@@ -29,19 +33,22 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Initialize the bottom navigation
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+        ).build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        // check login logic
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        if(user == null){
+
+        if (!DEBUG_SKIP_LOGIN && user == null) {
+            // If it is not debug mode and there is no logged in user -> jump to the login page
             Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
             startActivity(intent);
             finish();

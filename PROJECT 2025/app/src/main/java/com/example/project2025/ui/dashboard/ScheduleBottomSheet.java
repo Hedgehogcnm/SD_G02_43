@@ -30,7 +30,7 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
 
         Toast.makeText(getContext(), "Bottom Sheet Opened", Toast.LENGTH_SHORT).show();
 
-        // ==== 初始化 dayViews ====
+        // ==== initialize dayViews ====
         dayViews = new TextView[]{
                 view.findViewById(R.id.daySun),
                 view.findViewById(R.id.dayMon),
@@ -59,7 +59,7 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
             });
         }
 
-        // ==== 初始化 levelViews 和 foodBar ====
+        // ==== initialize levelViews and foodBar ====
         levelViews = new TextView[]{
                 view.findViewById(R.id.level1),
                 view.findViewById(R.id.level2),
@@ -85,10 +85,10 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
             });
         }
 
-        // ==== 设置 cancel 按钮 ====
+        // ==== set cancel button ====
         TextView cancelTextView = view.findViewById(R.id.cancel);
         cancelTextView.setOnClickListener(v -> {
-            // 清除 dayView 选择状态
+            // clear dayView status
             for (TextView day : dayViews) {
                 day.setSelected(false);
                 day.setTextColor(Color.parseColor("#888888"));
@@ -96,12 +96,12 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
                 day.setBackgroundColor(Color.TRANSPARENT);
             }
 
-            // 清除 levelView 状态
+            // clear levelView status
             for (TextView level : levelViews) {
                 level.setSelected(false);
             }
 
-            // 重置 foodBar 高度
+            // reset foodBar height
             foodBar.post(() -> {
                 ViewGroup.LayoutParams params = foodBar.getLayoutParams();
                 params.height = 0;
@@ -109,7 +109,7 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
             });
 
             Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_SHORT).show();
-            dismiss(); // 关闭 BottomSheet
+            dismiss(); // close BottomSheet
         });
 
         return view;
