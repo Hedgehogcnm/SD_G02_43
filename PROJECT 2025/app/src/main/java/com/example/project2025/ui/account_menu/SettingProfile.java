@@ -3,6 +3,7 @@ package com.example.project2025.ui.account_menu;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,11 @@ public class SettingProfile extends BottomSheetDialogFragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.setting_profile, container, false);
 
-        Toast.makeText(getContext(), "Bottom Sheet Opened", Toast.LENGTH_SHORT).show();
+        Log.d("SettingProfile", "Bottom Sheet Created");
 
         // ===== Cancel btn =====
         TextView cancelTextView = view.findViewById(R.id.setting_cancel);
         cancelTextView.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_SHORT).show();
             dismiss(); // close BottomSheet
         });
 
@@ -66,17 +66,17 @@ public class SettingProfile extends BottomSheetDialogFragment {
         }
 
         dialogView.findViewById(R.id.change_username).setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Change Username clicked", Toast.LENGTH_SHORT).show();
+            Log.d("Account Dialog: ", "Change Username clicked");
             dialog.dismiss();
         });
 
         dialogView.findViewById(R.id.change_profile_image).setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Change Profile Image clicked", Toast.LENGTH_SHORT).show();
+            Log.d("Account Dialog: ", "Change Profile Image clicked");
             dialog.dismiss();
         });
 
         dialogView.findViewById(R.id.change_password).setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Change Password clicked", Toast.LENGTH_SHORT).show();
+            Log.d("Account Dialog: ", "Change Password clicked");
             dialog.dismiss();
         });
 

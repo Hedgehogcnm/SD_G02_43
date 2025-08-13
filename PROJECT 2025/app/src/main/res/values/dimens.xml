@@ -4,8 +4,13 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="setting_text_spacing_margin">55dp</dimen>
 
+    <!-- Default back button margin-->
+    <dimen name="back_button_margin">10dp</dimen>
     <!--Dimensional for pet feeder image-->
     <dimen name="pet_feeder_image_height">150dp</dimen>
     <dimen name="pet_feeder_image_width">280dp</dimen>
     <dimen name="pet_feeder_image_margin_top">35dp</dimen>
+
+    <!--Change Password AND change username-->
+    <dimen name="text_size_change_username">20sp</dimen>
 </resources>
