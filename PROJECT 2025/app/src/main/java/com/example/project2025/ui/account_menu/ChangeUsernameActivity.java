@@ -21,8 +21,8 @@ import com.example.project2025.SignInActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -99,19 +99,26 @@ public class ChangeUsernameActivity extends AppCompatActivity {
 
     void initializeUsername(FirebaseFirestore db, FirebaseAuth mAuth){
         if(mAuth.getCurrentUser() != null) {
-            CollectionReference usersRef = db.collection("Users");
-            Query query = usersRef.whereEqualTo("email", mAuth.getCurrentUser().getEmail());
-            query.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    for (com.google.firebase.firestore.DocumentSnapshot document : task.getResult()) {
-                        String name = document.getString("name");
-                        currentName.setText(name);
+            SharedPreferences sharedPreferences = getSharedPreferences("CURRENTUSER", MODE_PRIVATE);
+            String documentID = sharedPreferences.getString("DocumentID", null);
+            if(documentID != null) {
+                DocumentReference userRef = db.collection("Users").document(documentID);
+                userRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String name = document.getString("name");
+                            currentName.setText(name);
+                        } else {
+                            Log.d("Account menu: ", "No such document");
+                        }
+                    } else {
+                        Log.d("Account menu: ", "Error getting current user's name", task.getException());
                     }
-                }
-                else {
-                    Log.d("Account menu: ","Error getting current user's name");
-                }
-            });
+                });
+            } else {
+                Log.d("Account menu: ","Error getting current user's documentID from SharedPreferences");
+            }
         }
         else{
             Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();

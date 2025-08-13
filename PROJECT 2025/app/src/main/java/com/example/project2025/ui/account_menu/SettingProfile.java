@@ -67,6 +67,8 @@ public class SettingProfile extends BottomSheetDialogFragment {
 
         dialogView.findViewById(R.id.change_username).setOnClickListener(v -> {
             Log.d("Account Dialog: ", "Change Username clicked");
+            Intent intent = new Intent(getActivity(), ChangeUsernameActivity.class);
+            startActivity(intent);
             dialog.dismiss();
         });
 

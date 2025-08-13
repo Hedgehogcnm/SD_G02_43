@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
          */
 
         // Initialize Shared Preferences
+        db = FirebaseFirestore.getInstance();
         CollectionReference usersRef = db.collection("Users");
         Query query = usersRef.whereEqualTo("email", user.getEmail());
 
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 for (DocumentSnapshot document : task.getResult()){
                     ref.uid = document.getString("uid");
                     ref.documentID = document.getId();
+                    Log.d("Account menu: ","Item logged, Current user's name: " + document.getString("name"));
                 }
 
             }
@@ -94,6 +96,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Account menu: ","Error getting current user's name");
             }
         });
+
+        Log.d("MY USER IS ","user: " + user);
+        Log.d("MY EMAIL IS ","email: " + user.getEmail());
+        Log.d("MY UID IS ","uid: " + ref.uid);
+        Log.d("MY DOCUMENT ID IS ","documentID: " + ref.documentID);
 
         // Inserting uid and documentID into shared preferences
         sharedPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
