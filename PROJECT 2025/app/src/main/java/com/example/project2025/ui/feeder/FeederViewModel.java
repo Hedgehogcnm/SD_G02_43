@@ -1,14 +1,14 @@
-package com.example.project2025.ui.dashboard;
+package com.example.project2025.ui.feeder;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class FeederViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public FeederViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("IOT device name");
     }

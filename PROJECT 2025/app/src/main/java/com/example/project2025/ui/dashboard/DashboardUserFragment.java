@@ -1,4 +1,4 @@
-package com.example.project2025.ui.home;
+package com.example.project2025.ui.dashboard;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,20 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.project2025.databinding.FragmentLifeBinding;
+import com.example.project2025.databinding.FragmentDashboardUserBinding;
 
-public class HomeFragment extends Fragment {
+public class DashboardUserFragment extends Fragment {
 
-    private FragmentLifeBinding binding;
+    private FragmentDashboardUserBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        DashboardUserViewModel homeViewModel =
+                new ViewModelProvider(this).get(DashboardUserViewModel.class);
 
-        binding = FragmentLifeBinding.inflate(inflater, container, false);
+        binding = FragmentDashboardUserBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 

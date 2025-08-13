@@ -1,16 +1,16 @@
-package com.example.project2025.ui.notifications;
+package com.example.project2025.ui.account_menu;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationViewModel extends ViewModel {
+public class accountMenuViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public NotificationViewModel() {
+    public accountMenuViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is account Menu fragment");
     }
 
     public LiveData<String> getText() {

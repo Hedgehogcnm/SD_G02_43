@@ -1,27 +1,25 @@
-package com.example.project2025.ui.notifications;
+package com.example.project2025.ui.account_menu;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.project2025.databinding.FragmentMenuBinding;
-import com.example.project2025.ui.dashboard.ScheduleBottomSheet;
 
-public class NotificationFragment extends Fragment {
+public class accountMenuFragment extends Fragment {
 
     private FragmentMenuBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationViewModel notificationViewModel =
-                new ViewModelProvider(this).get(NotificationViewModel.class);
+        accountMenuViewModel notificationViewModel =
+                new ViewModelProvider(this).get(accountMenuViewModel.class);
 
         binding = FragmentMenuBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

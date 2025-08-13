@@ -1,30 +1,29 @@
-package com.example.project2025.ui.dashboard;
+package com.example.project2025.ui.feeder;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.project2025.databinding.FragmentHomeBinding;
+import com.example.project2025.databinding.FragmentFeederBinding;
 
 import android.widget.ImageView;
 
 
-public class DashboardFragment extends Fragment {
+public class FeederFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentFeederBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        FeederViewModel dashboardViewModel =
+                new ViewModelProvider(this).get(FeederViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentFeederBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         ImageView createAlarmBtn = binding.alarm;

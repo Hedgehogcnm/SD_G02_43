@@ -1,4 +1,4 @@
-package com.example.project2025.ui.notifications;
+package com.example.project2025.ui.account_menu;
 
 import android.app.AlertDialog;
 import android.content.Intent;

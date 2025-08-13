@@ -3,24 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
-
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.project2025.ui.home.HomeFragment"
-        android:label="Life"
-        tools:layout="@layout/fragment_life" />
+    app:startDestination="@+id/navigation_dashboard">
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.project2025.ui.dashboard.DashboardFragment"
-        android:label="KaiFeedCat Feeder"
-        android:gravity="center"
-        tools:layout="@layout/fragment_home" />
+        android:name="com.example.project2025.ui.dashboard.DashboardUserFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard_user" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.project2025.ui.notifications.NotificationFragment"
-        android:label="Menu"
+        android:id="@+id/navigation_feeder"
+        android:name="com.example.project2025.ui.feeder.FeederFragment"
+        android:label="KaiFeedCat Feeder"
+        android:gravity="center"
+        tools:layout="@layout/fragment_feeder" />
+
+    <fragment
+        android:id="@+id/navigation_menu"
+        android:name="com.example.project2025.ui.account_menu.accountMenuFragment"
+        android:label="Account"
         tools:layout="@layout/fragment_menu" />
 </navigation>

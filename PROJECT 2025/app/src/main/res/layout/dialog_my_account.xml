@@ -2,16 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
 
     android:background="@drawable/dialog_background">
 
+    <Button
+        android:id="@+id/back_button"
+        android:text = "back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
     <!-- 第一行：头像 + 改用户名 -->
+    <!-- First line: change avatar and name-->
 
     <!-- 第二行：改头像 -->
+    <!-- Second line: change avatar-->
     <LinearLayout
+        android:id="@+id/change_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -26,7 +35,6 @@
             android:src="@drawable/ic_profile" />
 
         <TextView
-            android:id="@+id/change_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Change Username"
@@ -35,6 +43,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/change_profile_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -49,7 +58,6 @@
             android:layout_marginEnd="16dp" />
 
         <TextView
-            android:id="@+id/change_profile_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Change Profile Image"
@@ -58,7 +66,9 @@
     </LinearLayout>
 
     <!-- 第三行：改密码 -->
+    <!-- Third line: change password-->
     <LinearLayout
+        android:id="@+id/change_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -73,7 +83,6 @@
             android:layout_marginEnd="16dp" />
 
         <TextView
-            android:id="@+id/change_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Change Password"
