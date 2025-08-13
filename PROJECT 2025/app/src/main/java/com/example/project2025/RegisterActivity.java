@@ -3,7 +3,6 @@ package com.example.project2025;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,20 +22,37 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Registration screen using Firebase Authentication (email/password) with enforced
+ * email verification before granting access to the main app. The flow is:
+ * - User enters name, email, password → taps Register
+ * - Account is created in Firebase Auth and a verification email is sent
+ * - Screen stays here and shows actions: "I've verified" and "Resend verification"
+ * - After the user verifies via the email link and taps "I've verified",
+ *   we confirm verification, ensure a profile doc exists at Users/{uid} in Firestore,
+ *   then navigate to MainActivity
+ *
+ * Notes:
+ * - RegisterActivity is always the launcher; we do not auto-redirect on start
+ * - Firestore profile creation happens after verification to avoid unverified profiles
+ */
 public class RegisterActivity extends AppCompatActivity {
 
+    // UI references
     EditText nameEditText, emailEditText, passwordEditText, confirmPasswordEditText, OTPEditText;
     Button registerButton;
+    Button verifiedContinueButton;
+    Button resendVerificationButton;
     TextView loginTextView;
+
+    // Firebase clients
     FirebaseAuth mAuth;
     FirebaseFirestore db;
 
@@ -63,9 +79,11 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPasswordEditText = findViewById(R.id.confirmPassword);
         OTPEditText = findViewById(R.id.otp);
         registerButton = findViewById(R.id.registerButton);
+        verifiedContinueButton = findViewById(R.id.verifiedContinueButton);
+        resendVerificationButton = findViewById(R.id.resendVerificationButton);
         loginTextView = findViewById(R.id.loginTextView);
 
-        //User will go to login page after clicking login
+        // Navigate to the login screen when the user taps the Login text
         loginTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        //Register account
+        // Handle registration: validate inputs then create the Auth user
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,67 +124,106 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                //Check if email already existed or not
-                CollectionReference UsersRef = db.collection("Users");
-                Query query = UsersRef.whereEqualTo("email", email);
-                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            QuerySnapshot querySnapshot = task.getResult();
-                            if(querySnapshot.isEmpty()){
-                                Log.d("FireStore", "No email finded. Success!");
-                                registerUser(name,email, password);
-                            }
-                            else{
-                                Toast.makeText(RegisterActivity.this, "Email already existed!", Toast.LENGTH_LONG).show();
-                                Log.d("FireStore", "User already existed!");
-                                return;
-                            }
+                if (password.length() < 6) {
+                    Toast.makeText(RegisterActivity.this, "Password must be at least 6 characters", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                // Create account directly
+                registerUser(name, email, password);
+            }
+        });
+
+        // After the user clicks the verification link in their email, they tap this button.
+        // We reload the Auth user, confirm email is verified, ensure a Firestore profile exists,
+        // then proceed into the app.
+        verifiedContinueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mAuth.getCurrentUser() != null) {
+                    mAuth.getCurrentUser().reload().addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && mAuth.getCurrentUser().isEmailVerified()) {
+                            String uid = mAuth.getCurrentUser().getUid();
+                            String email = mAuth.getCurrentUser().getEmail();
+                            String name = nameEditText.getText().toString();
+
+                            db.collection("Users").document(uid).get()
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot snapshot) {
+                                            if (!snapshot.exists()) {
+                                                Map<String, Object> userProfile = new HashMap<>();
+                                                userProfile.put("name", name);
+                                                userProfile.put("email", email);
+                                                userProfile.put("uid", uid);
+                                                userProfile.put("createdAt", System.currentTimeMillis());
+                                                db.collection("Users").document(uid).set(userProfile, SetOptions.merge())
+                                                        .addOnSuccessListener(aVoid -> proceedToMain())
+                                                        .addOnFailureListener(e -> proceedToMain());
+                                            } else {
+                                                proceedToMain();
+                                            }
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> proceedToMain());
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Email not verified yet.", Toast.LENGTH_LONG).show();
                         }
-                        else{
-                            Log.d("FireStore","Query failed", task.getException());
-                            return;
-                        }
-                    }
-                });
+                    });
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Please check your email and verify, then log in.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        // Resend verification email for users who didn't receive it the first time
+        resendVerificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mAuth.getCurrentUser() != null) {
+                    mAuth.getCurrentUser().sendEmailVerification();
+                    Toast.makeText(RegisterActivity.this, "Verification email resent.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Create your account first.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }
 
+    // Removed auto-redirect in onStart to keep Register screen visible until user proceeds
+
+    /**
+     * Creates a Firebase Auth user and sends a verification email. The UI stays
+     * on this screen and reveals verification helper actions. Firestore profile
+     * creation is deferred until verification is confirmed.
+     */
     private void registerUser(String name, String email, String password){
-        Map<String, Object> user = new HashMap<>();
-        user.put("Name", name);
-        user.put("email", email);
-
-        db.collection("Users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-
-
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this, "Account created.", Toast.LENGTH_SHORT).show();
+                            // Send email verification and wait; profile will be created after verification
+                            if (mAuth.getCurrentUser() != null) {
+                                mAuth.getCurrentUser().sendEmailVerification();
+                            }
+                            Toast.makeText(RegisterActivity.this, "Verification email sent. Please verify, then tap 'I've verified' or Login.", Toast.LENGTH_LONG).show();
+                            verifiedContinueButton.setVisibility(View.VISIBLE);
+                            resendVerificationButton.setVisibility(View.VISIBLE);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, task.getException() != null ? task.getException().getMessage() : "Authentication failed.", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
+    }
+
+    /**
+     * Navigate to the main app experience after verification and profile ensuring.
+     */
+    private void proceedToMain() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
