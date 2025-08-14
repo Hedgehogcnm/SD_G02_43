@@ -79,6 +79,8 @@ public class SettingProfile extends BottomSheetDialogFragment {
 
         dialogView.findViewById(R.id.change_password).setOnClickListener(v -> {
             Log.d("Account Dialog: ", "Change Password clicked");
+            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+            startActivity(intent);
             dialog.dismiss();
         });
 

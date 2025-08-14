@@ -1,6 +1,12 @@
 package com.example.project2025.ui.account_menu;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,8 +15,16 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.project2025.R;
+import com.example.project2025.RegisterActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ChangePasswordActivity extends AppCompatActivity {
+
+    Button backButton, confirmButton;
+    EditText newPassword, confirmPassword;
+    TextView userEmail;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +35,59 @@ public class ChangePasswordActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        backButton = findViewById(R.id.back_button);
+        confirmButton = findViewById(R.id.confirm_button);
+        newPassword = findViewById(R.id.new_password);
+        confirmPassword = findViewById(R.id.confirm_password);
+        userEmail = findViewById(R.id.user_email);
+
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        backButton.setOnClickListener(v -> {
+            super.getOnBackPressedDispatcher();
+            finish();
+        });
+
+        // Initialize email text
+        if (currentUser != null) {
+            userEmail.setText(auth.getCurrentUser().getEmail());
+        } else {
+            userEmail.setText("Please login first");
+        }
+
+        confirmButton.setOnClickListener(v ->{
+            String newPasswordText = newPassword.getText().toString();
+            String confirmPasswordText = confirmPassword.getText().toString();
+
+            if(currentUser != null){
+                if (newPasswordText.length() < 6) {
+                    Toast.makeText(getApplicationContext(), "Password must be at least 6 characters", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(newPasswordText.equals(confirmPasswordText)){
+                    currentUser.updatePassword(newPasswordText).addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            newPassword.setText("");
+                            confirmPassword.setText("");
+                            Toast.makeText(getApplicationContext() ,"Password successfully changed!", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            newPassword.setText("");
+                            confirmPassword.setText("");
+                            Toast.makeText(getApplicationContext() ,"Fail to change password", Toast.LENGTH_SHORT).show();
+                        }
+                        Log.d("Debug: ", currentUser.getEmail());
+                    });
+                }
+                else{
+                    Toast.makeText(getApplicationContext() ,"Password doesn't match", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(getApplicationContext() ,"Please login first", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

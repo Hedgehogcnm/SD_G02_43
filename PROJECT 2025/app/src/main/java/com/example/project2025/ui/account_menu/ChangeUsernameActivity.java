@@ -1,7 +1,6 @@
 package com.example.project2025.ui.account_menu;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,28 +9,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.project2025.MainActivity;
 import com.example.project2025.R;
 import com.example.project2025.SignInActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChangeUsernameActivity extends AppCompatActivity {
 
     Button backButton, confirmButton;
     TextView currentName, newUsername;
-    FirebaseAuth mAuth;
+    FirebaseAuth auth;
     FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +42,9 @@ public class ChangeUsernameActivity extends AppCompatActivity {
             return insets;
         });
 
-        mAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        initializeUsername(db, mAuth);
+        initializeUsername(db, auth);
 
         backButton = findViewById(R.id.back_button);
         confirmButton = findViewById(R.id.confirm_button);
@@ -62,9 +60,10 @@ public class ChangeUsernameActivity extends AppCompatActivity {
            String newUsernameText = newUsername.getText().toString();
 
            if(!TextUtils.isEmpty(newUsernameText)){
-                if(setNewUsername(newUsernameText, db, mAuth)){
-                   Toast.makeText(this, "Username changed successfully", Toast.LENGTH_SHORT).show();
-               }
+               setNewUsername(newUsernameText, db, auth);
+               initializeUsername(db, auth);
+               Toast.makeText(getApplicationContext(), "Username changed successfully", Toast.LENGTH_SHORT).show();
+               newUsername.setText("");
            }
            else{
                Toast.makeText(this, "Please enter a new username first.", Toast.LENGTH_SHORT).show();
@@ -72,53 +71,45 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         });
     }
 
-    boolean setNewUsername(String newUsername, FirebaseFirestore db, FirebaseAuth mAuth){
-        Map<String, Object> userProfile = new HashMap<>();
-        userProfile.put("name", newUsername);
-
-        if(mAuth.getCurrentUser() != null) {
-            SharedPreferences sharedPreferences = getSharedPreferences("CURRENTUSER", MODE_PRIVATE);
-            String documentID = sharedPreferences.getString("DocumentID", null);
-            if(documentID != null) {
-                DocumentReference userRef = db.collection("Users").document(documentID);
-                userRef.update(userProfile).addOnSuccessListener(aVoid -> {
-                    initializeUsername(db, mAuth);
-                });
-                return true;
-            }
-            else{
-                Log.d("Account menu: ","Error getting current user's document");
-                return false;
-            }
+    void setNewUsername(String newUsername, FirebaseFirestore db, FirebaseAuth mAuth){
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        final Boolean[] status = {false};
+        if(currentUser != null) {
+            DocumentReference userRef = db.collection("Users").document(currentUser.getUid());
+            userRef.update("name",newUsername).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(getApplicationContext(), "Username changed successfully", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Please enter a new username first.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
         else{
             Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
-            return false;
         }
     }
 
     void initializeUsername(FirebaseFirestore db, FirebaseAuth mAuth){
-        if(mAuth.getCurrentUser() != null) {
-            SharedPreferences sharedPreferences = getSharedPreferences("CURRENTUSER", MODE_PRIVATE);
-            String documentID = sharedPreferences.getString("DocumentID", null);
-            if(documentID != null) {
-                DocumentReference userRef = db.collection("Users").document(documentID);
-                userRef.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            String name = document.getString("name");
-                            currentName.setText(name);
-                        } else {
-                            Log.d("Account menu: ", "No such document");
-                        }
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null) {
+            DocumentReference userRef = db.collection("Users").document(currentUser.getUid());
+            userRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String name = document.getString("name");
+                        currentName.setText(name);
                     } else {
-                        Log.d("Account menu: ", "Error getting current user's name", task.getException());
+                        Log.d("Account menu: ", "No such document");
                     }
-                });
-            } else {
-                Log.d("Account menu: ","Error getting current user's documentID from SharedPreferences");
-            }
+                } else {
+                    Log.d("Account menu: ", "Error getting current user's name", task.getException());
+                }
+            });
         }
         else{
             Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
