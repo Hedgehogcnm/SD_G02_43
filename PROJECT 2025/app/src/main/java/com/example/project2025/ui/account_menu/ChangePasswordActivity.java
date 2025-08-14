@@ -2,7 +2,6 @@ package com.example.project2025.ui.account_menu;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,14 +14,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.project2025.R;
-import com.example.project2025.RegisterActivity;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
     Button backButton, confirmButton;
-    EditText newPassword, confirmPassword;
+    EditText oldPassword, newPassword, confirmPassword;
     TextView userEmail;
     FirebaseAuth auth;
 
@@ -40,6 +42,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         backButton = findViewById(R.id.back_button);
         confirmButton = findViewById(R.id.confirm_button);
         newPassword = findViewById(R.id.new_password);
+        oldPassword = findViewById(R.id.old_password);
         confirmPassword = findViewById(R.id.confirm_password);
         userEmail = findViewById(R.id.user_email);
 
@@ -62,28 +65,41 @@ public class ChangePasswordActivity extends AppCompatActivity {
             String confirmPasswordText = confirmPassword.getText().toString();
 
             if(currentUser != null){
+                // Check new password length
                 if (newPasswordText.length() < 6) {
                     Toast.makeText(getApplicationContext(), "Password must be at least 6 characters", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(newPasswordText.equals(confirmPasswordText)){
-                    currentUser.updatePassword(newPasswordText).addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
-                            newPassword.setText("");
-                            confirmPassword.setText("");
-                            Toast.makeText(getApplicationContext() ,"Password successfully changed!", Toast.LENGTH_SHORT).show();
+
+                // Reauth the user
+                AuthCredential credential = EmailAuthProvider.getCredential(currentUser.getEmail(), oldPassword.getText().toString());
+                currentUser.reauthenticate(credential).addOnCompleteListener(taskAuth -> {
+                    if(taskAuth.isSuccessful()){
+                        Log.d("Reauth User: ", "Re-authentication successful");
+
+                        if(newPasswordText.equals(confirmPasswordText)){
+                            currentUser.updatePassword(newPasswordText).addOnCompleteListener(task -> {
+                                if(task.isSuccessful()){
+                                    newPassword.setText("");
+                                    confirmPassword.setText("");
+                                    Toast.makeText(getApplicationContext() ,"Password successfully changed!", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    newPassword.setText("");
+                                    confirmPassword.setText("");
+                                    Toast.makeText(getApplicationContext() ,"Fail to change password", Toast.LENGTH_SHORT).show();
+                                }
+                                Log.d("Debug: ", currentUser.getEmail());
+                            });
                         }
                         else{
-                            newPassword.setText("");
-                            confirmPassword.setText("");
-                            Toast.makeText(getApplicationContext() ,"Fail to change password", Toast.LENGTH_SHORT).show();
-                        }
-                        Log.d("Debug: ", currentUser.getEmail());
-                    });
-                }
-                else{
-                    Toast.makeText(getApplicationContext() ,"Password doesn't match", Toast.LENGTH_SHORT).show();
-                }
+                            Toast.makeText(getApplicationContext() ,"Password doesn't match", Toast.LENGTH_SHORT).show();                        }
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext() ,"Wrong old password", Toast.LENGTH_SHORT).show();
+                        Log.d("Reauth User: ", "Re-authentication Fail");
+                    }
+                });
             }
             else{
                 Toast.makeText(getApplicationContext() ,"Please login first", Toast.LENGTH_SHORT).show();
