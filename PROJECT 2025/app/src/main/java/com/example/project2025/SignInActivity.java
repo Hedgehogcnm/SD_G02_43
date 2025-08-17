@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.AlertDialog;
+import android.view.LayoutInflater;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -36,24 +38,14 @@ public class SignInActivity extends AppCompatActivity {
 
     EditText emailEditText, passwordEditText;
     Button signInBtn;
-    TextView registerTextView;
+    TextView registerTextView, forgotPasswordTextView;
     FirebaseAuth mAuth;
 
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            // Only allow entry if email is verified
-            if (currentUser.isEmailVerified()) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(this, "Please verify your email, then log in.", Toast.LENGTH_LONG).show();
-                mAuth.signOut();
-            }
-        }
+        // Auto-redirect removed - users must manually log in each time
+        // This prevents immediate redirect to MainActivity when opening the app
     }
 
     @Override
@@ -71,6 +63,7 @@ public class SignInActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         signInBtn = findViewById(R.id.logInButton);
         registerTextView = findViewById(R.id.registerTextView);
+        forgotPasswordTextView = findViewById(R.id.forgotPasswordTextView);
 
         registerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +71,13 @@ public class SignInActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showForgotPasswordDialog();
             }
         });
 
@@ -97,17 +97,29 @@ public class SignInActivity extends AppCompatActivity {
                             public void onComplete(@NonNull     Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user != null && user.isEmailVerified()) {
-                                        Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    } else {
-                                        Toast.makeText(SignInActivity.this, "Please verify your email first.", Toast.LENGTH_LONG).show();
-                                        if (user != null) {
-                                            user.sendEmailVerification();
+                                    if (user != null) {
+                                        // ===== ADMIN LOGIN SYSTEM =====
+                                        // Check if the logged-in user is the admin (kaifeedcat@gmail.com)
+                                        if (user.getEmail().equals("kaifeedcat@gmail.com")) {
+                                            // ADMIN USER: Allow login even without email verification
+                                            // This bypasses the normal email verification requirement for admin
+                                            Toast.makeText(SignInActivity.this, "Admin Login Successful", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            // REGULAR USER: Normal login flow with email verification required
+                                            if (user.isEmailVerified()) {
+                                                Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                Toast.makeText(SignInActivity.this, "Please verify your email first.", Toast.LENGTH_LONG).show();
+                                                user.sendEmailVerification();
+                                                mAuth.signOut();
+                                            }
                                         }
-                                        mAuth.signOut();
                                     }
                                 } else {
 
@@ -118,7 +130,53 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+    private void showForgotPasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Reset Password");
 
+        // Create the dialog layout
+        final EditText emailInput = new EditText(this);
+        emailInput.setHint("Enter your email address");
+        emailInput.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        builder.setView(emailInput);
+
+        builder.setPositiveButton("Send Reset Email", new android.content.DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(android.content.DialogInterface dialog, int which) {
+                String email = emailInput.getText().toString().trim();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(SignInActivity.this, "Please enter your email address", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
+                // Send password reset email
+                mAuth.sendPasswordResetEmail(email)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(SignInActivity.this, 
+                                        "Password reset email sent! Check your inbox.", 
+                                        Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(SignInActivity.this, 
+                                        "Failed to send reset email. Please check your email address.", 
+                                        Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(android.content.DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 }
