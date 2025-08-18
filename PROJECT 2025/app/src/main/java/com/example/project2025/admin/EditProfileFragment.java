@@ -1,4 +1,4 @@
-package com.example.project2025;
+package com.example.project2025.admin;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.project2025.R;
+import com.example.project2025.SignInActivity;
 import com.example.project2025.ui.account_menu.ChangeUsernameActivity;
 import com.example.project2025.ui.account_menu.ChangePasswordActivity;
 

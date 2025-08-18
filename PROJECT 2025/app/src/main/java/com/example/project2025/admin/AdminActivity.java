@@ -1,8 +1,11 @@
-package com.example.project2025;
+package com.example.project2025.admin;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.example.project2025.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
@@ -12,11 +15,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 public class AdminActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
+        // Get current user role
+        sharedPreferences = getSharedPreferences("ROLE", MODE_PRIVATE);
+        sharedPreferences.edit().putString("Role", "Admin").apply();
         // ===== BOTTOM NAVIGATION SETUP =====
         // Initialize the bottom navigation bar for admin interface
         BottomNavigationView bottomNav = findViewById(R.id.admin_bottom_navigation);

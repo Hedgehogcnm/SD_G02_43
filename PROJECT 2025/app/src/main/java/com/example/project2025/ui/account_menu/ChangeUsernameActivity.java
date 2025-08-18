@@ -1,6 +1,7 @@
 package com.example.project2025.ui.account_menu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ChangeUsernameActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPreferences;
     Button backButton, confirmButton;
     TextView currentName, newUsername;
     FirebaseAuth auth;
@@ -44,7 +46,11 @@ public class ChangeUsernameActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        initializeUsername(db, auth);
+        sharedPreferences = getSharedPreferences("ROLE", MODE_PRIVATE);
+        String role = sharedPreferences.getString("Role", "Users");
+        Log.d("Debugging:", "Role: " + role);
+        Log.d("Debugging: ", auth.getCurrentUser().getEmail());
+        initializeUsername(db, auth, role);
 
         backButton = findViewById(R.id.back_button);
         confirmButton = findViewById(R.id.confirm_button);
@@ -58,11 +64,9 @@ public class ChangeUsernameActivity extends AppCompatActivity {
 
         confirmButton.setOnClickListener(v -> {
            String newUsernameText = newUsername.getText().toString();
-
            if(!TextUtils.isEmpty(newUsernameText)){
-               setNewUsername(newUsernameText, db, auth);
-               initializeUsername(db, auth);
-               Toast.makeText(getApplicationContext(), "Username changed successfully", Toast.LENGTH_SHORT).show();
+               setNewUsername(newUsernameText, db, auth, role);
+               initializeUsername(db, auth, role);
                newUsername.setText("");
            }
            else{
@@ -71,32 +75,51 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         });
     }
 
-    void setNewUsername(String newUsername, FirebaseFirestore db, FirebaseAuth mAuth){
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        sharedPreferences = getSharedPreferences("ROLE", MODE_PRIVATE);
+        String role = sharedPreferences.getString("ROLE", "Users");
+        initializeUsername(db, auth, role);
+    }
+
+    void setNewUsername(String newUsername, FirebaseFirestore db, FirebaseAuth mAuth, String collection){
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        final Boolean[] status = {false};
+        Log.d("ChangeUsername", "Attempting to set new username: " + newUsername);
+        Log.d("ChangeUsername", "Target collection: " + collection);
+
         if(currentUser != null) {
-            DocumentReference userRef = db.collection("Users").document(currentUser.getUid());
-            userRef.update("name",newUsername).addOnCompleteListener(new OnCompleteListener<Void>() {
+            Log.d("ChangeUsername", "Current user UID: " + currentUser.getUid());
+            DocumentReference userRef = db.collection(collection).document(currentUser.getUid());
+
+            Log.d("ChangeUsername", "Updating document path: " + collection + "/" + currentUser.getUid());
+
+            userRef.update("name", newUsername).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
+                        Log.d("ChangeUsername", "Update successful for UID: " + currentUser.getUid());
                         Toast.makeText(getApplicationContext(), "Username changed successfully", Toast.LENGTH_SHORT).show();
                     }
                     else{
+                        Log.e("ChangeUsername", "Update failed", task.getException());
                         Toast.makeText(getApplicationContext(), "Please enter a new username first.", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
         else{
+            Log.e("ChangeUsername", "Current user is NULL. Cannot update username.");
             Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
         }
     }
 
-    void initializeUsername(FirebaseFirestore db, FirebaseAuth mAuth){
+    void initializeUsername(FirebaseFirestore db, FirebaseAuth mAuth, String collection){
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null) {
-            DocumentReference userRef = db.collection("Users").document(currentUser.getUid());
+            DocumentReference userRef = db.collection(collection).document(currentUser.getUid());
             userRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();

@@ -34,7 +34,7 @@
             android:exported="false"
             android:label="@string/app_name" />
         <activity
-            android:name=".AdminActivity"
+            android:name=".admin.AdminActivity"
             android:exported="false" />
     </application>
 

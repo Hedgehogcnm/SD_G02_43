@@ -16,6 +16,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
+/**
+ * This is the main activity for User
+ * This activity is accessible to all users
+ * Contains bottom navigation with dashboard, account menu, and feeder
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     // Share Preferences
@@ -39,12 +45,16 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the bottom navigation
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_dashboard, R.id.navigation_feeder, R.id.navigation_menu
+                R.id.navigation_dashboard, R.id.navigation_menu, R.id.navigation_feeder
         ).build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        // Get current user role
+        sharedPreferences = getSharedPreferences("ROLE", MODE_PRIVATE);
+        sharedPreferences.edit().putString("Role", "Users").apply();
 
         // check login logic
         auth = FirebaseAuth.getInstance();

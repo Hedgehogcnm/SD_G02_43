@@ -45,7 +45,12 @@ public class accountMenuFragment extends Fragment {
             SettingProfile bottomSheet = new SettingProfile();
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
         });
+        return root;
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         //Initialize Firebase
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
@@ -77,8 +82,6 @@ public class accountMenuFragment extends Fragment {
                 Log.d("accountMenuFragment: ", "get failed with ", task.getException());
             }
         });
-
-        return root;
     }
 
     @Override

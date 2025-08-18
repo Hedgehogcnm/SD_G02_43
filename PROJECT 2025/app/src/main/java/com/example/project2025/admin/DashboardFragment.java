@@ -1,10 +1,12 @@
-package com.example.project2025;
+package com.example.project2025.admin;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
+
+import com.example.project2025.R;
 
 /**
  * DashboardFragment - Admin dashboard interface
