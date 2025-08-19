@@ -1,4 +1,4 @@
-package com.example.project2025.ui.account_menu;
+package com.example.project2025.admin;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -13,46 +13,53 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
+import com.example.project2025.R;
 import com.example.project2025.SignInActivity;
-import com.example.project2025.databinding.FragmentMenuBinding;
+import com.example.project2025.shared.SettingProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class accountMenuFragment extends Fragment {
+/**
+ * EditProfileFragment - Admin profile management interface
+ * This fragment provides the same functionality as the user profile settings
+ * Allows admin to manage their own profile (username, password, language, etc.)
+ * Copied from user-side SettingProfile for consistency
+ */
+public class EditProfileAdminFragment extends Fragment {
 
     TextView username, email;
     FirebaseAuth auth;
     FirebaseUser currentUser;
     FirebaseFirestore db;
     SharedPreferences sharedPreferences;
-    private FragmentMenuBinding binding;
 
+    @Nullable
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        accountMenuViewModel notificationViewModel =
-                new ViewModelProvider(this).get(accountMenuViewModel.class);
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.account_fragment, container, false);
 
-        binding = FragmentMenuBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        ImageView createGearBtn = binding.gear;
+        Log.d("EditProfileFragment", "Fragment Created");
+        username = view.findViewById(R.id.menu_username);
+        email = view.findViewById(R.id.menu_email);
+        // ===== CANCEL BUTTON =====
+        // When admin clicks cancel, return to the Dashboard fragment
+        ImageView createGearBtn = view.findViewById(R.id.gear_button);
         createGearBtn.setOnClickListener(v -> {
             SettingProfile bottomSheet = new SettingProfile();
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
         });
-        return root;
+
+        return view;
     }
 
-    @Override
     public void onStart() {
         super.onStart();
         //Initialize Firebase
@@ -68,8 +75,6 @@ public class accountMenuFragment extends Fragment {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     // Display Text
-                    username = binding.menuUsername;
-                    email = binding.menuEmail;
                     if (currentUser != null) {
                         email.setText(auth.getCurrentUser().getEmail());
                         username.setText(document.getString("name"));
@@ -88,10 +93,6 @@ public class accountMenuFragment extends Fragment {
             }
         });
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
 }
+
+

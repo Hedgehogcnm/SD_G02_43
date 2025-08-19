@@ -13,12 +13,12 @@ import com.example.project2025.R;
  * Currently empty as requested by user
  * This fragment will be used for admin-specific features in the future
  */
-public class DashboardFragment extends Fragment {
+public class DashboardAdminFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         // Currently shows "Admin Dashboard" and "(Empty for now)" text
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+        return inflater.inflate(R.layout.dashboard_fragment_admin, container, false);
     }
 }

@@ -29,23 +29,20 @@ public class MainActivity extends AppCompatActivity {
     // Firebase auth & Firestore
     private FirebaseAuth auth;
     private FirebaseUser user;
-
-    // Debug switch — true: skip login, false: need login
-    private static final boolean DEBUG_SKIP_LOGIN = true;
-
     private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Inflate and set layout first
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Initialize the bottom navigation
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_dashboard, R.id.navigation_menu, R.id.navigation_feeder
+                R.id.dashboard_fragment_user_navigation, R.id.account_fragment_navigation, R.id.feeder_fragment_navigation
         ).build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
@@ -59,13 +56,6 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
-        if (!DEBUG_SKIP_LOGIN && user == null) {
-            // If it is not debug mode and there is no logged in user -> jump to the login page
-            Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
     }
-    }
+}
 

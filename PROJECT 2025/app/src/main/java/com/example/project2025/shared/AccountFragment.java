@@ -1,8 +1,7 @@
-package com.example.project2025.admin;
+package com.example.project2025.shared;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,30 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.project2025.R;
 import com.example.project2025.SignInActivity;
-import com.example.project2025.ui.account_menu.ChangeUsernameActivity;
-import com.example.project2025.ui.account_menu.ChangePasswordActivity;
-import com.example.project2025.ui.account_menu.SettingProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-/**
- * EditProfileFragment - Admin profile management interface
- * This fragment provides the same functionality as the user profile settings
- * Allows admin to manage their own profile (username, password, language, etc.)
- * Copied from user-side SettingProfile for consistency
- */
-public class EditProfileFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
     TextView username, email;
     FirebaseAuth auth;
@@ -43,26 +32,22 @@ public class EditProfileFragment extends Fragment {
     FirebaseFirestore db;
     SharedPreferences sharedPreferences;
 
-    @Nullable
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_menu, container, false);
+                             ViewGroup container, Bundle savedInstanceState) {
+        AccountViewModel notificationViewModel =
+                new ViewModelProvider(this).get(AccountViewModel.class);
 
-        Log.d("EditProfileFragment", "Fragment Created");
+        View root = inflater.inflate(R.layout.account_fragment, container, false);
 
-        // ===== CANCEL BUTTON =====
-        // When admin clicks cancel, return to the Dashboard fragment
-        ImageView createGearBtn = view.findViewById(R.id.gear);
+        ImageView createGearBtn = root.findViewById(R.id.gear_button);
         createGearBtn.setOnClickListener(v -> {
             SettingProfile bottomSheet = new SettingProfile();
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
         });
-
-        return view;
+        return root;
     }
 
+    @Override
     public void onStart() {
         super.onStart();
         //Initialize Firebase
@@ -98,6 +83,9 @@ public class EditProfileFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 }
-
-

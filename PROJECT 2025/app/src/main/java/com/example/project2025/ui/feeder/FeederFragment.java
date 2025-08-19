@@ -9,24 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.project2025.databinding.FragmentFeederBinding;
-
 import android.widget.ImageView;
+
+import com.example.project2025.R;
 
 
 public class FeederFragment extends Fragment {
-
-    private FragmentFeederBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         FeederViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(FeederViewModel.class);
 
-        binding = FragmentFeederBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        View root = inflater.inflate(R.layout.feeder_fragment, container, false);
 
-        ImageView createAlarmBtn = binding.alarm;
+        ImageView createAlarmBtn = root.findViewById(R.id.alarm);
         createAlarmBtn.setOnClickListener(v -> {
             ScheduleBottomSheet bottomSheet = new ScheduleBottomSheet();
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
@@ -38,6 +35,5 @@ public class FeederFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
     }
 }

@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KaiFeedCat.NoActionBar">
         <activity
-            android:name=".ui.account_menu.ChangePasswordActivity"
+            android:name=".shared.ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.account_menu.ChangeUsernameActivity"
+            android:name=".shared.ChangeUsernameActivity"
             android:exported="false" />
         <activity
             android:name=".SignInActivity"

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_navigation"
+    app:startDestination="@id/nav_dashboard_admin">
+
+    <fragment
+        android:id="@+id/nav_dashboard_admin"
+        android:name="com.example.project2025.admin.DashboardAdminFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/dashboard_fragment_admin"/>
+
+    <fragment
+        android:id="@+id/nav_account_fragment"
+        android:name="com.example.project2025.admin.EditProfileAdminFragment"
+        android:label="Edit Profile"
+        tools:layout="@layout/account_fragment"/>
+
+</navigation>

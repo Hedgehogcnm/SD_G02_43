@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.account_menu.accountMenuFragment">
+    tools:context=".shared.AccountFragment">
 
 
     <ImageView
-        android:id="@+id/gear"
+        android:id="@+id/gear_button"
         android:layout_width="20dp"
         android:layout_height="30dp"
         android:layout_marginTop="16dp"
