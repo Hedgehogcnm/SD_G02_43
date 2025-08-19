@@ -1,6 +1,9 @@
 package com.example.project2025.ui.account_menu;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +33,7 @@ public class accountMenuFragment extends Fragment {
     FirebaseAuth auth;
     FirebaseUser currentUser;
     FirebaseFirestore db;
+    SharedPreferences sharedPreferences;
     private FragmentMenuBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -55,9 +59,10 @@ public class accountMenuFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
-
+        sharedPreferences = getActivity().getSharedPreferences("ROLE", MODE_PRIVATE);
+        String role = sharedPreferences.getString("Role", "Users");
         // Initialize username
-        DocumentReference userRef = db.collection("Users").document(currentUser.getUid());
+        DocumentReference userRef = db.collection(role).document(currentUser.getUid());
         userRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();

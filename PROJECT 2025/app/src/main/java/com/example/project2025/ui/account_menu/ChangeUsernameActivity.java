@@ -48,8 +48,6 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         sharedPreferences = getSharedPreferences("ROLE", MODE_PRIVATE);
         String role = sharedPreferences.getString("Role", "Users");
-        Log.d("Debugging:", "Role: " + role);
-        Log.d("Debugging: ", auth.getCurrentUser().getEmail());
         initializeUsername(db, auth, role);
 
         backButton = findViewById(R.id.back_button);
@@ -87,15 +85,8 @@ public class ChangeUsernameActivity extends AppCompatActivity {
 
     void setNewUsername(String newUsername, FirebaseFirestore db, FirebaseAuth mAuth, String collection){
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        Log.d("ChangeUsername", "Attempting to set new username: " + newUsername);
-        Log.d("ChangeUsername", "Target collection: " + collection);
-
         if(currentUser != null) {
-            Log.d("ChangeUsername", "Current user UID: " + currentUser.getUid());
             DocumentReference userRef = db.collection(collection).document(currentUser.getUid());
-
-            Log.d("ChangeUsername", "Updating document path: " + collection + "/" + currentUser.getUid());
-
             userRef.update("name", newUsername).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

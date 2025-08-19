@@ -1,12 +1,16 @@
 package com.example.project2025.admin;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +22,12 @@ import com.example.project2025.R;
 import com.example.project2025.SignInActivity;
 import com.example.project2025.ui.account_menu.ChangeUsernameActivity;
 import com.example.project2025.ui.account_menu.ChangePasswordActivity;
+import com.example.project2025.ui.account_menu.SettingProfile;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * EditProfileFragment - Admin profile management interface
@@ -27,125 +37,67 @@ import com.example.project2025.ui.account_menu.ChangePasswordActivity;
  */
 public class EditProfileFragment extends Fragment {
 
+    TextView username, email;
+    FirebaseAuth auth;
+    FirebaseUser currentUser;
+    FirebaseFirestore db;
+    SharedPreferences sharedPreferences;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
         Log.d("EditProfileFragment", "Fragment Created");
 
         // ===== CANCEL BUTTON =====
         // When admin clicks cancel, return to the Dashboard fragment
-        TextView cancelTextView = view.findViewById(R.id.setting_cancel);
-        cancelTextView.setOnClickListener(v -> {
-            // Navigate back to dashboard instead of closing the activity
-            if (getActivity() instanceof AdminActivity) {
-                ((AdminActivity) getActivity()).getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.admin_fragment_container, new DashboardFragment())
-                    .commit();
-            }
+        ImageView createGearBtn = view.findViewById(R.id.gear);
+        createGearBtn.setOnClickListener(v -> {
+            SettingProfile bottomSheet = new SettingProfile();
+            bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
         });
-
-        // ===== MY ACCOUNT =====
-        // Opens dialog to change username, profile image, or password
-        TextView myAccountTextView = view.findViewById(R.id.setting_myaccount);
-        myAccountTextView.setOnClickListener(v -> showMyAccountDialog());
-
-        // ===== LANGUAGE =====
-        // Opens dialog to choose between English and Bahasa Melayu
-        TextView languageTextView = view.findViewById(R.id.setting_language);
-        languageTextView.setOnClickListener(v -> showLanguageDialog());
-
-        // ===== PRIVACY =====
-        // Shows privacy policy information
-        TextView privacyTextView = view.findViewById(R.id.setting_privacy);
-        privacyTextView.setOnClickListener(v -> showPrivacyDialog());
-
-        // ===== LOG OUT =====
-        // Logs out admin and returns to SignInActivity
-        TextView logoutTextView = view.findViewById(R.id.setting_logout);
-        logoutTextView.setOnClickListener(v -> showLogoutDialog());
 
         return view;
     }
 
-    // My Account dialog =====
-    private void showMyAccountDialog() {
-        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_my_account, null);
-
-        AlertDialog dialog = new AlertDialog.Builder(requireContext())
-                .setView(dialogView)
-                .create();
-
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        }
-
-        dialogView.findViewById(R.id.change_username).setOnClickListener(v -> {
-            Log.d("Account Dialog: ", "Change Username clicked");
-            Intent intent = new Intent(getActivity(), ChangeUsernameActivity.class);
-            startActivity(intent);
-            dialog.dismiss();
-        });
-
-        dialogView.findViewById(R.id.change_profile_image).setOnClickListener(v -> {
-            Log.d("Account Dialog: ", "Change Profile Image clicked");
-            dialog.dismiss();
-        });
-
-        dialogView.findViewById(R.id.change_password).setOnClickListener(v -> {
-            Log.d("Account Dialog: ", "Change Password clicked");
-            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
-            startActivity(intent);
-            dialog.dismiss();
-        });
-
-        dialog.show();
-    }
-
-    // language dialog
-    private void showLanguageDialog() {
-        String[] languages = {"English", "Bahasa Melayu"};
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Choose Language")
-                .setItems(languages, (dialog, which) -> {
-                    String selectedLanguage = languages[which];
-                    Toast.makeText(getContext(),
-                            "Selected: " + selectedLanguage,
-                            Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-
-        builder.show();
-    }
-
-    // privacy dialog
-    private void showPrivacyDialog() {
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Privacy Policy")
-                .setMessage("We value your privacy. Your data will be handled securely and will not be shared without your consent.")
-                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                .show();
-    }
-
-    // Log out dialog
-    private void showLogoutDialog() {
-        new AlertDialog.Builder(getContext())
-                .setTitle("Log Out")
-                .setMessage("Are you sure you want to log out?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    Intent intent = new Intent(getActivity(), SignInActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    if (getActivity() != null) {
-                        getActivity().finish();
+    public void onStart() {
+        super.onStart();
+        //Initialize Firebase
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        sharedPreferences = getActivity().getSharedPreferences("ROLE", MODE_PRIVATE);
+        String role = sharedPreferences.getString("Role", "Users");
+        // Initialize username
+        DocumentReference userRef = db.collection(role).document(currentUser.getUid());
+        userRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    // Display Text
+                    username = getView().findViewById(R.id.menu_username);
+                    email = getView().findViewById(R.id.menu_email);
+                    if (currentUser != null) {
+                        email.setText(auth.getCurrentUser().getEmail());
+                        username.setText(document.getString("name"));
+                    } else {
+                        username.setText("Please login first");
+                        Intent intent = new Intent(getActivity(), SignInActivity.class);
+                        startActivity(intent);
                     }
-                })
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                .show();
+                }
+                else {
+                    Log.d("accountMenuFragment: ", "No such document");
+                }
+            }
+            else {
+                Log.d("accountMenuFragment: ", "get failed with ", task.getException());
+            }
+        });
     }
 }
+
+
