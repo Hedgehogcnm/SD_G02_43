@@ -120,19 +120,19 @@
         app:layout_constraintTop_toBottomOf="@id/weekDaySelector" />
 
     <!-- feed level -->
+    <!-- feed level -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="60dp"
+        android:layout_marginStart="60dp"
         android:orientation="horizontal"
         android:padding="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timePicker"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@id/timePicker">
 
         <!-- Left side: Container -->
 
@@ -167,7 +167,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:background="@drawable/ic_camera"
+                android:background="@drawable/level_selector"
                 android:gravity="center"
                 android:padding="8dp"
                 android:text="1"
@@ -178,7 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:background="@drawable/ic_camera"
+                android:background="@drawable/level_selector"
                 android:gravity="center"
                 android:padding="8dp"
                 android:text="2"
@@ -189,7 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:background="@drawable/ic_camera"
+                android:background="@drawable/level_selector"
                 android:gravity="center"
                 android:padding="8dp"
                 android:text="3"
@@ -200,7 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:background="@drawable/ic_camera"
+                android:background="@drawable/level_selector"
                 android:gravity="center"
                 android:padding="8dp"
                 android:text="4"

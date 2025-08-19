@@ -8,17 +8,12 @@
 
     android:background="@drawable/dialog_background">
 
-    <Button
-        android:id="@+id/back_button"
-        android:text = "back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <!-- 第一行：头像 + 改用户名 -->
+
     <!-- First line: change avatar and name-->
 
-    <!-- 第二行：改头像 -->
+
     <!-- Second line: change avatar-->
+
     <LinearLayout
         android:id="@+id/change_username"
         android:layout_width="match_parent"
@@ -65,7 +60,7 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <!-- 第三行：改密码 -->
+
     <!-- Third line: change password-->
     <LinearLayout
         android:id="@+id/change_password"
@@ -89,5 +84,12 @@
             android:textColor="#333"
             android:textSize="16sp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="back" />
 
 </LinearLayout>

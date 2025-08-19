@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,10 +24,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
-    Button backButton, confirmButton;
-    EditText oldPassword, newPassword, confirmPassword;
-    TextView userEmail;
+    Button confirmButton;
+    EditText oldPassword, newPassword, confirmPassword, userEmail;
+    //TextView userEmail;
     FirebaseAuth auth;
+    ImageView backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             return insets;
         });
 
-        backButton = findViewById(R.id.back_button);
+        backButton = findViewById(R.id.returnButton);
         confirmButton = findViewById(R.id.confirm_button);
         newPassword = findViewById(R.id.new_password);
         oldPassword = findViewById(R.id.old_password);

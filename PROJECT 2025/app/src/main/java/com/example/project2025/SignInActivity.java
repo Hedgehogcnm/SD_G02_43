@@ -137,8 +137,7 @@ public class SignInActivity extends AppCompatActivity {
                                         });
                                     }
                                 } else {
-
-                                    Toast.makeText(SignInActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignInActivity.this, "User not found", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

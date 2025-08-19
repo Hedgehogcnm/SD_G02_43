@@ -6,38 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.feeder.FeederFragment">
 
-  <!--
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.494" />
--->
-
-  <TextView
-      android:id="@+id/deviceName"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="151dp"
-      android:layout_marginTop="12dp"
-      android:layout_marginEnd="152dp"
-      android:layout_marginBottom="7dp"
-      android:text="Default Device Name"
-
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/imageView4" />
-
+  <!-- device pic -->
   <ImageView
       android:id="@+id/imageView4"
       android:layout_width="@dimen/pet_feeder_image_width"
@@ -48,26 +17,166 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
 
+  <!-- device name -->
+  <TextView
+      android:id="@+id/deviceName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      android:text="Default Device Name"
+      android:textSize="18sp"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+  <!-- Schedule left caption -->
   <TextView
       android:id="@+id/schedule"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="50dp"
-      android:layout_marginStart="70dp"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="32dp"
       android:text="Schedule"
       android:textSize="24sp"
       android:textStyle="bold"
-
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+      app:layout_constraintTop_toBottomOf="@+id/deviceName" />
 
+  <!-- Schedule right alarm -->
   <ImageView
       android:id="@+id/alarm"
       android:layout_width="32dp"
       android:layout_height="32dp"
-      android:layout_marginEnd="70dp"
+      android:layout_marginTop="35dp"
+      android:layout_marginEnd="45dp"
       android:src="@android:drawable/ic_lock_idle_alarm"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@+id/schedule" />
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <!-- 包裹内容的 CardView -->
+  <!-- Feeding Schedule Section -->
+  <androidx.cardview.widget.CardView
+      android:id="@+id/scheduleCard"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      app:cardBackgroundColor="@android:color/white"
+      app:cardCornerRadius="16dp"
+      app:cardElevation="8dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/schedule">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <!-- Feed Schedule 1 -->
+      <androidx.cardview.widget.CardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="12dp"
+          app:cardCornerRadius="12dp"
+          app:cardElevation="4dp"
+          app:cardBackgroundColor="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+          <TextView
+              android:id="@+id/schedule_title1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Title 1"
+              android:textColor="@android:color/black"
+              android:textSize="18sp"
+              android:textStyle="bold" />
+
+          <TextView
+              android:id="@+id/schedule_time1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="6dp"
+              android:text="Time: "
+              android:textSize="16sp" />
+
+          <TextView
+              android:id="@+id/schedule_days1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="4dp"
+              android:text="Days: "
+              android:textSize="16sp" />
+
+          <TextView
+              android:id="@+id/schedule_feed_level1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="4dp"
+              android:text="Feed Level: "
+              android:textSize="16sp" />
+
+        </LinearLayout>
+      </androidx.cardview.widget.CardView>
+
+      <!-- Feed Schedule 2 -->
+      <androidx.cardview.widget.CardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="12dp"
+          app:cardCornerRadius="12dp"
+          app:cardElevation="4dp"
+          app:cardBackgroundColor="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+          <TextView
+              android:id="@+id/schedule_title2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Title 2"
+              android:textColor="@android:color/black"
+              android:textSize="18sp"
+              android:textStyle="bold" />
+
+          <TextView
+              android:id="@+id/schedule_time2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="6dp"
+              android:text="Time: "
+              android:textSize="16sp" />
+
+          <TextView
+              android:id="@+id/schedule_days2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="4dp"
+              android:text="Days: "
+              android:textSize="16sp" />
+
+          <TextView
+              android:id="@+id/schedule_feed_level2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="4dp"
+              android:text="Feed Level: "
+              android:textSize="16sp" />
+
+        </LinearLayout>
+      </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+  </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

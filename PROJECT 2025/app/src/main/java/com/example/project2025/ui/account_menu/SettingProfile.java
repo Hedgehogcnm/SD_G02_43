@@ -38,10 +38,6 @@ public class SettingProfile extends BottomSheetDialogFragment {
         TextView myAccountTextView = view.findViewById(R.id.setting_myaccount);
         myAccountTextView.setOnClickListener(v -> showMyAccountDialog());
 
-        // ===== Language =====
-        TextView languageTextView = view.findViewById(R.id.setting_language);
-        languageTextView.setOnClickListener(v -> showLanguageDialog());
-
         // ===== Privacy =====
         TextView privacyTextView = view.findViewById(R.id.setting_privacy);
         privacyTextView.setOnClickListener(v -> showPrivacyDialog());

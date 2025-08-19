@@ -13,4 +13,5 @@
 
     <!--Change Password AND change username-->
     <dimen name="text_size_change_username">20sp</dimen>
+    <dimen name="bottomsheet_text_margin">70dp</dimen>
 </resources>
