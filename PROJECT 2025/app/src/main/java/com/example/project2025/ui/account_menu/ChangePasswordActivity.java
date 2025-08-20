@@ -25,10 +25,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ChangePasswordActivity extends AppCompatActivity {
 
     Button confirmButton;
-    EditText oldPassword, newPassword, confirmPassword, userEmail;
+    EditText oldPassword, newPassword, confirmPassword;
     //TextView userEmail;
     FirebaseAuth auth;
     ImageView backButton;
+    TextView userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

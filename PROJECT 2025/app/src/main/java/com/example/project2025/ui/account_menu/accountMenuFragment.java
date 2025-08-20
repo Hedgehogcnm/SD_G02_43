@@ -61,7 +61,9 @@ public class accountMenuFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         sharedPreferences = getActivity().getSharedPreferences("ROLE", MODE_PRIVATE);
         String role = sharedPreferences.getString("Role", "Users");
+
         // Initialize username
+        /*
         DocumentReference userRef = db.collection(role).document(currentUser.getUid());
         userRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -69,7 +71,7 @@ public class accountMenuFragment extends Fragment {
                 if (document.exists()) {
                     // Display Text
                     username = binding.menuUsername;
-                    email = binding.menuEmail;
+                    //email = binding.menuEmail;
                     if (currentUser != null) {
                         email.setText(auth.getCurrentUser().getEmail());
                         username.setText(document.getString("name"));
@@ -87,6 +89,8 @@ public class accountMenuFragment extends Fragment {
                 Log.d("accountMenuFragment: ", "get failed with ", task.getException());
             }
         });
+
+         */
     }
 
     @Override

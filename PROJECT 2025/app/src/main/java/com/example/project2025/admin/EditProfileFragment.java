@@ -79,7 +79,7 @@ public class EditProfileFragment extends Fragment {
                 if (document.exists()) {
                     // Display Text
                     username = getView().findViewById(R.id.menu_username);
-                    email = getView().findViewById(R.id.menu_email);
+                   // email = getView().findViewById(R.idtiao.menu_email);
                     if (currentUser != null) {
                         email.setText(auth.getCurrentUser().getEmail());
                         username.setText(document.getString("name"));
