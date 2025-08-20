@@ -77,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
         confirmPasswordEditText = findViewById(R.id.confirmPassword);
-        OTPEditText = findViewById(R.id.otp);
+       // OTPEditText = findViewById(R.id.otp);
         registerButton = findViewById(R.id.registerButton);
         verifiedContinueButton = findViewById(R.id.verifiedContinueButton);
         resendVerificationButton = findViewById(R.id.resendVerificationButton);
