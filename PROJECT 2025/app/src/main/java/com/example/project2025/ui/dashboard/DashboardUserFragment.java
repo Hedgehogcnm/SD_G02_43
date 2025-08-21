@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.project2025.R;
+
 import com.example.project2025.databinding.FragmentDashboardUserBinding;
 
 import java.io.IOException;
@@ -25,12 +27,12 @@ public class DashboardUserFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentDashboardUserBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        DashboardUserViewModel homeViewModel =
+                new ViewModelProvider(this).get(DashboardUserViewModel.class);
 
+        View root = inflater.inflate(R.layout.dashboard_fragment_user, container, false);
 
-        feedButton = binding.feedButton;
-
+        feedButton = root.findViewById(R.id.feedButton);
 
         feedButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +79,5 @@ public class DashboardUserFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
     }
 }

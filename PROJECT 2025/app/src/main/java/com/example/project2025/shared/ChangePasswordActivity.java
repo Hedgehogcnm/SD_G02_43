@@ -1,4 +1,4 @@
-package com.example.project2025.ui.account_menu;
+package com.example.project2025.shared;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -20,15 +20,14 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class ChangePasswordActivity extends AppCompatActivity {
 
     Button confirmButton;
-    EditText oldPassword, newPassword, confirmPassword, userEmail;
+    EditText oldPassword, newPassword, confirmPassword;
     //TextView userEmail;
     FirebaseAuth auth;
     ImageView backButton;
+    TextView userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

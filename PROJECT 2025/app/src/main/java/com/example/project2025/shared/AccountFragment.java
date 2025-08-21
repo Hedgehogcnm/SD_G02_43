@@ -1,4 +1,4 @@
-package com.example.project2025.ui.account_menu;
+package com.example.project2025.shared;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -17,7 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.project2025.SignInActivity;
-import com.example.project2025.databinding.FragmentMenuBinding;
+import com.example.project2025.databinding.AccountFragmentBinding;
+import com.example.project2025.shared.AccountViewModel;
+import com.example.project2025.shared.SettingProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,24 +29,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class accountMenuFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
-    TextView username, email;
+    TextView username;
     FirebaseAuth auth;
     FirebaseUser currentUser;
     FirebaseFirestore db;
     SharedPreferences sharedPreferences;
-    private FragmentMenuBinding binding;
+    private AccountFragmentBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        accountMenuViewModel notificationViewModel =
-                new ViewModelProvider(this).get(accountMenuViewModel.class);
+        AccountViewModel notificationViewModel =
+                new ViewModelProvider(this).get(AccountViewModel.class);
 
-        binding = FragmentMenuBinding.inflate(inflater, container, false);
+        binding = AccountFragmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        ImageView createGearBtn = binding.gear;
+        ImageView createGearBtn = binding.gearButton;
         createGearBtn.setOnClickListener(v -> {
             SettingProfile bottomSheet = new SettingProfile();
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
@@ -69,9 +71,7 @@ public class accountMenuFragment extends Fragment {
                 if (document.exists()) {
                     // Display Text
                     username = binding.menuUsername;
-                    email = binding.menuEmail;
                     if (currentUser != null) {
-                        email.setText(auth.getCurrentUser().getEmail());
                         username.setText(document.getString("name"));
                     } else {
                         username.setText("Please login first");

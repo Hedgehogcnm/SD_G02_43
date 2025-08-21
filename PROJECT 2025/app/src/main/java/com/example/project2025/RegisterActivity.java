@@ -77,11 +77,17 @@ public class RegisterActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
         confirmPasswordEditText = findViewById(R.id.confirmPassword);
-        OTPEditText = findViewById(R.id.otp);
+       // OTPEditText = findViewById(R.id.otp);
         registerButton = findViewById(R.id.registerButton);
         verifiedContinueButton = findViewById(R.id.verifiedContinueButton);
         resendVerificationButton = findViewById(R.id.resendVerificationButton);
         loginTextView = findViewById(R.id.loginTextView);
+    }
+
+    protected void onStart(){
+        super.onStart();
+        resendVerificationButton.setVisibility(View.GONE);
+        verifiedContinueButton.setVisibility(View.GONE);
 
         // Navigate to the login screen when the user taps the Login text
         loginTextView.setOnClickListener(new View.OnClickListener() {
@@ -124,8 +130,8 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (password.length() < 6) {
-                    Toast.makeText(RegisterActivity.this, "Password must be at least 6 characters", Toast.LENGTH_LONG).show();
+                if (password.length() < 8 || password.length() > 30) {
+                    Toast.makeText(RegisterActivity.this, "Password must be between 6 to 30 characters", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -188,7 +194,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     // Removed auto-redirect in onStart to keep Register screen visible until user proceeds

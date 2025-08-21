@@ -6,6 +6,7 @@
 
     <!-- Default back button margin-->
     <dimen name="back_button_margin">10dp</dimen>
+
     <!--Dimensional for pet feeder image-->
     <dimen name="pet_feeder_image_height">150dp</dimen>
     <dimen name="pet_feeder_image_width">280dp</dimen>
@@ -13,8 +14,9 @@
 
     <!--Change Password AND change username-->
     <dimen name="text_size_change_username">20sp</dimen>
-    <dimen name="bottomsheet_text_margin">70dp</dimen>
+    <dimen name="bottomsheet_text_margin">60dp</dimen>
 
     <dimen name="live_cam_button_width">70dp</dimen>
     <dimen name="live_cam_button_height">50dp</dimen>
+
 </resources>

@@ -14,16 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KaiFeedCat.NoActionBar">
         <activity
-            android:name=".ui.account_menu.ChangePasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.account_menu.ChangeUsernameActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SignInActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
+            android:name=".Onboarding"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +22,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".shared.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".shared.ChangeUsernameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="false"

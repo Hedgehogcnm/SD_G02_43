@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.account_menu.ChangeUsernameActivity">
+    tools:context=".shared.ChangeUsernameActivity">
 
     <Button
         android:id="@+id/back_button"

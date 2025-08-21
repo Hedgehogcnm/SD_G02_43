@@ -2,11 +2,18 @@ package com.example.project2025.admin;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.project2025.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.zip.Inflater;
 
 /**
  * AdminActivity - Main admin interface for the application
@@ -21,40 +28,13 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        // Get current user role
+        // Save role
         sharedPreferences = getSharedPreferences("ROLE", MODE_PRIVATE);
         sharedPreferences.edit().putString("Role", "Admin").apply();
-        // ===== BOTTOM NAVIGATION SETUP =====
-        // Initialize the bottom navigation bar for admin interface
-        BottomNavigationView bottomNav = findViewById(R.id.admin_bottom_navigation);
-        bottomNav.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
-            
-            // Handle navigation between admin fragments
-            if (item.getItemId() == R.id.nav_dashboard) {
-                // Switch to Dashboard fragment (empty for now)
-                selectedFragment = new DashboardFragment();
-            } else if (item.getItemId() == R.id.nav_edit_profile) {
-                // Switch to Edit Profile fragment (same as user side)
-                selectedFragment = new EditProfileFragment();
-            }
-            
-            // Replace the current fragment with the selected one
-            if (selectedFragment != null) {
-                getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.admin_fragment_container, selectedFragment)
-                    .commit();
-                return true;
-            }
-            return false;
-        });
 
-        // ===== DEFAULT FRAGMENT =====
-        // Set Dashboard as the default fragment when admin first opens the app
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.admin_fragment_container, new DashboardFragment())
-                .commit();
-        }
+        // Setup bottom navigation with NavController
+        BottomNavigationView bottomNav = findViewById(R.id.admin_bottom_navigation);
+        NavController navController = Navigation.findNavController(this, R.id.admin_nav_host_fragment);
+        NavigationUI.setupWithNavController(bottomNav, navController);
     }
 }

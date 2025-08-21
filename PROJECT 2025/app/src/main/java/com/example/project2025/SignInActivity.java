@@ -36,10 +36,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SignInActivity extends AppCompatActivity {
 
     EditText emailEditText, passwordEditText;
-    Button signInBtn;
+    Button loginButton;
     TextView registerTextView, forgotPasswordTextView;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
@@ -66,7 +69,7 @@ public class SignInActivity extends AppCompatActivity {
         });
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
-        signInBtn = findViewById(R.id.logInButton);
+        loginButton = findViewById(R.id.logInButton);
         registerTextView = findViewById(R.id.registerTextView);
         forgotPasswordTextView = findViewById(R.id.forgotPasswordTextView);
 
@@ -86,13 +89,19 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        signInBtn.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+
                 if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                     Toast.makeText(SignInActivity.this, "Please fill in all fields", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if(!validate(email)){
+                    Toast.makeText(SignInActivity.this, "Invalid email format", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -144,6 +153,13 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.matches();
     }
 
     private void showForgotPasswordDialog() {

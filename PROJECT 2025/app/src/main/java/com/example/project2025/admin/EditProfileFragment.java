@@ -20,9 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.project2025.R;
 import com.example.project2025.SignInActivity;
-import com.example.project2025.ui.account_menu.ChangeUsernameActivity;
-import com.example.project2025.ui.account_menu.ChangePasswordActivity;
-import com.example.project2025.ui.account_menu.SettingProfile;
+import com.example.project2025.shared.SettingProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -37,7 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
  */
 public class EditProfileFragment extends Fragment {
 
-    TextView username, email;
+    TextView username;
     FirebaseAuth auth;
     FirebaseUser currentUser;
     FirebaseFirestore db;
@@ -48,18 +46,19 @@ public class EditProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_menu, container, false);
+        View view = inflater.inflate(R.layout.account_fragment, container, false);
 
         Log.d("EditProfileFragment", "Fragment Created");
 
         // ===== CANCEL BUTTON =====
         // When admin clicks cancel, return to the Dashboard fragment
-        ImageView createGearBtn = view.findViewById(R.id.gear);
+        ImageView createGearBtn = view.findViewById(R.id.gear_button);
         createGearBtn.setOnClickListener(v -> {
             SettingProfile bottomSheet = new SettingProfile();
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
         });
 
+        username = view.findViewById(R.id.menu_username);
         return view;
     }
 
@@ -78,10 +77,7 @@ public class EditProfileFragment extends Fragment {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     // Display Text
-                    username = getView().findViewById(R.id.menu_username);
-                    email = getView().findViewById(R.id.menu_email);
                     if (currentUser != null) {
-                        email.setText(auth.getCurrentUser().getEmail());
                         username.setText(document.getString("name"));
                     } else {
                         username.setText("Please login first");

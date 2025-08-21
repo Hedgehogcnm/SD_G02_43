@@ -1,4 +1,4 @@
-package com.example.project2025.ui.account_menu;
+package com.example.project2025.shared;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
