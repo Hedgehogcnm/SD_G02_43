@@ -4,6 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:id="@+id/ip_address"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_margin="40dp"
+        android:hint="Enter ip"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id = "@+id/manual_feed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manual Feed"
+        app:layout_constraintStart_toEndOf="@+id/ip_address"
+        app:layout_constraintTop_toTopOf="@+id/ip_address"
+        android:layout_marginLeft="40dp"/>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -20,7 +38,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="(Empty for now)"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
