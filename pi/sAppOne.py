@@ -2,15 +2,15 @@ import RPi.GPIO as GPIO
 import time
 import socket
 
-# GPIO Setup (same as your working test)
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(13, GPIO.OUT)
-
-# Create PWM instance (same as your working test)
-p = GPIO.PWM(13, 50)  # 50Hz frequency
-p.start(0)  # Start with 0% duty cycle
-
 def feed_action():
+    # GPIO Setup (same as your working test)
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(13, GPIO.OUT)
+
+    # Create PWM instance (same as your working test)
+    p = GPIO.PWM(13, 50)  # 50Hz frequency
+    p.start(0)  # Start with 0% duty cycle
+    
     print("Starting feed sequence")
     try:
         # Use the same duty cycles that worked in your test
@@ -24,11 +24,18 @@ def feed_action():
         
         # Return to neutral position
         p.ChangeDutyCycle(7.5)
+        time.sleep(1)
         print("Feed sequence completed")
+        
         
     except Exception as e:
         print(f"Error during feed action: {e}")
-
+        p.stop()
+        GPIO.cleanup()
+    except KeyboardInterrupt:
+        p.stop()
+        GPIO.cleanup()
+        
 # Network setup
 HOST = "0.0.0.0"  # Listen on all interfaces
 PORT = 12345       # Use the same port as in your Android app
@@ -57,7 +64,6 @@ except KeyboardInterrupt:
     print("Server shutting down")
 except Exception as e:
     print(f"An error occurred: {e}")
-finally:
-    # Cleanup (same as your working test)
-    p.stop()
-    GPIO.cleanup()
+
+
+    
