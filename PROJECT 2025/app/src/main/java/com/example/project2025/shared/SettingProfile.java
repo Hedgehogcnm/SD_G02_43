@@ -84,23 +84,6 @@ public class SettingProfile extends BottomSheetDialogFragment {
         dialog.show();
     }
 
-    // language dialog
-    private void showLanguageDialog() {
-        String[] languages = {"English", "Bahasa Melayu"};
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Choose Language")
-                .setItems(languages, (dialog, which) -> {
-                    String selectedLanguage = languages[which];
-                    Toast.makeText(getContext(),
-                            "Selected: " + selectedLanguage,
-                            Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-
-        builder.show();
-    }
 
     // privacy dialog
     private void showPrivacyDialog() {

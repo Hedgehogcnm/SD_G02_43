@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/nav_dashboard_admin"
         android:icon="@drawable/ic_dashboard_black_24dp"
@@ -8,5 +9,6 @@
     <item
         android:id="@+id/nav_account_fragment"
         android:icon="@drawable/ic_profile"
-        android:title="Edit Profile" />
+        app:tint="#000000"
+        android:title="Profile" />
 </menu>

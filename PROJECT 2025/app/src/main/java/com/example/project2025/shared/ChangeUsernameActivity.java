@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class ChangeUsernameActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
-    Button backButton, confirmButton;
+    Button confirmButton;
     TextView currentName, newUsername;
+    ImageView returnButton;
     FirebaseAuth auth;
     FirebaseFirestore db;
     @Override
@@ -50,15 +52,22 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         String role = sharedPreferences.getString("Role", "Users");
         initializeUsername(db, auth, role);
 
-        backButton = findViewById(R.id.back_button);
+        //backButton = findViewById(R.id.back_button);
         confirmButton = findViewById(R.id.confirm_button);
         currentName = findViewById(R.id.current_name);
         newUsername = findViewById(R.id.new_username);
+        returnButton = findViewById(R.id.returnButton);
 
-        backButton.setOnClickListener(v -> {
+        /*backButton.setOnClickListener(v -> {
+            super.getOnBackPressedDispatcher();
+            finish();
+        });*/
+
+        returnButton.setOnClickListener(v -> {
             super.getOnBackPressedDispatcher();
             finish();
         });
+
 
         confirmButton.setOnClickListener(v -> {
            String newUsernameText = newUsername.getText().toString();

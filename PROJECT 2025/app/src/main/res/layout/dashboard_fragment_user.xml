@@ -4,69 +4,209 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F8F9FA"
     tools:context=".ui.dashboard.DashboardUserFragment">
 
-
-    <WebView
-        android:id="@+id/ipCamera"
+    <!-- WebView for IP Camera -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
         android:layout_width="380dp"
         android:layout_height="250dp"
         android:layout_marginTop="60dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="wrap_content"
+        <WebView
+            android:id="@+id/ipCamera"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- 2x2 Grid Layout for Buttons -->
+    <GridLayout
+        android:id="@+id/buttonGrid"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="24dp"
+        android:columnCount="2"
+        android:rowCount="2"
+        android:alignmentMode="alignMargins"
+        android:columnOrderPreserved="false"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ipCamera">
+        app:layout_constraintTop_toBottomOf="@+id/cardview">
 
-        <TableRow>
-            <Button
-                android:id="@+id/photoButton"
-                android:layout_width="@dimen/live_cam_button_width"
-                android:layout_height="@dimen/live_cam_button_height"
-                android:layout_margin="10dp"
-                android:textSize="10sp"
-                android:text = "photo"/>
+        <!-- Photo Button -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="8dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
 
-            <Button
-                android:id="@+id/audioButton"
-                android:layout_width="@dimen/live_cam_button_width"
-                android:layout_height="@dimen/live_cam_button_height"
-                android:layout_margin="10dp"
-                android:textSize="10sp"
-                android:text = "audio"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
-            <Button
-                android:id="@+id/videoButton"
-                android:layout_width="@dimen/live_cam_button_width"
-                android:layout_height="@dimen/live_cam_button_height"
-                android:layout_margin="10dp"
-                android:textSize="10sp"
-                android:text = "video"/>
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_photo_camera"
+                    app:tint="#000000" />
 
-            <Button
-                android:id="@+id/feedButton"
-                android:layout_width="@dimen/live_cam_button_width"
-                android:layout_height="@dimen/live_cam_button_height"
-                android:layout_margin="10dp"
-                android:textSize="10sp"
-                android:text = "feed"/>
-        </TableRow>
-    </TableLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Photo"
+                    android:textSize="14sp"
+                    android:textColor="#000000"
+                    android:layout_marginTop="8dp" />
 
-    <Button
-        android:id="@+id/feedRecordButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Audio Button -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="8dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_mic"
+                    app:tint="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Audio"
+                    android:textSize="14sp"
+                    android:textColor="#000000"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Video Button -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="8dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_videocam"
+                    app:tint="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Video"
+                    android:textSize="14sp"
+                    android:textColor="#000000"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Feed Button -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="8dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:src="@drawable/ic_feed"
+                    app:tint="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Feed"
+                    android:textSize="14sp"
+                    android:textColor="#000000"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </GridLayout>
+
+    <!-- Feed Record Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/feedButton"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="322dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="Feed Record"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:cornerRadius="15dp"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
-        android:text = "Feed Record"
-        android:layout_marginTop="50dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/buttonGrid"
+        app:strokeColor="@color/black"
+        app:strokeWidth="25dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,15 +3,15 @@
     <item
         android:id="@+id/dashboard_fragment_user_navigation"
         android:icon="@drawable/ic_cam"
-        android:title="Dashboard" />
+        android:title="Live" />
 
     <item
         android:id="@+id/feeder_fragment_navigation"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Pet Feeder" />
+        android:title="Dashboard" />
 
     <item
         android:id="@+id/account_fragment_navigation"
         android:icon="@drawable/ic_profile"
-        android:title="Account" />
+        android:title="Profile" />
 </menu>

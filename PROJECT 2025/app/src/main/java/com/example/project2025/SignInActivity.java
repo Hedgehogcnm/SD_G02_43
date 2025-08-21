@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.AlertDialog;
@@ -164,15 +165,23 @@ public class SignInActivity extends AppCompatActivity {
 
     private void showForgotPasswordDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Reset Password");
+        builder.setTitle("RESET PASSWORD");
+        builder.setMessage("\nEnter your email address to receive a password reset link");
 
-        // Create the dialog layout
+        // Create the dialog layout with proper margins
         final EditText emailInput = new EditText(this);
         emailInput.setHint("Enter your email address");
         emailInput.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        builder.setView(emailInput);
 
-        builder.setPositiveButton("Send Reset Email", new android.content.DialogInterface.OnClickListener() {
+        // Add margin to the EditText
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 20, 50, 10); // Left, Top, Right, Bottom padding
+        layout.addView(emailInput);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Reset", new android.content.DialogInterface.OnClickListener() {
             @Override
             public void onClick(android.content.DialogInterface dialog, int which) {
                 String email = emailInput.getText().toString().trim();
@@ -180,20 +189,25 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(SignInActivity.this, "Please enter your email address", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                
+
+                if (!validate(email)) {
+                    Toast.makeText(SignInActivity.this, "Invalid email format", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // Send password reset email
                 mAuth.sendPasswordResetEmail(email)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(SignInActivity.this, 
-                                        "Password reset email sent! Check your inbox.", 
-                                        Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SignInActivity.this,
+                                            "Password reset email sent! Check your inbox.",
+                                            Toast.LENGTH_LONG).show();
                                 } else {
-                                    Toast.makeText(SignInActivity.this, 
-                                        "Failed to send reset email. Please check your email address.", 
-                                        Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SignInActivity.this,
+                                            "Failed to send reset email. Please check your email address.",
+                                            Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
@@ -203,7 +217,7 @@ public class SignInActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {
             @Override
             public void onClick(android.content.DialogInterface dialog, int which) {
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
 

@@ -12,17 +12,20 @@
       android:layout_height="wrap_content">
 
     <!-- device pic -->
+
+    <!-- device name -->
+
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="@dimen/pet_feeder_image_width"
         android:layout_height="@dimen/pet_feeder_image_height"
-        android:layout_marginTop="@dimen/pet_feeder_image_margin_top"
+        android:layout_marginTop="60dp"
         android:src="@drawable/device_pic"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.412"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- device name -->
     <TextView
         android:id="@+id/deviceName"
         android:layout_width="wrap_content"
@@ -42,25 +45,27 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:text="Schedule"
+        android:text="SCHEDULE"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/deviceName" />
 
     <!-- Schedule right alarm -->
+
+    <!-- CardView that wraps the content -->
+    <!-- Feeding Schedule Section -->
+
     <ImageView
         android:id="@+id/alarm"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="45dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="68dp"
         android:src="@android:drawable/ic_lock_idle_alarm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- CardView that wraps the content -->
-    <!-- Feeding Schedule Section -->
     <androidx.cardview.widget.CardView
         android:id="@+id/scheduleCard"
         android:layout_width="match_parent"

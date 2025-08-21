@@ -23,11 +23,12 @@
         android:paddingVertical="8dp">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:layout_marginEnd="16dp"
             android:contentDescription="Profile Image"
-            android:src="@drawable/ic_profile" />
+            android:src="@drawable/ic_profile"
+            android:layout_marginStart="65dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,7 +51,8 @@
             android:layout_height="40dp"
             android:src="@drawable/ic_camera"
             android:contentDescription="Change Profile Image"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="65dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -75,6 +77,7 @@
             android:layout_height="40dp"
             android:src="@drawable/ic_lock"
             android:contentDescription="Change Password"
+            android:layout_marginStart="65dp"
             android:layout_marginEnd="16dp" />
 
         <TextView
@@ -85,11 +88,20 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <Button
+
+    <!-- Use MaterialButton instead of regular Button -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="back" />
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="back"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="#000000"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </LinearLayout>
