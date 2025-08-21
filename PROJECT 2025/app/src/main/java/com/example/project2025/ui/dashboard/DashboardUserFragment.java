@@ -9,10 +9,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.project2025.R;
 
-import com.example.project2025.databinding.FragmentDashboardUserBinding;
+import com.example.project2025.databinding.DashboardFragmentUserBinding;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,7 +21,7 @@ import java.net.Socket;
 
 public class DashboardUserFragment extends Fragment {
 
-    private FragmentDashboardUserBinding binding;
+    private DashboardFragmentUserBinding binding;
     private Button feedButton;
     private static final String PI_IP = "192.168.135.157";
     private static final int PORT = 12345;
