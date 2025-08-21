@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import androidx.fragment.app.Fragment;
 
 import com.example.project2025.R;
@@ -13,7 +15,10 @@ import com.example.project2025.R;
  * Currently empty as requested by user
  * This fragment will be used for admin-specific features in the future
  */
+
 public class DashboardFragment extends Fragment {
+
+    Button feedButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
