@@ -7,32 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
 
-
-    <!-- top bar -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:id="@+id/returnButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="28dp"
-            android:src="@drawable/return_button_foreground"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <!-- Use MaterialButton instead of regular Button -->
     <!-- Use TextInputLayout to wrap EditText to get Material Design features -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/resendVerificationButton"
-        android:layout_width="157dp"
+        android:layout_width="120dp"
         android:layout_height="47dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="40dp"
@@ -44,25 +23,25 @@
         app:layout_constraintTop_toBottomOf="@+id/confirm_passwordInputLayout" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/verifiedContinueButton"
+        android:id="@+id/registerButton"
         android:layout_width="337dp"
         android:layout_height="51dp"
         android:layout_marginTop="5dp"
-        android:text="I've verified"
+        android:text="Register"
         android:textColor="#FFFFFF"
         app:backgroundTint="#000000"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerButton" />
+        app:layout_constraintTop_toBottomOf="@+id/verifiedContinueButton" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/registerButton"
-        android:layout_width="157dp"
+        android:id="@+id/verifiedContinueButton"
+        android:layout_width="140dp"
         android:layout_height="47dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="40dp"
-        android:text="VERIFY"
+        android:text="I've verified"
         android:textColor="#FFFFFF"
         app:backgroundTint="#000000"
         app:cornerRadius="10dp"
@@ -137,7 +116,7 @@
         app:boxCornerRadiusTopEnd="10dp"
         app:boxCornerRadiusTopStart="10dp"
         app:counterEnabled="true"
-        app:counterMaxLength="8"
+        app:counterMaxLength="30"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -169,7 +148,7 @@
         app:boxCornerRadiusTopEnd="10dp"
         app:boxCornerRadiusTopStart="10dp"
         app:counterEnabled="true"
-        app:counterMaxLength="8"
+        app:counterMaxLength="30"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"

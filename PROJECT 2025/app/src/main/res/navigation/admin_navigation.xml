@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/nav_account_fragment"
-        android:name="com.example.project2025.admin.EditProfileAdminFragment"
+        android:name="com.example.project2025.admin.EditProfileFragment"
         android:label="Edit Profile"
         tools:layout="@layout/account_fragment"/>
 

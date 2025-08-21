@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 public class SignInActivity extends AppCompatActivity {
 
     EditText emailEditText, passwordEditText;
-    Button signInBtn;
+    Button loginButton;
     TextView registerTextView, forgotPasswordTextView;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
@@ -69,7 +69,7 @@ public class SignInActivity extends AppCompatActivity {
         });
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
-        signInBtn = findViewById(R.id.logInButton);
+        loginButton = findViewById(R.id.logInButton);
         registerTextView = findViewById(R.id.registerTextView);
         forgotPasswordTextView = findViewById(R.id.forgotPasswordTextView);
 
@@ -89,7 +89,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        signInBtn.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = emailEditText.getText().toString();
