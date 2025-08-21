@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,7 @@ public class SettingProfile extends BottomSheetDialogFragment {
         Log.d("SettingProfile", "Bottom Sheet Created");
 
         // ===== Cancel btn =====
-        TextView cancelTextView = view.findViewById(R.id.setting_cancel);
+        ImageView cancelTextView = view.findViewById(R.id.setting_cancel);
         cancelTextView.setOnClickListener(v -> {
             dismiss(); // close BottomSheet
         });

@@ -1,4 +1,4 @@
-package com.example.project2025.shared;
+package com.example.project2025.ui.account_menu;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -16,30 +16,35 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.project2025.R;
 import com.example.project2025.SignInActivity;
+import com.example.project2025.databinding.FragmentMenuBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class AccountFragment extends Fragment {
+import java.util.HashMap;
+import java.util.Map;
+
+public class accountMenuFragment extends Fragment {
 
     TextView username, email;
     FirebaseAuth auth;
     FirebaseUser currentUser;
     FirebaseFirestore db;
     SharedPreferences sharedPreferences;
+    private FragmentMenuBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AccountViewModel notificationViewModel =
-                new ViewModelProvider(this).get(AccountViewModel.class);
+        accountMenuViewModel notificationViewModel =
+                new ViewModelProvider(this).get(accountMenuViewModel.class);
 
-        View root = inflater.inflate(R.layout.account_fragment, container, false);
+        binding = FragmentMenuBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
-        ImageView createGearBtn = root.findViewById(R.id.gear_button);
+        ImageView createGearBtn = binding.gear;
         createGearBtn.setOnClickListener(v -> {
             SettingProfile bottomSheet = new SettingProfile();
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
@@ -63,8 +68,8 @@ public class AccountFragment extends Fragment {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     // Display Text
-                    username = getView().findViewById(R.id.menu_username);
-                    email = getView().findViewById(R.id.menu_email);
+                    username = binding.menuUsername;
+                    email = binding.menuEmail;
                     if (currentUser != null) {
                         email.setText(auth.getCurrentUser().getEmail());
                         username.setText(document.getString("name"));
@@ -87,5 +92,6 @@ public class AccountFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        binding = null;
     }
 }

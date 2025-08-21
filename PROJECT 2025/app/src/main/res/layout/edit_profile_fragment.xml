@@ -71,17 +71,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setting_myaccount" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/notificationSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/setting_text_spacing_margin"
-        android:checked="true"
-        android:text="Notification"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setting_logout" />
-
     <TextView
         android:id="@+id/setting_logout"
         android:layout_width="wrap_content"

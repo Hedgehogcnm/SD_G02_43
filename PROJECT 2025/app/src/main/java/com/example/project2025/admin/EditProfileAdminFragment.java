@@ -2,6 +2,7 @@ package com.example.project2025.admin;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +20,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.project2025.R;
 import com.example.project2025.SignInActivity;
-import com.example.project2025.shared.SettingProfile;
+import com.example.project2025.ui.account_menu.ChangeUsernameActivity;
+import com.example.project2025.ui.account_menu.ChangePasswordActivity;
+import com.example.project2025.ui.account_menu.SettingProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -31,7 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * Allows admin to manage their own profile (username, password, language, etc.)
  * Copied from user-side SettingProfile for consistency
  */
-public class EditProfileAdminFragment extends Fragment {
+public class EditProfileFragment extends Fragment {
 
     TextView username, email;
     FirebaseAuth auth;
@@ -44,14 +48,13 @@ public class EditProfileAdminFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.account_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
         Log.d("EditProfileFragment", "Fragment Created");
-        username = view.findViewById(R.id.menu_username);
-        email = view.findViewById(R.id.menu_email);
+
         // ===== CANCEL BUTTON =====
         // When admin clicks cancel, return to the Dashboard fragment
-        ImageView createGearBtn = view.findViewById(R.id.gear_button);
+        ImageView createGearBtn = view.findViewById(R.id.gear);
         createGearBtn.setOnClickListener(v -> {
             SettingProfile bottomSheet = new SettingProfile();
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
