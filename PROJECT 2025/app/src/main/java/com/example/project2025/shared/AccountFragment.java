@@ -20,6 +20,7 @@ import com.example.project2025.SignInActivity;
 import com.example.project2025.databinding.AccountFragmentBinding;
 import com.example.project2025.shared.AccountViewModel;
 import com.example.project2025.shared.SettingProfile;
+import com.example.project2025.ProfileImageHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -63,13 +64,13 @@ public class AccountFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         sharedPreferences = getActivity().getSharedPreferences("ROLE", MODE_PRIVATE);
         String role = sharedPreferences.getString("Role", "Users");
-        // Initialize username
+        // Initialize username and profile image
         DocumentReference userRef = db.collection(role).document(currentUser.getUid());
         userRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    // Display Text
+                    // Display username
                     username = binding.menuUsername;
                     if (currentUser != null) {
                         username.setText(document.getString("name"));
@@ -78,6 +79,11 @@ public class AccountFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), SignInActivity.class);
                         startActivity(intent);
                     }
+                    
+                    // Load and display the user's selected profile image
+                    // This retrieves the profilepic field from Firebase and displays the corresponding drawable
+                    String profilePic = document.getString("profilepic");
+                    ProfileImageHelper.loadProfileImage(getContext(), binding.imageView6, profilePic);
                 }
                 else {
                     Log.d("accountMenuFragment: ", "No such document");

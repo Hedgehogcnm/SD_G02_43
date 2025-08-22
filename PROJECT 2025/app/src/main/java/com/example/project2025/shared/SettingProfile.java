@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.example.project2025.R;
 import com.example.project2025.SignInActivity;
+import com.example.project2025.Change_image;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class SettingProfile extends BottomSheetDialogFragment {
@@ -71,6 +72,9 @@ public class SettingProfile extends BottomSheetDialogFragment {
 
         dialogView.findViewById(R.id.change_profile_image).setOnClickListener(v -> {
             Log.d("Account Dialog: ", "Change Profile Image clicked");
+            // Launch the Change_image activity for profile image selection
+            Intent intent = new Intent(getActivity(), Change_image.class);
+            startActivity(intent);
             dialog.dismiss();
         });
 

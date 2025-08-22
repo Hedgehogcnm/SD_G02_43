@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    Profile Image Selection Layout
+    
+    This layout provides a user interface for selecting profile images with the following components:
+    1. Top navigation bar with return button and title
+    2. Instructions for the user
+    3. 2x2 grid of 4 animal profile images (sad_cat, happy_monkey, scared_cat, desperate_dog)
+    4. Default option button for sad_mouse
+    5. Save button to commit changes to Firebase
+    
+    Used by: Change_image.java activity
+    Navigation: Settings -> My Account -> Change Profile Image
+-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- top bar -->
+    <!-- Top Navigation Bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -14,6 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Return/Back button - closes this activity -->
         <ImageView
             android:id="@+id/returnButton"
             android:layout_width="40dp"
@@ -21,15 +35,17 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/return_button_foreground"
+            android:contentDescription="Return to previous screen"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Page title -->
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:text="Change Image"
+            android:text="Change Profile Image"
             android:textColor="@color/black"
             android:textSize="24dp"
             android:textStyle="bold"
@@ -38,42 +54,212 @@
             app:layout_constraintTop_toTopOf="@+id/returnButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <!-- Use MaterialButton instead of regular Button -->
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="@dimen/pet_feeder_image_width"
-        android:layout_height="@dimen/pet_feeder_image_height"
-        android:layout_marginTop="76dp"
+    <!-- User Instructions -->
+    <TextView
+        android:id="@+id/instructionsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Select your profile picture:"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:srcCompat="@drawable/device_pic" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
+    <!-- 2x2 Grid Container for Profile Image Selection -->
+    <!-- This CardView contains a 2x2 grid of the 4 available animal profile images -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/gridContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/instructionsText">
+
+        <!-- 2x2 Grid Layout containing 4 animal profile images -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:padding="16dp"
+            android:rowCount="2">
+
+            <!-- Sad Cat Profile Image Option (Top Left) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/sadCatCard"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/sadCatImage"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/sad_cat"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Sad Cat Profile Image" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sad Cat"
+                        android:textSize="12sp"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Happy Monkey Profile Image Option (Top Right) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/happyMonkeyCard"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/happyMonkeyImage"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/happy_monkey"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Happy Monkey Profile Image" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Happy Monkey"
+                        android:textSize="12sp"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Scared Cat Profile Image Option (Bottom Left) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/scaredCatCard"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/scaredCatImage"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/scared_cat"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Scared Cat Profile Image" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scared Cat"
+                        android:textSize="12sp"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Desperate Dog Profile Image Option (Bottom Right) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/desperateDogCard"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/desperateDogImage"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/desperate_dog"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Desperate Dog Profile Image" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Desperate Dog"
+                        android:textSize="12sp"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </GridLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Default Profile Image Option -->
+    <!-- Button to select the default sad_mouse profile image -->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/logInButton"
-        android:layout_width="330dp"
+        android:id="@+id/defaultButton"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:text="Use Default (Sad Mouse)"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="#666666"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/sad_mouse"
+        app:iconGravity="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridContainer" />
+
+    <!-- Save Changes Button -->
+    <!-- Commits the selected profile image to Firebase Firestore -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/saveButton"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
         android:text="Save"
         android:textColor="#FFFFFF"
         app:backgroundTint="#000000"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/defaultButton" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="*click on the image to change"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
