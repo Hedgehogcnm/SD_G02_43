@@ -161,6 +161,7 @@
             app:cardElevation="4dp">
 
             <LinearLayout
+                android:id="@+id/feedButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -190,7 +191,7 @@
 
     <!-- Feed Record Button -->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/feedButton"
+        android:id="@+id/feed_record"
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="322dp"
         android:layout_height="50dp"
