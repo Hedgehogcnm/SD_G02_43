@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.project2025.R;
+import com.example.project2025.EditProfile;
 import com.example.project2025.SignInActivity;
 import com.example.project2025.shared.SettingProfile;
 import com.example.project2025.ProfileImageHelper;
@@ -55,8 +56,8 @@ public class EditProfileFragment extends Fragment {
         // When admin clicks cancel, return to the Dashboard fragment
         ImageView createGearBtn = view.findViewById(R.id.gear_button);
         createGearBtn.setOnClickListener(v -> {
-            SettingProfile bottomSheet = new SettingProfile();
-            bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
+            Intent intent = new Intent(getActivity(), EditProfile.class);
+            startActivity(intent);
         });
 
         username = view.findViewById(R.id.menu_username);

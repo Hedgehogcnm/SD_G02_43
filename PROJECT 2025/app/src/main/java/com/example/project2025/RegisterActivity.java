@@ -78,7 +78,6 @@ public class RegisterActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
         confirmPasswordEditText = findViewById(R.id.confirmPassword);
-       // OTPEditText = findViewById(R.id.otp);
         registerButton = findViewById(R.id.registerButton);
         verifiedContinueButton = findViewById(R.id.verifiedContinueButton);
         resendVerificationButton = findViewById(R.id.resendVerificationButton);
@@ -161,6 +160,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 userProfile.put("name", name);
                                                 userProfile.put("email", email);
                                                 userProfile.put("uid", uid);
+                                                userProfile.put("profilepic", "desperate_dog.jpg");
                                                 userProfile.put("createdAt", System.currentTimeMillis());
                                                 db.collection("Users").document(uid).set(userProfile, SetOptions.merge())
                                                         .addOnSuccessListener(aVoid -> proceedToMain())
@@ -237,12 +237,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        if (password.length() < 8 || password.length() > 30) {
-            Toast.makeText(RegisterActivity.this, "Password must be between 6 to 30 characters", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        else if (!password.matches(".*[!@#$%^&*()_+<>=?,.{}/-].*")) {
-            Toast.makeText(RegisterActivity.this, "Password must contain at least one special character", Toast.LENGTH_LONG).show();
+        if (password.length() < 8 || password.length() > 30 || !password.matches(".*[!@#$%^&*()_+<>=?,.{}/-].*")) {
+            Toast.makeText(getApplicationContext(), "The password must be at least 8 characters and 1 symbol", Toast.LENGTH_LONG).show();
             return false;
         }
         else{

@@ -3,6 +3,7 @@ package com.example.project2025;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -407,13 +408,15 @@ public class Change_image extends AppCompatActivity {
             StorageReference imageRef = storageRef.child("profile_images/" + imageName);
 
             // Upload the image
+            SharedPreferences sharedPreferences = getSharedPreferences("ROLE", MODE_PRIVATE);
+            String role = sharedPreferences.getString("Role", "Users");
             UploadTask uploadTask = imageRef.putFile(customImageUri);
             uploadTask.addOnSuccessListener(taskSnapshot -> {
                 // Get the download URL
                 imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                     // Save the download URL to Firestore
                     String imageUrl = uri.toString();
-                    DocumentReference userRef = db.collection("Users").document(currentUser.getUid());
+                    DocumentReference userRef = db.collection(role).document(currentUser.getUid());
                     userRef.update("profilepic", imageUrl, "isCustomImage", true)
                             .addOnSuccessListener(aVoid -> {
                                 Log.d(TAG, "Custom profile image updated successfully");
