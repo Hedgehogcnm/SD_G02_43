@@ -9,18 +9,18 @@
 
     <!-- Use MaterialButton instead of regular Button -->
     <!-- Use TextInputLayout to wrap EditText to get Material Design features -->
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/resendVerificationButton"
-        android:layout_width="120dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="36dp"
         android:text="RESEND"
         android:textColor="#FFFFFF"
-        app:backgroundTint="#000000"
+        app:backgroundTint="#575757"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirm_passwordInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/registerButton" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/registerButton"
@@ -32,21 +32,23 @@
         app:backgroundTint="#000000"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verifiedContinueButton" />
+        app:layout_constraintTop_toBottomOf="@+id/confirm_passwordInputLayout" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/verifiedContinueButton"
         android:layout_width="140dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="56dp"
         android:text="I've verified"
         android:textColor="#FFFFFF"
-        app:backgroundTint="#000000"
+        app:backgroundTint="#575757"
         app:cornerRadius="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/resendVerificationButton"
+        app:layout_constraintHorizontal_bias="0.923"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirm_passwordInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/registerButton" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameInputLayout"
@@ -173,7 +175,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="156dp"
         android:layout_marginBottom="51dp"
         android:fontFamily="sans-serif"
         android:text="Already have an account? "
@@ -183,6 +184,7 @@
         app:layout_constraintEnd_toStartOf="@+id/loginTextView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verifiedContinueButton"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
