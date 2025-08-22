@@ -18,9 +18,11 @@ import com.example.project2025.R;
 import com.example.project2025.SignInActivity;
 import com.example.project2025.Change_image;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingProfile extends BottomSheetDialogFragment {
 
+    FirebaseAuth auth;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -29,7 +31,7 @@ public class SettingProfile extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.setting_profile, container, false);
 
         Log.d("SettingProfile", "Bottom Sheet Created");
-
+        auth = FirebaseAuth.getInstance();
         // ===== Cancel btn =====
         ImageView cancelTextView = view.findViewById(R.id.setting_cancel);
         cancelTextView.setOnClickListener(v -> {
@@ -106,6 +108,7 @@ public class SettingProfile extends BottomSheetDialogFragment {
                 .setPositiveButton("Yes", (dialog, which) -> {
                     Intent intent = new Intent(getActivity(), SignInActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    auth.signOut();
                     startActivity(intent);
                     if (getActivity() != null) {
                         getActivity().finish();

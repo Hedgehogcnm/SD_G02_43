@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -130,13 +131,11 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (password.length() < 8 || password.length() > 30) {
-                    Toast.makeText(RegisterActivity.this, "Password must be between 6 to 30 characters", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
                 // Create account directly
-                registerUser(name, email, password);
+                if(isPasswordValid(password))
+                {
+                    registerUser(name, email, password);
+                }
             }
         });
 
@@ -217,6 +216,11 @@ public class RegisterActivity extends AppCompatActivity {
                             verifiedContinueButton.setVisibility(View.VISIBLE);
                             resendVerificationButton.setVisibility(View.VISIBLE);
                         } else {
+                            Exception e = task.getException();
+
+                            if(e instanceof FirebaseAuthWeakPasswordException){
+                                Toast.makeText(RegisterActivity.this, task.getException() != null ? task.getException().getMessage() : "Authentication failed.", Toast.LENGTH_LONG).show();
+                            }
                             Toast.makeText(RegisterActivity.this, task.getException() != null ? task.getException().getMessage() : "Authentication failed.", Toast.LENGTH_LONG).show();
                         }
                     }
@@ -230,5 +234,19 @@ public class RegisterActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private boolean isPasswordValid(String password) {
+        if (password.length() < 8 || password.length() > 30) {
+            Toast.makeText(RegisterActivity.this, "Password must be between 6 to 30 characters", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else if (!password.matches(".*[!@#$%^&*()_+<>=?,.{}/-].*")) {
+            Toast.makeText(RegisterActivity.this, "Password must contain at least one special character", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 }
