@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -23,10 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class EditProfile extends AppCompatActivity {
 
+    private LinearLayout changeProfile, changeUsername, privacy, changePassword;
     private ImageView profileImage;
     private TextView usernameText;
-    private TextView privacyText;
-    private TextView changePasswordText;
     private ImageView returnButton;
     private com.google.android.material.button.MaterialButton logoutButton;
     private FirebaseAuth auth;
@@ -50,37 +50,38 @@ public class EditProfile extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         // Initialize UI elements
-        profileImage = findViewById(R.id.change_image);
-        usernameText = findViewById(R.id.change_username);
-        privacyText = findViewById(R.id.setting_privacy);
-        changePasswordText = findViewById(R.id.change_password);
-        returnButton = findViewById(R.id.setting_cancel);
+        profileImage = findViewById(R.id.profile_picture);
+        changeProfile = findViewById(R.id.edit_profile_picture);
+        usernameText = findViewById(R.id.current_name);
+        changeUsername = findViewById(R.id.change_name);
+        privacy = findViewById(R.id.privacy);
+        changePassword = findViewById(R.id.change_password);
+        returnButton = findViewById(R.id.return_button);
         logoutButton = findViewById(R.id.setting_logout);
 
         // Set up click listeners
-        profileImage.setOnClickListener(v -> {
+        changeProfile.setOnClickListener(v -> {
             // Navigate to Change_image activity
             Intent intent = new Intent(EditProfile.this, Change_image.class);
             startActivity(intent);
         });
 
-        usernameText.setOnClickListener(v -> {
+        changeUsername.setOnClickListener(v -> {
             // Navigate to ChangeUsernameActivity
             Intent intent = new Intent(EditProfile.this, ChangeUsernameActivity.class);
             startActivity(intent);
         });
 
-        privacyText.setOnClickListener(v -> {
-            // Show privacy dialog
-            showPrivacyDialog();
-        });
-
-        changePasswordText.setOnClickListener(v -> {
+        changePassword.setOnClickListener(v -> {
             // Navigate to ChangePasswordActivity
             Intent intent = new Intent(EditProfile.this, ChangePasswordActivity.class);
             startActivity(intent);
         });
 
+        privacy.setOnClickListener(v -> {
+            // Show privacy dialog
+            showPrivacyDialog();
+        });
         returnButton.setOnClickListener(v -> {
             // Return to previous screen
             finish();
