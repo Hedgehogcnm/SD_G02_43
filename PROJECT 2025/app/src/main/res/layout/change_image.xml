@@ -226,6 +226,48 @@
         </GridLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Camera and Gallery Options -->
+    <LinearLayout
+        android:id="@+id/customImageOptions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridContainer">
+
+        <!-- Camera Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cameraButton"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="Camera"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#4285F4"
+            app:cornerRadius="10dp"
+            app:icon="@android:drawable/ic_menu_camera"
+            app:iconGravity="textStart" />
+
+        <!-- Gallery Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/galleryButton"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="Gallery"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#34A853"
+            app:cornerRadius="10dp"
+            app:icon="@android:drawable/ic_menu_gallery"
+            app:iconGravity="textStart" />
+    </LinearLayout>
+
     <!-- Default Profile Image Option -->
     <!-- Button to select the default sad_mouse profile image -->
     <com.google.android.material.button.MaterialButton
@@ -243,7 +285,7 @@
         app:iconGravity="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridContainer" />
+        app:layout_constraintTop_toBottomOf="@+id/customImageOptions" />
 
     <!-- Save Changes Button -->
     <!-- Commits the selected profile image to Firebase Firestore -->
