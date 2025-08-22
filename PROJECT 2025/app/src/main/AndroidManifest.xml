@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KaiFeedCat.NoActionBar">
         <activity
+            android:name=".EditProfile"
+            android:exported="false" />
+        <activity
             android:name=".Change_image"
             android:exported="false" />
         <activity
