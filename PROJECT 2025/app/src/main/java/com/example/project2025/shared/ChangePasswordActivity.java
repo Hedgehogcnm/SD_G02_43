@@ -86,7 +86,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                 if(task.isSuccessful()){
                                     newPassword.setText("");
                                     confirmPassword.setText("");
-                                    Toast.makeText(getApplicationContext() ,"Password successfully changed!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext() ,"Update Successfully", Toast.LENGTH_SHORT).show();
                                 }
                                 else{
                                     newPassword.setText("");
@@ -97,10 +97,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                             });
                         }
                         else{
-                            Toast.makeText(getApplicationContext() ,"Password doesn't match", Toast.LENGTH_SHORT).show();                        }
+                            Toast.makeText(getApplicationContext() ,"Please enter matching passwords", Toast.LENGTH_SHORT).show();                        }
                     }
                     else{
-                        Toast.makeText(getApplicationContext() ,"Wrong old password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext() ,"Please enter the correct old password", Toast.LENGTH_SHORT).show();
                         Log.d("Reauth User: ", "Re-authentication Fail");
                     }
                 });
