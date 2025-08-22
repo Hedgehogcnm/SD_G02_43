@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.project2025.EditProfile;
 import com.example.project2025.SignInActivity;
 import com.example.project2025.databinding.AccountFragmentBinding;
 import com.example.project2025.shared.AccountViewModel;
@@ -49,8 +50,9 @@ public class AccountFragment extends Fragment {
 
         ImageView createGearBtn = binding.gearButton;
         createGearBtn.setOnClickListener(v -> {
-            SettingProfile bottomSheet = new SettingProfile();
-            bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
+            // Navigate to EditProfile activity instead of showing SettingProfile bottom sheet
+            Intent intent = new Intent(getActivity(), EditProfile.class);
+            startActivity(intent);
         });
         return root;
     }

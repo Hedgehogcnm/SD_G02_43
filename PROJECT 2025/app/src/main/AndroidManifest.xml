@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"
+        tools:ignore="SelectedPhotoAccess" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:usesCleartextTraffic="true"
@@ -19,6 +25,9 @@
             android:exported="false" />
         <activity
             android:name=".Change_image"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfile"
             android:exported="false" />
         <activity
             android:name=".Onboarding"

@@ -1,7 +1,10 @@
 package com.example.project2025;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 /**
  * Utility class to help load and display profile images throughout the app
@@ -27,9 +30,11 @@ public class ProfileImageHelper {
      * This method handles the mapping between Firebase storage (filename) and Android resources (drawable).
      * If the filename is null, empty, or doesn't match any known images, it defaults to sad_mouse.
      * 
+     * This method now also supports loading custom images from URLs (for images uploaded to Firebase Storage)
+     * 
      * @param context The Android context (required for resource access)
      * @param imageView The ImageView widget to display the profile image in
-     * @param profilePicFilename The filename stored in Firebase profilepic field (e.g., "sad_cat.jpg")
+     * @param profilePicFilename The filename stored in Firebase profilepic field (e.g., "sad_cat.jpg") or a URL
      */
     public static void loadProfileImage(Context context, ImageView imageView, String profilePicFilename) {
         // Handle null or empty filenames by showing default image
@@ -37,7 +42,19 @@ public class ProfileImageHelper {
             imageView.setImageResource(R.drawable.sad_mouse); // Default profile image
             return;
         }
+        
+        // Check if the profilePicFilename is a URL (starts with http:// or https://)
+        if (profilePicFilename.startsWith("http://") || profilePicFilename.startsWith("https://")) {
+            // Load image from URL using Glide
+            Glide.with(context)
+                .load(profilePicFilename)
+                .placeholder(R.drawable.sad_mouse) // Show default while loading
+                .error(R.drawable.sad_mouse) // Show default on error
+                .into(imageView);
+            return;
+        }
 
+        // For predefined images, use the drawable resources
         // Remove .jpg extension for resource name lookup
         String resourceName = profilePicFilename.replace(".jpg", "");
         
