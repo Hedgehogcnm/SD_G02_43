@@ -29,6 +29,8 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Registration screen using Firebase Authentication (email/password) with enforced
@@ -56,6 +58,13 @@ public class RegisterActivity extends AppCompatActivity {
     // Firebase clients
     FirebaseAuth mAuth;
     FirebaseFirestore db;
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.matches();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,24 +119,28 @@ public class RegisterActivity extends AppCompatActivity {
                 String confirmPassword = confirmPasswordEditText.getText().toString();
 
                 if(TextUtils.isEmpty(name)){
-                    Toast.makeText(RegisterActivity.this, "Please Enter Name", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Please enter your name", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if(TextUtils.isEmpty(email)){
-                    Toast.makeText(RegisterActivity.this, "Please Enter Email", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Please enter your email", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(!validate(email)){
+                    Toast.makeText(RegisterActivity.this, "Please enter a valid email format", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if(TextUtils.isEmpty(password)){
-                    Toast.makeText(RegisterActivity.this, "Please Enter Password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Please enter your password", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if(TextUtils.isEmpty(confirmPassword)){
-                    Toast.makeText(RegisterActivity.this, "Please Enter Confirm Password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Please enter your confirm password", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 if(!password.equals(confirmPassword)){
-                    Toast.makeText(RegisterActivity.this, "Password and Confirm password doesn't match", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Please enter matching passwords", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -212,7 +225,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if (mAuth.getCurrentUser() != null) {
                                 mAuth.getCurrentUser().sendEmailVerification();
                             }
-                            Toast.makeText(RegisterActivity.this, "Verification email sent. Please verify, then tap 'I've verified' or Login.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterActivity.this, "A verification email was sent please check your spam folder", Toast.LENGTH_LONG).show();
                             verifiedContinueButton.setVisibility(View.VISIBLE);
                             resendVerificationButton.setVisibility(View.VISIBLE);
                         } else {
@@ -238,11 +251,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         if (password.length() < 8 || password.length() > 30) {
-            Toast.makeText(RegisterActivity.this, "Password must be between 6 to 30 characters", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterActivity.this, "The password must be at least 8 characters and 1 symbol", Toast.LENGTH_LONG).show();
             return false;
         }
         else if (!password.matches(".*[!@#$%^&*()_+<>=?,.{}/-].*")) {
-            Toast.makeText(RegisterActivity.this, "Password must contain at least one special character", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterActivity.this, "The password must be at least 8 characters and 1 symbol", Toast.LENGTH_LONG).show();
             return false;
         }
         else{

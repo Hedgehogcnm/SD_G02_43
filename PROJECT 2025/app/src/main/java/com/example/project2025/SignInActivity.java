@@ -96,13 +96,23 @@ public class SignInActivity extends AppCompatActivity {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
-                if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(SignInActivity.this, "Please fill in all fields", Toast.LENGTH_LONG).show();
+                if(TextUtils.isEmpty(email) && TextUtils.isEmpty(password)) {
+                    Toast.makeText(SignInActivity.this, "Please enter your email", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if(TextUtils.isEmpty(email)) {
+                    Toast.makeText(SignInActivity.this, "Please enter your email", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if(TextUtils.isEmpty(password)) {
+                    Toast.makeText(SignInActivity.this, "Please enter your password", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 if(!validate(email)){
-                    Toast.makeText(SignInActivity.this, "Invalid email format", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignInActivity.this, "Please enter a valid email format", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -147,7 +157,7 @@ public class SignInActivity extends AppCompatActivity {
                                         });
                                     }
                                 } else {
-                                    Toast.makeText(SignInActivity.this, "User not found", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignInActivity.this, "Please register your email", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -186,12 +196,12 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(android.content.DialogInterface dialog, int which) {
                 String email = emailInput.getText().toString().trim();
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(SignInActivity.this, "Please enter your email address", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignInActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (!validate(email)) {
-                    Toast.makeText(SignInActivity.this, "Invalid email format", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignInActivity.this, "Please enter a valid email format", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -202,7 +212,7 @@ public class SignInActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(SignInActivity.this,
-                                            "Password reset email sent! Check your inbox.",
+                                            "Password reset link has been sent to your email",
                                             Toast.LENGTH_LONG).show();
                                 } else {
                                     Toast.makeText(SignInActivity.this,
