@@ -54,22 +54,20 @@
             app:layout_constraintTop_toTopOf="@+id/returnButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- User Instructions -->
+
     <TextView
         android:id="@+id/instructionsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Select your profile picture:"
+        android:layout_marginTop="292dp"
+        android:text="*click profile photo to change"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-    <!-- 2x2 Grid Container for Profile Image Selection -->
-    <!-- This CardView contains a 2x2 grid of the 4 available animal profile images -->
     <androidx.cardview.widget.CardView
         android:id="@+id/gridContainer"
         android:layout_width="0dp"
@@ -81,227 +79,40 @@
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/instructionsText">
-
-        <!-- 2x2 Grid Layout containing 4 animal profile images -->
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:padding="16dp"
-            android:rowCount="2">
-
-            <!-- Sad Cat Profile Image Option (Top Left) -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/sadCatCard"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/sadCatImage"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/sad_cat"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="Sad Cat Profile Image" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sad Cat"
-                        android:textSize="12sp"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Happy Monkey Profile Image Option (Top Right) -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/happyMonkeyCard"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/happyMonkeyImage"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/happy_monkey"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="Happy Monkey Profile Image" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Happy Monkey"
-                        android:textSize="12sp"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Scared Cat Profile Image Option (Bottom Left) -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/scaredCatCard"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/scaredCatImage"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/scared_cat"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="Scared Cat Profile Image" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Scared Cat"
-                        android:textSize="12sp"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Desperate Dog Profile Image Option (Bottom Right) -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/desperateDogCard"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/desperateDogImage"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/desperate_dog"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="Desperate Dog Profile Image" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Desperate Dog"
-                        android:textSize="12sp"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-        </GridLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!-- Camera and Gallery Options -->
-    <LinearLayout
-        android:id="@+id/customImageOptions"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridContainer">
-
-        <!-- Camera Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/cameraButton"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:text="Camera"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="#4285F4"
-            app:cornerRadius="10dp"
-            app:icon="@android:drawable/ic_menu_camera"
-            app:iconGravity="textStart" />
-
-        <!-- Gallery Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/galleryButton"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:text="Gallery"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="#34A853"
-            app:cornerRadius="10dp"
-            app:icon="@android:drawable/ic_menu_gallery"
-            app:iconGravity="textStart" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/instructionsText"/>
 
     <!-- Default Profile Image Option -->
     <!-- Button to select the default sad_mouse profile image -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/defaultButton"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="20dp"
-        android:text="Use Default (Sad Mouse)"
-        android:textColor="#FFFFFF"
-        app:backgroundTint="#666666"
-        app:cornerRadius="10dp"
-        app:icon="@drawable/sad_mouse"
-        app:iconGravity="textStart"
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/change_image"
+        android:layout_width="230dp"
+        android:layout_height="201dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/desperate_dog"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customImageOptions" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <!-- Save Changes Button -->
     <!-- Commits the selected profile image to Firebase Firestore -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveButton"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="20dp"
         android:text="Save"
         android:textColor="#FFFFFF"
         app:backgroundTint="#000000"
         app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/defaultButton" />
+        app:layout_constraintTop_toBottomOf="@+id/instructionsText"
+        app:layout_constraintVertical_bias="0.0"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

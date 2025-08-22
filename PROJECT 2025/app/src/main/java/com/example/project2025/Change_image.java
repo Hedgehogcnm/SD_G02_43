@@ -64,12 +64,10 @@ public class Change_image extends AppCompatActivity {
 
     private static final String TAG = "Change_image";
     
-    // UI Elements - Cards for the 4 animal profile pictures
-    private CardView sadCatCard, happyMonkeyCard, scaredCatCard, desperateDogCard;
-    // Buttons for default option and saving changes
-    private MaterialButton defaultButton, saveButton, cameraButton, galleryButton;
+    // UI Elements
+    private MaterialButton saveButton;
     // Return/back button
-    private ImageView returnButton;
+    private ImageView returnButton, change_image;
     
     // Firebase components for authentication and database
     private FirebaseAuth mAuth;
@@ -112,7 +110,7 @@ public class Change_image extends AppCompatActivity {
         initializeActivityResultLaunchers();
 
         // Set up the user interface components
-        initializeViews();
+        /*initializeViews();*/ 
         // Set up click listeners for all interactive elements
         setupClickListeners();
         // Load and highlight the user's current profile image selection
@@ -143,17 +141,10 @@ public class Change_image extends AppCompatActivity {
                         if (selectedImageUri != null) {
                             customImageUri = selectedImageUri;
                             isCustomImage = true;
-                            clearSelection(); // Clear any previous selection
                             
-                            // Show a preview of the selected image
-                            try {
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), customImageUri);
-                                // You could display this bitmap in an ImageView if you want to show a preview
-                                Toast.makeText(this, "Image selected successfully", Toast.LENGTH_SHORT).show();
-                            } catch (IOException e) {
-                                Log.e(TAG, "Error loading gallery image", e);
-                                Toast.makeText(this, "Error loading image", Toast.LENGTH_SHORT).show();
-                            }
+                            // Display the selected image in the ImageView
+                            change_image.setImageURI(customImageUri);
+                            Toast.makeText(this, "Image selected successfully", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -163,7 +154,7 @@ public class Change_image extends AppCompatActivity {
      * Initialize all UI components by finding them in the layout
      * This includes the 4 image selection cards, buttons, and return button
      */
-    private void initializeViews() {
+    /*private void initializeViews() {
         // Initialize the 4 animal image selection cards from the 2x2 grid
         sadCatCard = findViewById(R.id.sadCatCard);
         happyMonkeyCard = findViewById(R.id.happyMonkeyCard);
@@ -176,118 +167,37 @@ public class Change_image extends AppCompatActivity {
         returnButton = findViewById(R.id.returnButton); // Back/return navigation button
         cameraButton = findViewById(R.id.cameraButton); // Camera button for taking photos
         galleryButton = findViewById(R.id.galleryButton); // Gallery button for selecting images
-    }
+    }*/
 
     /**
      * Set up click listeners for all interactive UI elements
-     * Each click handler calls the appropriate method with the selected image filename
      */
     private void setupClickListeners() {
+        // Initialize UI elements
+        returnButton = findViewById(R.id.returnButton);
+        saveButton = findViewById(R.id.saveButton);
+        change_image = findViewById(R.id.change_image);
+        
         // Return button - closes this activity and goes back to previous screen
         returnButton.setOnClickListener(v -> finish());
-
-        // Image selection cards - each card selects a different animal image
-        // Parameters: (imageFilename, cardReference for highlighting)
-        sadCatCard.setOnClickListener(v -> {
-            selectImage("sad_cat.jpg", sadCatCard);
-            isCustomImage = false;
-            customImageUri = null;
-        });
-        happyMonkeyCard.setOnClickListener(v -> {
-            selectImage("happy_monkey.jpg", happyMonkeyCard);
-            isCustomImage = false;
-            customImageUri = null;
-        });
-        scaredCatCard.setOnClickListener(v -> {
-            selectImage("scared_cat.jpg", scaredCatCard);
-            isCustomImage = false;
-            customImageUri = null;
-        });
-        desperateDogCard.setOnClickListener(v -> {
-            selectImage("desperate_dog.jpg", desperateDogCard);
-            isCustomImage = false;
-            customImageUri = null;
-        });
-
-        // Default button - selects the default sad_mouse image (no card to highlight)
-        defaultButton.setOnClickListener(v -> {
-            selectImage("sad_mouse.jpg", null);
-            isCustomImage = false;
-            customImageUri = null;
-        });
-
-        // Camera button - opens camera to take a photo
-        cameraButton.setOnClickListener(v -> {
-            if (checkCameraPermission()) {
-                openCamera();
-            } else {
-                requestCameraPermission();
-            }
-        });
-
-        // Gallery button - opens gallery to select an image
-        galleryButton.setOnClickListener(v -> {
+        
+        // Change image click listener - opens gallery to select an image
+        change_image.setOnClickListener(v -> {
             if (checkStoragePermission()) {
                 openGallery();
             } else {
                 requestStoragePermission();
             }
         });
-
         // Save button - commits the selected image to Firebase Firestore
         saveButton.setOnClickListener(v -> saveProfileImage());
     }
 
-    /**
-     * Handle image selection and visual feedback
-     * @param imageName The filename of the selected image (e.g., "sad_cat.jpg")
-     * @param card The CardView to highlight (null for default button)
-     */
-    private void selectImage(String imageName, CardView card) {
-        // Clear any previous selection highlighting
-        clearSelection();
-        
-        // Update internal state with new selection
-        selectedImage = imageName;
-        selectedCard = card;
-        
-        // Provide visual feedback for the selected card
-        if (card != null) {
-            // Highlight selected card with light blue background and higher elevation
-            card.setCardBackgroundColor(Color.parseColor("#E3F2FD")); // Light blue background
-            card.setCardElevation(8f); // Higher elevation creates shadow effect
-        }
-        
-        Log.d(TAG, "Selected image: " + imageName);
-    }
+    // These methods are no longer needed with the new UI layout
 
     /**
-     * Reset all image selection cards to their default unselected appearance
-     * This removes highlighting from all cards before applying it to the newly selected one
-     */
-    private void clearSelection() {
-        // Reset all cards to default white background and normal elevation
-        if (sadCatCard != null) {
-            sadCatCard.setCardBackgroundColor(Color.WHITE);
-            sadCatCard.setCardElevation(2f); // Normal elevation
-        }
-        if (happyMonkeyCard != null) {
-            happyMonkeyCard.setCardBackgroundColor(Color.WHITE);
-            happyMonkeyCard.setCardElevation(2f);
-        }
-        if (scaredCatCard != null) {
-            scaredCatCard.setCardBackgroundColor(Color.WHITE);
-            scaredCatCard.setCardElevation(2f);
-        }
-        if (desperateDogCard != null) {
-            desperateDogCard.setCardBackgroundColor(Color.WHITE);
-            desperateDogCard.setCardElevation(2f);
-        }
-    }
-
-    /**
-     * Load the user's current profile image from Firebase and highlight it in the UI
-     * This runs when the activity starts to show which image is currently selected
+     * Load the user's current profile image from Firebase and display it in the UI
+     * This runs when the activity starts to show the current profile image
      */
     private void loadCurrentProfileImage() {
         if (currentUser == null) {
@@ -302,44 +212,19 @@ public class Change_image extends AppCompatActivity {
                 // Retrieve the profilepic field value
                 String currentProfilePic = documentSnapshot.getString("profilepic");
                 if (currentProfilePic != null && !currentProfilePic.isEmpty()) {
-                    // Update local state and highlight the current selection
+                    // Update local state and display the current image
                     selectedImage = currentProfilePic;
-                    highlightCurrentSelection();
+                    
+                    // Display the current profile image
+                    ProfileImageHelper.loadProfileImage(this, change_image, currentProfilePic);
+                } else {
+                    // If profilepic is empty/null, use default image
+                    change_image.setImageResource(R.drawable.sad_mouse);
                 }
-                // If profilepic is empty/null, default selection (sad_mouse) remains
             }
         }).addOnFailureListener(e -> {
             Log.e(TAG, "Error loading current profile image from Firebase", e);
         });
-    }
-
-    /**
-     * Highlight the currently selected image in the UI
-     * Maps the selectedImage filename to the appropriate card and highlights it
-     */
-    private void highlightCurrentSelection() {
-        clearSelection(); // First clear any existing highlights
-        
-        // Match the stored filename to the appropriate UI card and highlight it
-        switch (selectedImage) {
-            case "sad_cat.jpg":
-                selectImage("sad_cat.jpg", sadCatCard);
-                break;
-            case "happy_monkey.jpg":
-                selectImage("happy_monkey.jpg", happyMonkeyCard);
-                break;
-            case "scared_cat.jpg":
-                selectImage("scared_cat.jpg", scaredCatCard);
-                break;
-            case "desperate_dog.jpg":
-                selectImage("desperate_dog.jpg", desperateDogCard);
-                break;
-            case "sad_mouse.jpg":
-            default:
-                // Default image doesn't have a card to highlight (it's a button)
-                selectImage("sad_mouse.jpg", null);
-                break;
-        }
     }
 
         /**
@@ -446,12 +331,12 @@ public class Change_image extends AppCompatActivity {
             File f = new File(currentPhotoPath);
             customImageUri = Uri.fromFile(f);
             isCustomImage = true;
-            clearSelection(); // Clear any previous selection
+            // Display the captured image in the ImageView
             
             // Show a preview of the captured image
             try {
                 Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
-                // You could display this bitmap in an ImageView if you want to show a preview
+                change_image.setImageBitmap(bitmap); // Display the captured image
                 
                 // Optionally, add the photo to the gallery
                 galleryAddPic();
@@ -484,7 +369,7 @@ public class Change_image extends AppCompatActivity {
     }
 
     /**
-     * Save the selected profile image to Firebase Firestore or Storage
+     * Save the selected profile image to Firebase Storage
      * Updates the user's document with the new profilepic value
      */
     private void saveProfileImage() {
@@ -497,30 +382,19 @@ public class Change_image extends AppCompatActivity {
         saveButton.setEnabled(false);
         saveButton.setText("Saving...");
 
-        if (isCustomImage && customImageUri != null) {
+        if (customImageUri != null) {
             // Upload custom image to Firebase Storage
             uploadImageToStorage();
         } else {
-            // Update the profilepic field in the user's document with predefined image
-            DocumentReference userRef = db.collection("Users").document(currentUser.getUid());
-            userRef.update("profilepic", selectedImage)
-                    .addOnSuccessListener(aVoid -> {
-                        // Success: Log the update and show success message
-                        Log.d(TAG, "Profile image updated successfully to: " + selectedImage);
-                        Toast.makeText(this, "Profile image updated!", Toast.LENGTH_SHORT).show();
-                        finish(); // Close this activity and return to previous screen
-                    })
-                    .addOnFailureListener(e -> {
-                        // Failure: Log error and show error message
-                        Log.e(TAG, "Error updating profile image in Firebase", e);
-                        Toast.makeText(this, "Failed to update profile image", Toast.LENGTH_SHORT).show();
-                        
-                        // Reset button to normal state so user can try again
-                        saveButton.setEnabled(true);
-                        saveButton.setText("Save");
-            });
+            // No image selected, show error message
+            Toast.makeText(this, "Please select an image first", Toast.LENGTH_SHORT).show();
+            saveButton.setEnabled(true);
+            saveButton.setText("Save");
         }
     }
+    
+    // The uploadImageToStorage method is defined below
+     // It handles uploading the image to Firebase Storage and updating the user's profile
 
     /**
      * Upload custom image to Firebase Storage
