@@ -11,21 +11,19 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
+
     <!-- device pic -->
-
-    <!-- device name -->
-
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="@dimen/pet_feeder_image_width"
-        android:layout_height="@dimen/pet_feeder_image_height"
-        android:layout_marginTop="60dp"
+        android:id="@+id/device_pic"
+        android:layout_width="156dp"
+        android:layout_height="157dp"
+        android:layout_marginTop="80dp"
         android:src="@drawable/device_pic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.412"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- device name -->
     <TextView
         android:id="@+id/deviceName"
         android:layout_width="wrap_content"
@@ -35,8 +33,9 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintTop_toBottomOf="@+id/device_pic" />
 
     <!-- Schedule left caption -->
     <TextView
@@ -52,25 +51,39 @@
         app:layout_constraintTop_toBottomOf="@+id/deviceName" />
 
     <!-- Schedule right alarm -->
+    <ImageView
+        android:id="@+id/alarm"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="304dp"
+        android:layout_marginEnd="40dp"
+        app:tint="#000000"
+        android:src="@android:drawable/ic_lock_idle_alarm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <!-- CardView that wraps the content -->
     <!-- Feeding Schedule Section -->
 
     <ImageView
-        android:id="@+id/alarm"
+        android:id="@+id/notification"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="68dp"
-        android:src="@android:drawable/ic_lock_idle_alarm"
+        android:src="@drawable/ic_notification"
+        app:layout_constraintBottom_toTopOf="@+id/alarm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.894"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.136" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/scheduleCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:layout_marginTop="10dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
@@ -90,13 +103,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@android:color/white">
+            app:cardElevation="1dp">>
 
           <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:background="@drawable/card_border"
               android:orientation="vertical"
               android:padding="16dp">
 
@@ -141,13 +155,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@android:color/white">
+            app:cardElevation="1dp">
 
           <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:background="@drawable/card_border"
               android:orientation="vertical"
               android:padding="16dp">
 
@@ -193,50 +208,51 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@android:color/white">
+            app:cardElevation="1dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-          <TextView
-              android:id="@+id/schedule_title3"
-              android:layout_width="wrap_content"
+          <LinearLayout
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:text="Title 3"
-              android:textColor="@android:color/black"
-              android:textSize="18sp"
-              android:textStyle="bold" />
+              android:background="@drawable/card_border"
+              android:orientation="vertical"
+              android:padding="16dp">
 
-          <TextView
-              android:id="@+id/schedule_time3"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="6dp"
-              android:text="Time: "
-              android:textSize="16sp" />
+            <TextView
+                android:id="@+id/schedule_title3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title 3"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-          <TextView
-              android:id="@+id/schedule_days3"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="4dp"
-              android:text="Days: "
-              android:textSize="16sp" />
+            <TextView
+                android:id="@+id/schedule_time3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Time: "
+                android:textSize="16sp" />
 
-          <TextView
-              android:id="@+id/schedule_feed_level3"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="4dp"
-              android:text="Feed Level: "
-              android:textSize="16sp" />
+            <TextView
+                android:id="@+id/schedule_days3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Days: "
+                android:textSize="16sp" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/schedule_feed_level3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Feed Level: "
+                android:textSize="16sp" />
+
+          </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- for testing the ScrollView -->
@@ -245,13 +261,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@android:color/white">
+            app:cardElevation="1dp">>
 
           <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:background="@drawable/card_border"
               android:orientation="vertical"
               android:padding="16dp">
 
@@ -295,14 +312,6 @@
       </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-
-    <!-- Add a bottom margin to ensure the last item is visible-->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/scheduleCard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -8,11 +8,25 @@
     tools:context=".ui.dashboard.DashboardUserFragment">
 
     <!-- WebView for IP Camera -->
+    <!--
+    <ImageView
+        android:id="@+id/notification_button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="44dp"
+        android:src="@drawable/ic_notification"
+        app:layout_constraintBottom_toTopOf="@+id/cardview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+-->
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview"
         android:layout_width="380dp"
         android:layout_height="250dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="75dp"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
         app:cardCornerRadius="12dp"

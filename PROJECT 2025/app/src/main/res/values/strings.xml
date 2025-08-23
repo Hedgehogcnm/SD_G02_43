@@ -12,4 +12,5 @@
     <string name="day_fri">Fri</string>
     <string name="day_sat">Sat</string>
 
+    <string name="user_device">User &amp; Device</string>
 </resources>
