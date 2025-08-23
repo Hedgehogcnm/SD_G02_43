@@ -98,8 +98,7 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@drawable/ic_chevron_right"
-                    android:tint="#999999" />
+                    android:src="@drawable/ic_chevron_right" />
             </LinearLayout>
 
             <!-- Name -->
@@ -137,7 +136,7 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_chevron_right"
-                    android:tint="#999999" />
+                    />
             </LinearLayout>
 
             <!-- Change Password -->
@@ -166,7 +165,7 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_chevron_right"
-                    android:tint="#999999" />
+                    />
             </LinearLayout>
 
             <!-- Privacy -->
@@ -194,7 +193,7 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_chevron_right"
-                    android:tint="#999999" />
+                   />
             </LinearLayout>
 
 
@@ -224,7 +223,7 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_chevron_right"
-                    android:tint="#999999" />
+                    />
             </LinearLayout>
 
         </LinearLayout>
@@ -234,10 +233,11 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/setting_logout"
         style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="363dp"
+        android:layout_width="360dp"
         android:layout_height="56dp"
         android:layout_marginBottom="72dp"
-        android:text="Log Out"
+        android:textStyle="bold"
+        android:text="Sign Out"
         android:textColor="#F44336"
         android:textSize="16sp"
         app:iconTint="#F44336"
@@ -245,6 +245,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="#F44336"
-        app:strokeWidth="1dp" />
+        app:strokeWidth="2.5dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

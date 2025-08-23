@@ -4,7 +4,7 @@
     <item
         android:id="@+id/nav_dashboard_admin"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Dashboard" />
+        android:title="Home" />
 
     <item
         android:id="@+id/nav_account_fragment"
