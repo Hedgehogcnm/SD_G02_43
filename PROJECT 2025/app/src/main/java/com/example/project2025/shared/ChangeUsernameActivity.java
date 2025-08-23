@@ -77,7 +77,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
                newUsername.setText("");
            }
            else{
-               Toast.makeText(this, "Please enter a new username first.", Toast.LENGTH_SHORT).show();
+               Toast.makeText(this, "Please enter your new name", Toast.LENGTH_SHORT).show();
            }
         });
     }
@@ -101,11 +101,11 @@ public class ChangeUsernameActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
                         Log.d("ChangeUsername", "Update successful for UID: " + currentUser.getUid());
-                        Toast.makeText(getApplicationContext(), "Username changed successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Update Successfully", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Log.e("ChangeUsername", "Update failed", task.getException());
-                        Toast.makeText(getApplicationContext(), "Please enter a new username first.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Please enter your new name", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

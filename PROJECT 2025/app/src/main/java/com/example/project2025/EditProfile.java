@@ -2,6 +2,7 @@ package com.example.project2025;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -58,6 +59,11 @@ public class EditProfile extends AppCompatActivity {
         changePassword = findViewById(R.id.change_password);
         returnButton = findViewById(R.id.return_button);
         logoutButton = findViewById(R.id.setting_logout);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         // Set up click listeners
         changeProfile.setOnClickListener(v -> {
@@ -86,7 +92,7 @@ public class EditProfile extends AppCompatActivity {
             // Return to previous screen
             finish();
         });
-        
+
         logoutButton.setOnClickListener(v -> {
             // Show logout confirmation dialog
             showLogoutDialog();
@@ -99,7 +105,9 @@ public class EditProfile extends AppCompatActivity {
     private void loadUserData() {
         if (currentUser != null) {
             String uid = currentUser.getUid();
-            DocumentReference userRef = db.collection("Users").document(uid);
+            SharedPreferences sharedPreferences = getSharedPreferences("ROLE", MODE_PRIVATE);
+            String role = sharedPreferences.getString("Role", "Users");
+            DocumentReference userRef = db.collection(role).document(uid);
             
             userRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {

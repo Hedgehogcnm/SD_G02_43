@@ -64,18 +64,22 @@ public class ChangePasswordActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(v ->{
             String newPasswordText = newPassword.getText().toString();
             String confirmPasswordText = confirmPassword.getText().toString();
-
+            String oldPasswordText = oldPassword.getText().toString();
+            if(oldPasswordText.isEmpty()){
+                Toast.makeText(getApplicationContext(), "Please enter your old password", Toast.LENGTH_LONG).show();
+                return;
+            }
             if(currentUser != null){
                 // Check new password length
-                if (newPasswordText.length() < 6) {
-                    Toast.makeText(getApplicationContext(), "Password must be at least 6 characters", Toast.LENGTH_LONG).show();
+                if (!isPasswordValid(newPasswordText)) {
                     return;
                 }
 
                 // Reauth the user
-                AuthCredential credential = EmailAuthProvider.getCredential(currentUser.getEmail(), oldPassword.getText().toString());
+                AuthCredential credential = EmailAuthProvider.getCredential(currentUser.getEmail(), oldPasswordText);
                 currentUser.reauthenticate(credential).addOnCompleteListener(taskAuth -> {
-                    if(taskAuth.isSuccessful()){
+                    if(taskAuth.isSuccessful())
+                    {
                         Log.d("Reauth User: ", "Re-authentication successful");
 
                         if(newPasswordText.equals(confirmPasswordText)){
@@ -83,7 +87,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                 if(task.isSuccessful()){
                                     newPassword.setText("");
                                     confirmPassword.setText("");
-                                    Toast.makeText(getApplicationContext() ,"Password successfully changed!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext() ,"Update Successfully", Toast.LENGTH_SHORT).show();
                                 }
                                 else{
                                     newPassword.setText("");
@@ -94,11 +98,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
                             });
                         }
                         else{
-                            Toast.makeText(getApplicationContext() ,"Password doesn't match", Toast.LENGTH_SHORT).show();                        }
+                            Toast.makeText(getApplicationContext() ,"Please enter matching passwords", Toast.LENGTH_SHORT).show();                        }
                     }
+
                     else{
-                        Toast.makeText(getApplicationContext() ,"Wrong old password", Toast.LENGTH_SHORT).show();
-                        Log.d("Reauth User: ", "Re-authentication Fail");
+                        Toast.makeText(getApplicationContext() ,"Please enter the correct old password", Toast.LENGTH_SHORT).show();
+                        Log.d("Authentication  User: ", "Re-authentication Fail");
                     }
                 });
             }
@@ -106,5 +111,20 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext() ,"Please login first", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
+
+
+    }
+
+    private boolean isPasswordValid(String password) {
+        if (password.length() < 8 || password.length() > 30 || !password.matches(".*[!@#$%^&*()_+<>=?,.{}/-].*")) {
+            Toast.makeText(getApplicationContext(), "The password must be at least 8 characters and 1 symbol", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 }

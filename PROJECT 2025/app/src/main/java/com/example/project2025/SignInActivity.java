@@ -13,6 +13,7 @@ package com.example.project2025;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,20 +35,27 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignInActivity extends AppCompatActivity {
 
-    EditText emailEditText, passwordEditText;
-    Button loginButton;
-    TextView registerTextView, forgotPasswordTextView;
-    FirebaseAuth mAuth;
-    FirebaseFirestore db;
-    String role;
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", Pattern.CASE_INSENSITIVE);
+    private EditText emailEditText, passwordEditText;
+    private Button loginButton;
+    private TextView registerTextView, forgotPasswordTextView;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private String role;
 
     @Override
     public void onStart() {
@@ -55,6 +63,7 @@ public class SignInActivity extends AppCompatActivity {
         // Auto-redirect removed - users must manually log in each time
         // This prevents immediate redirect to MainActivity when opening the app
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,67 +105,108 @@ public class SignInActivity extends AppCompatActivity {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
-                if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(SignInActivity.this, "Please fill in all fields", Toast.LENGTH_LONG).show();
+                if(TextUtils.isEmpty(email)) {
+                    Toast.makeText(SignInActivity.this, "Please enter your email", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 if(!validate(email)){
-                    Toast.makeText(SignInActivity.this, "Invalid email format", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignInActivity.this, "Please enter a valid email format", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                
+                if(TextUtils.isEmpty(password)) {
+                    Toast.makeText(SignInActivity.this, "Please enter your password", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user != null) {
-                                        DocumentReference userRef = db.collection("Admin").document(user.getUid());
-                                        userRef.get().addOnCompleteListener(task1 -> {
-                                            if (task1.isSuccessful()) {
-                                                if (task1.getResult().exists()) {
-                                                    role = "Admin";
-                                                }
-                                                else{
-                                                    role = "User";
-                                                }
+                AtomicBoolean userExistInDb = new AtomicBoolean(false);
 
-                                                if (user.isEmailVerified()) {
-                                                    Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                                    if(role.equals("Admin")){
-                                                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                                                        startActivity(intent);
-                                                        finish();
-                                                    }
-                                                    else{
-                                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                        startActivity(intent);
-                                                        finish();
+
+                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                DocumentReference adminRef = db.collection("Admin").document(user.getUid());
+                                DocumentReference userRef = db.collection("Users").document(user.getUid());
+
+                                adminRef.get().addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        if (task1.getResult().exists()) {
+                                            role = "Admin";
+                                            proceedAfterLogin(user, role);
+                                        } else {
+                                            userRef.get().addOnCompleteListener(task2 -> {
+                                                if (task2.isSuccessful()) {
+                                                    if (task2.getResult().exists()) {
+                                                        role = "User";
+                                                        proceedAfterLogin(user, role);
+                                                    } else {
+                                                        // To Resolve Ghost user
+                                                        role = "User";
+                                                        Map<String, Object> userProfile = new HashMap<>();
+                                                        userProfile.put("name", "Please change again.");
+                                                        userProfile.put("email", user.getEmail());
+                                                        userProfile.put("uid", user.getUid());
+                                                        userProfile.put("profilepic", "desperate_dog.jpg");
+                                                        userProfile.put("createdAt", System.currentTimeMillis());
+
+                                                        db.collection("Users").document(user.getUid())
+                                                                .set(userProfile, SetOptions.merge())
+                                                                .addOnSuccessListener(aVoid -> proceedAfterLogin(user, role))
+                                                                .addOnFailureListener(e ->
+                                                                        Toast.makeText(SignInActivity.this, "Failed to create profile", Toast.LENGTH_SHORT).show()
+                                                                );
                                                     }
                                                 } else {
-                                                    Toast.makeText(SignInActivity.this, "Please verify your email first.", Toast.LENGTH_LONG).show();
-                                                    user.sendEmailVerification();
-                                                    mAuth.signOut();
+                                                    Log.e("Firestore", "Error checking Users collection", task2.getException());
                                                 }
-                                            }
-                                            else{
-                                                Toast.makeText(SignInActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                                            });
+                                        }
+                                    } else {
+                                        Toast.makeText(SignInActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        } else {
+                            CollectionReference adminRefExist = db.collection("Admin");
+                            CollectionReference userRefExist = db.collection("Users");
+
+                            Log.d("Debug", "Checking if user exists: " + email);
+
+                            adminRefExist.whereEqualTo("email", email).get().addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    if (!task1.getResult().isEmpty()) {
+                                        // Email found in Admin collection but password is wrong
+                                        Toast.makeText(SignInActivity.this, "Incorrect Password", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // If not found in Admin, check in Users
+                                        userRefExist.whereEqualTo("email", email).get().addOnCompleteListener(task2 -> {
+                                            if (task2.isSuccessful()) {
+                                                if (!task2.getResult().isEmpty()) {
+                                                    // Email found in Users collection but password is wrong
+                                                    Toast.makeText(SignInActivity.this, "Your password is incorrect", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    // Email not found in either collection
+                                                    Toast.makeText(SignInActivity.this, "Please register your email", Toast.LENGTH_SHORT).show();
+                                                }
+                                            } else {
+                                                Log.e("Firestore", "Error checking Users collection", task2.getException());
                                             }
                                         });
                                     }
                                 } else {
-                                    Toast.makeText(SignInActivity.this, "User not found", Toast.LENGTH_SHORT).show();
+                                    Log.e("Firestore", "Error checking Admin collection", task1.getException());
                                 }
-                            }
-                        });
+                            });
+                        }
+                    }
+                });
             }
         });
-
     }
-
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", Pattern.CASE_INSENSITIVE);
 
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
@@ -186,12 +236,12 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(android.content.DialogInterface dialog, int which) {
                 String email = emailInput.getText().toString().trim();
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(SignInActivity.this, "Please enter your email address", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignInActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (!validate(email)) {
-                    Toast.makeText(SignInActivity.this, "Invalid email format", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignInActivity.this, "Please enter a valid email format", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -202,7 +252,7 @@ public class SignInActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(SignInActivity.this,
-                                            "Password reset email sent! Check your inbox.",
+                                            "Password reset link has been sent to your email",
                                             Toast.LENGTH_LONG).show();
                                 } else {
                                     Toast.makeText(SignInActivity.this,
@@ -222,5 +272,22 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         builder.show();
+    }
+    private void proceedAfterLogin(FirebaseUser user, String role) {
+        if (user.isEmailVerified()) {
+            Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+            Intent intent;
+            if ("Admin".equals(role)) {
+                intent = new Intent(getApplicationContext(), AdminActivity.class);
+            } else {
+                intent = new Intent(getApplicationContext(), MainActivity.class);
+            }
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(SignInActivity.this, "Please verify your email first.", Toast.LENGTH_LONG).show();
+            user.sendEmailVerification();
+            mAuth.signOut();
+        }
     }
 }

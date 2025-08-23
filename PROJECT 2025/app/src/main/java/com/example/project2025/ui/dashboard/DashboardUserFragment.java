@@ -81,7 +81,7 @@ public class DashboardUserFragment extends Fragment {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(requireContext(), "Feeding time !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "Feeding time!", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } catch (IOException e) {
@@ -90,8 +90,8 @@ public class DashboardUserFragment extends Fragment {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(requireContext(), "Failed becauuse of : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.d("Manual Feed ERROR:", "Failed becauuse of : " + e.getMessage());
+                            Toast.makeText(requireContext(), "Failed because of : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("Manual Feed ERROR:", "Failed because of : " + e.getMessage());
                         }
                     });
                 }
