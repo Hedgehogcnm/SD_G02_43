@@ -84,16 +84,37 @@
     <!-- Default Profile Image Option -->
     <!-- Button to select the default sad_mouse profile image -->
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/change_image"
-        android:layout_width="230dp"
-        android:layout_height="201dp"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:src="@drawable/desperate_dog"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/change_image"
+            android:layout_width="230dp"
+            android:layout_height="201dp"
+            android:src="@drawable/desperate_dog"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="3dp"/>
+
+        <!-- Edit Icon -->
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/edit_pen"
+            android:scaleType="centerInside"
+            android:elevation="4dp"
+            android:layout_alignBottom="@id/change_image"
+            android:layout_alignEnd="@id/change_image"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            />
+
+    </RelativeLayout>
 
     <!-- Save Changes Button -->
     <!-- Commits the selected profile image to Firebase Firestore -->

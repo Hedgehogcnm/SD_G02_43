@@ -43,53 +43,40 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.io.File;
 
 /**
  * Activity for changing user profile images
- * 
- * Features:
- * - Displays 4 animal images in a 2x2 grid layout (sad_cat, happy_monkey, scared_cat, desperate_dog)
- * - Includes a "Use Default" option for sad_mouse
- * - Highlights currently selected image when opened
- * - Saves selected image to Firebase Firestore
- * - Provides visual feedback during selection and saving
- * 
- * Flow:
- * 1. User opens screen from Settings -> My Account -> Change Profile Image
- * 2. Current profile image is loaded and highlighted
- * 3. User selects a new image (visual feedback provided)
- * 4. User clicks Save to update Firebase
- * 5. Success message shown and returns to previous screen
  */
 public class Change_image extends AppCompatActivity {
 
     private static final String TAG = "Change_image";
-    
+
     // UI Elements
     private MaterialButton saveButton;
     // Return/back button
     private ImageView returnButton, change_image;
-    
+
     // Firebase components for authentication and database
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private FirebaseStorage storage;
     private StorageReference storageRef;
-    
+
     // Track which image is currently selected
     private String selectedImage = "sad_mouse.jpg"; // Default image filename
     private CardView selectedCard = null; // Reference to the currently selected card for highlighting
-    
+
     // Custom image handling
     private Uri customImageUri = null;
     private boolean isCustomImage = false;
     private String currentPhotoPath;
-    
+
     // Permission request codes
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
-    
+
     // Activity result launchers
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<Intent> galleryLauncher;
@@ -106,18 +93,16 @@ public class Change_image extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
-        
+
         // Initialize activity result launchers
         initializeActivityResultLaunchers();
 
-        // Set up the user interface components
-        /*initializeViews();*/ 
         // Set up click listeners for all interactive elements
         setupClickListeners();
         // Load and highlight the user's current profile image selection
         loadCurrentProfileImage();
     }
-    
+
     /**
      * Initialize activity result launchers for camera and gallery
      */
@@ -140,35 +125,47 @@ public class Change_image extends AppCompatActivity {
                         // Image was selected from gallery
                         Uri selectedImageUri = result.getData().getData();
                         if (selectedImageUri != null) {
-                            customImageUri = selectedImageUri;
-                            isCustomImage = true;
-                            
-                            // Display the selected image in the ImageView
-                            change_image.setImageURI(customImageUri);
-                            Toast.makeText(this, "Image selected successfully", Toast.LENGTH_SHORT).show();
+                            // Validate file type
+                            if (isValidImageType(selectedImageUri)) {
+                                customImageUri = selectedImageUri;
+                                isCustomImage = true;
+
+                                // Display the selected image in the ImageView
+                                change_image.setImageURI(customImageUri);
+                                Toast.makeText(this, "Image selected successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this, "Cannot accept this file type. Please select JPEG, PNG, or JPG only.", Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 });
     }
 
     /**
-     * Initialize all UI components by finding them in the layout
-     * This includes the 4 image selection cards, buttons, and return button
+     * Check if the selected image has a valid type (JPEG, PNG, or JPG)
      */
-    /*private void initializeViews() {
-        // Initialize the 4 animal image selection cards from the 2x2 grid
-        sadCatCard = findViewById(R.id.sadCatCard);
-        happyMonkeyCard = findViewById(R.id.happyMonkeyCard);
-        scaredCatCard = findViewById(R.id.scaredCatCard);
-        desperateDogCard = findViewById(R.id.desperateDogCard);
-        
-        // Initialize action buttons
-        defaultButton = findViewById(R.id.defaultButton); // "Use Default (Sad Mouse)" button
-        saveButton = findViewById(R.id.saveButton); // "Save" button to commit changes to Firebase
-        returnButton = findViewById(R.id.returnButton); // Back/return navigation button
-        cameraButton = findViewById(R.id.cameraButton); // Camera button for taking photos
-        galleryButton = findViewById(R.id.galleryButton); // Gallery button for selecting images
-    }*/
+    private boolean isValidImageType(Uri uri) {
+        try {
+            String mimeType = getContentResolver().getType(uri);
+            if (mimeType != null) {
+                return mimeType.equals("image/jpeg") ||
+                        mimeType.equals("image/png") ||
+                        mimeType.equals("image/jpg");
+            }
+
+            // If we can't get MIME type, check file extension
+            String path = uri.getPath();
+            if (path != null) {
+                String extension = path.substring(path.lastIndexOf(".") + 1).toLowerCase();
+                return extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png");
+            }
+
+            return false;
+        } catch (Exception e) {
+            Log.e(TAG, "Error checking image type", e);
+            return false;
+        }
+    }
 
     /**
      * Set up click listeners for all interactive UI elements
@@ -178,10 +175,10 @@ public class Change_image extends AppCompatActivity {
         returnButton = findViewById(R.id.returnButton);
         saveButton = findViewById(R.id.saveButton);
         change_image = findViewById(R.id.change_image);
-        
+
         // Return button - closes this activity and goes back to previous screen
         returnButton.setOnClickListener(v -> finish());
-        
+
         // Change image click listener - opens gallery to select an image
         change_image.setOnClickListener(v -> {
             if (checkStoragePermission()) {
@@ -193,8 +190,6 @@ public class Change_image extends AppCompatActivity {
         // Save button - commits the selected image to Firebase Firestore
         saveButton.setOnClickListener(v -> saveProfileImage());
     }
-
-    // These methods are no longer needed with the new UI layout
 
     /**
      * Load the user's current profile image from Firebase and display it in the UI
@@ -215,7 +210,7 @@ public class Change_image extends AppCompatActivity {
                 if (currentProfilePic != null && !currentProfilePic.isEmpty()) {
                     // Update local state and display the current image
                     selectedImage = currentProfilePic;
-                    
+
                     // Display the current profile image
                     ProfileImageHelper.loadProfileImage(this, change_image, currentProfilePic);
                 } else {
@@ -228,7 +223,7 @@ public class Change_image extends AppCompatActivity {
         });
     }
 
-        /**
+    /**
      * Check if camera permission is granted
      */
     private boolean checkCameraPermission() {
@@ -275,6 +270,17 @@ public class Change_image extends AppCompatActivity {
                 Toast.makeText(this, "Storage permission denied", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    /**
+     * Open gallery to select an image
+     */
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        galleryLauncher.launch(intent);
     }
 
     /**
@@ -332,16 +338,15 @@ public class Change_image extends AppCompatActivity {
             File f = new File(currentPhotoPath);
             customImageUri = Uri.fromFile(f);
             isCustomImage = true;
-            // Display the captured image in the ImageView
-            
+
             // Show a preview of the captured image
             try {
                 Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
                 change_image.setImageBitmap(bitmap); // Display the captured image
-                
+
                 // Optionally, add the photo to the gallery
                 galleryAddPic();
-                
+
                 Toast.makeText(this, "Photo captured successfully", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Log.e(TAG, "Error processing camera image", e);
@@ -349,7 +354,7 @@ public class Change_image extends AppCompatActivity {
             }
         }
     }
-    
+
     /**
      * Add the photo to the gallery
      */
@@ -359,14 +364,6 @@ public class Change_image extends AppCompatActivity {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
-    }
-
-    /**
-     * Open gallery to select an image
-     */
-    private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        galleryLauncher.launch(intent);
     }
 
     /**
@@ -393,9 +390,6 @@ public class Change_image extends AppCompatActivity {
             saveButton.setText("Save");
         }
     }
-    
-    // The uploadImageToStorage method is defined below
-     // It handles uploading the image to Firebase Storage and updating the user's profile
 
     /**
      * Upload custom image to Firebase Storage
