@@ -96,8 +96,8 @@ public class SignInActivity extends AppCompatActivity {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
-                if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(SignInActivity.this, "Please fill in all fields", Toast.LENGTH_LONG).show();
+                if(TextUtils.isEmpty(email) && TextUtils.isEmpty(password)) {
+                    Toast.makeText(SignInActivity.this, "Please fill in all the fields", Toast.LENGTH_LONG).show();
                     return;
                 }
 

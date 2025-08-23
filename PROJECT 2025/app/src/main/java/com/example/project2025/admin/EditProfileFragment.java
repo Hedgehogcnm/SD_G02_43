@@ -89,7 +89,7 @@ public class EditProfileFragment extends Fragment {
                     // Load and display the admin user's selected profile image
                     // This retrieves the profilepic field from Firebase and displays the corresponding drawable
                     String profilePic = document.getString("profilepic");
-                    ImageView profileImageView = getView().findViewById(R.id.imageView6);
+                    ImageView profileImageView = getView().findViewById(R.id.change_image);
                     ProfileImageHelper.loadProfileImage(getContext(), profileImageView, profilePic);
                 }
                 else {

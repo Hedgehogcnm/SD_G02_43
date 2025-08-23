@@ -75,7 +75,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 // Reauth the user
                 AuthCredential credential = EmailAuthProvider.getCredential(currentUser.getEmail(), oldPassword.getText().toString());
                 currentUser.reauthenticate(credential).addOnCompleteListener(taskAuth -> {
-                    if(taskAuth.isSuccessful()){
+                    if(taskAuth.isSuccessful())
+                    {
                         Log.d("Reauth User: ", "Re-authentication successful");
 
                         if(newPasswordText.equals(confirmPasswordText)){
@@ -96,9 +97,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         else{
                             Toast.makeText(getApplicationContext() ,"Password doesn't match", Toast.LENGTH_SHORT).show();                        }
                     }
+
                     else{
                         Toast.makeText(getApplicationContext() ,"Wrong old password", Toast.LENGTH_SHORT).show();
-                        Log.d("Reauth User: ", "Re-authentication Fail");
+                        Log.d("Authentication  User: ", "Re-authentication Fail");
                     }
                 });
             }
@@ -106,5 +108,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext() ,"Please login first", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
+
+
     }
 }
