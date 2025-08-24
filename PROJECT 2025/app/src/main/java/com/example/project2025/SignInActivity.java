@@ -61,7 +61,11 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Auto-redirect removed - users must manually log in each time
+        // Auto login user if current user is not null.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            proceedAfterLogin(currentUser, role);
+        }
         // This prevents immediate redirect to MainActivity when opening the app
     }
 
