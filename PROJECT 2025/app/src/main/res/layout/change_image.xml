@@ -61,8 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="292dp"
         android:text="*click profile photo to change"
-        android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +95,7 @@
             android:id="@+id/change_image"
             android:layout_width="230dp"
             android:layout_height="201dp"
-            android:src="@drawable/desperate_dog"
+            android:src="@drawable/logo"
             app:civ_border_color="@color/black"
             app:civ_border_width="3dp"/>
 
