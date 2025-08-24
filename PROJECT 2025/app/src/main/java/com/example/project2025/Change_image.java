@@ -414,7 +414,7 @@ public class Change_image extends AppCompatActivity {
                     userRef.update("profilepic", imageUrl, "isCustomImage", true)
                             .addOnSuccessListener(aVoid -> {
                                 Log.d(TAG, "Custom profile image updated successfully");
-                                Toast.makeText(this, "Profile image updated!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Update Successfully!", Toast.LENGTH_SHORT).show();
                                 finish();
                             })
                             .addOnFailureListener(e -> {

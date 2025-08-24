@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -180,14 +181,14 @@ public class SignInActivity extends AppCompatActivity {
                                 if (task1.isSuccessful()) {
                                     if (!task1.getResult().isEmpty()) {
                                         // Email found in Admin collection but password is wrong
-                                        Toast.makeText(SignInActivity.this, "Incorrect Password", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignInActivity.this, "Please enter a correct password", Toast.LENGTH_SHORT).show();
                                     } else {
                                         // If not found in Admin, check in Users
                                         userRefExist.whereEqualTo("email", email).get().addOnCompleteListener(task2 -> {
                                             if (task2.isSuccessful()) {
                                                 if (!task2.getResult().isEmpty()) {
                                                     // Email found in Users collection but password is wrong
-                                                    Toast.makeText(SignInActivity.this, "Your password is incorrect", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(SignInActivity.this, "Please enter a correct password", Toast.LENGTH_SHORT).show();
                                                 } else {
                                                     // Email not found in either collection
                                                     Toast.makeText(SignInActivity.this, "Please register your email", Toast.LENGTH_SHORT).show();
@@ -207,7 +208,6 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
     }
-
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.matches();
@@ -235,6 +235,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(android.content.DialogInterface dialog, int which) {
                 String email = emailInput.getText().toString().trim();
+
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(SignInActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
                     return;
@@ -245,24 +246,37 @@ public class SignInActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Send password reset email
-                mAuth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(SignInActivity.this,
-                                            "Password reset link has been sent to your email",
-                                            Toast.LENGTH_LONG).show();
+                CollectionReference adminRefExist = db.collection("Admin");
+                CollectionReference userRefExist = db.collection("Users");
+
+                Log.d("Debug", "Checking if user exists: " + email);
+
+                adminRefExist.whereEqualTo("email", email).get().addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        if (!task1.getResult().isEmpty()) {
+                            sendForgotPasswordEmail(email);
+                        } else {
+                            // If not found in Admin, check in Users
+                            userRefExist.whereEqualTo("email", email).get().addOnCompleteListener(task2 -> {
+                                if (task2.isSuccessful()) {
+                                    if (!task2.getResult().isEmpty()) {
+                                        sendForgotPasswordEmail(email);
+                                    } else {
+                                        // Email not found in either collection
+                                        Toast.makeText(SignInActivity.this, "Please enter a registered email", Toast.LENGTH_SHORT).show();
+                                    }
                                 } else {
-                                    Toast.makeText(SignInActivity.this,
-                                            "Failed to send reset email. Please check your email address.",
-                                            Toast.LENGTH_LONG).show();
+                                    Log.e("Firestore", "Error checking Users collection", task2.getException());
                                 }
-                            }
-                        });
+                            });
+                        }
+                    } else {
+                        Log.e("Firestore", "Error checking Admin collection", task1.getException());
+                    }
+                });
             }
         });
+
 
         builder.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {
             @Override
@@ -272,6 +286,20 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         builder.show();
+    }
+
+    private void sendForgotPasswordEmail(String email) {
+        // Send password reset email
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(SignInActivity.this, "Password reset link has been sent to your email", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SignInActivity.this, "Failed to send reset email. Please check your email address.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
     private void proceedAfterLogin(FirebaseUser user, String role) {
         if (user.isEmailVerified()) {

@@ -125,9 +125,10 @@ public class ChangeUsernameActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         String name = document.getString("name");
+                        Log.d("Account menu: ", "Set currentName to: " + name);
                         currentName.setText(name);
                     } else {
-                        Log.d("Account menu: ", "No such document");
+                        Log.d("Account menu: ", "No such document " + currentUser.getEmail());
                     }
                 } else {
                     Log.d("Account menu: ", "Error getting current user's name", task.getException());

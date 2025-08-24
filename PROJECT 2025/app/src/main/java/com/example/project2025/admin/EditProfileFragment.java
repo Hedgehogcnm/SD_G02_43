@@ -2,7 +2,6 @@ package com.example.project2025.admin;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import com.example.project2025.R;
 import com.example.project2025.EditProfile;
 import com.example.project2025.SignInActivity;
-import com.example.project2025.shared.SettingProfile;
 import com.example.project2025.ProfileImageHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
