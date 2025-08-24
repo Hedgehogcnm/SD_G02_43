@@ -20,7 +20,6 @@ import com.example.project2025.EditProfile;
 import com.example.project2025.SignInActivity;
 import com.example.project2025.databinding.AccountFragmentBinding;
 import com.example.project2025.shared.AccountViewModel;
-import com.example.project2025.shared.SettingProfile;
 import com.example.project2025.ProfileImageHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
