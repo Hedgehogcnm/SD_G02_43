@@ -93,7 +93,7 @@
                     android:id="@+id/profile_picture"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/desperate_dog" />
+                    android:src="@drawable/logo" />
 
                 <ImageView
                     android:layout_width="16dp"
