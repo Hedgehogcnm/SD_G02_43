@@ -42,9 +42,15 @@ def get_distance():
 if __name__ == '__main__':
     try:
         while True:
-            dist = get_distance()
-            print("Measured Distance = {:.2f} cm".format(dist))
-            time.sleep(1)
+            for i in range(5):
+                dist = get_distance()
+                print("Measured Distance = {:.2f} cm".format(dist))
+                time.sleep(1)
+                if(dist < 12):
+                    print("Sufficient Food")
+                else:
+                    print("Insufficient Food")
+                time.sleep(1)
 
     # Reset by pressing CTRL + C
     except KeyboardInterrupt:
