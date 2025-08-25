@@ -10,6 +10,7 @@ package com.example.project2025;
  *   only if user.isEmailVerified() returns true. If not verified, resend verification and sign out.
  */
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -237,20 +238,34 @@ public class SignInActivity extends AppCompatActivity {
         layout.addView(emailInput);
 
         builder.setView(layout);
-
-        builder.setPositiveButton("Reset", new android.content.DialogInterface.OnClickListener() {
+        
+        // Set positive and negative buttons
+        builder.setPositiveButton("Reset", null);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(android.content.DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        
+        // Create and show the dialog
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        
+        // Override the positive button click behavior after dialog is shown
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 String email = emailInput.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(SignInActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
-                    return;
+                    return; // Don't dismiss dialog
                 }
 
                 if (!validate(email)) {
                     Toast.makeText(SignInActivity.this, "Please enter a valid email format", Toast.LENGTH_SHORT).show();
-                    return;
+                    return; // Don't dismiss dialog
                 }
 
                 CollectionReference adminRefExist = db.collection("Admin");
@@ -262,37 +277,32 @@ public class SignInActivity extends AppCompatActivity {
                     if (task1.isSuccessful()) {
                         if (!task1.getResult().isEmpty()) {
                             sendForgotPasswordEmail(email);
+                            dialog.dismiss(); // Only dismiss dialog on success
                         } else {
                             // If not found in Admin, check in Users
                             userRefExist.whereEqualTo("email", email).get().addOnCompleteListener(task2 -> {
                                 if (task2.isSuccessful()) {
                                     if (!task2.getResult().isEmpty()) {
                                         sendForgotPasswordEmail(email);
+                                        dialog.dismiss(); // Only dismiss dialog on success
                                     } else {
                                         // Email not found in either collection
                                         Toast.makeText(SignInActivity.this, "Please enter a registered email", Toast.LENGTH_SHORT).show();
+                                        // Don't dismiss dialog
                                     }
                                 } else {
                                     Log.e("Firestore", "Error checking Users collection", task2.getException());
+                                    // Don't dismiss dialog on error
                                 }
                             });
                         }
                     } else {
                         Log.e("Firestore", "Error checking Admin collection", task1.getException());
+                        // Don't dismiss dialog on error
                     }
                 });
             }
         });
-
-
-        builder.setNegativeButton("Cancel", new android.content.DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(android.content.DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        builder.show();
     }
 
     private void sendForgotPasswordEmail(String email) {
