@@ -11,6 +11,7 @@ package com.example.project2025;
  */
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -61,6 +62,8 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        SharedPreferences sharedPreferences = getSharedPreferences("ROLE", MODE_PRIVATE);
+        role = sharedPreferences.getString("Role", null);
         // Auto login user if current user is not null.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
