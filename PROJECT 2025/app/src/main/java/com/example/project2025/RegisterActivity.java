@@ -91,12 +91,13 @@ public class RegisterActivity extends AppCompatActivity {
         verifiedContinueButton = findViewById(R.id.verifiedContinueButton);
         resendVerificationButton = findViewById(R.id.resendVerificationButton);
         loginTextView = findViewById(R.id.loginTextView);
+
+        resendVerificationButton.setVisibility(View.GONE);
+        verifiedContinueButton.setVisibility(View.GONE);
     }
 
     protected void onStart(){
         super.onStart();
-        resendVerificationButton.setVisibility(View.GONE);
-        verifiedContinueButton.setVisibility(View.GONE);
 
         // Navigate to the login screen when the user taps the Login text
         loginTextView.setOnClickListener(new View.OnClickListener() {

@@ -14,7 +14,7 @@
         android:id="@+id/resendVerificationButton"
         android:layout_width="140dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="38dp"
         android:text="RESEND"
         android:textColor="#FFFFFF"
         app:backgroundTint="#575757"
@@ -40,15 +40,17 @@
         android:id="@+id/verifiedContinueButton"
         android:layout_width="140dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="56dp"
+        android:layout_marginStart="38dp"
         android:text="I've verified"
         android:textColor="#FFFFFF"
         app:backgroundTint="#575757"
         app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/resendVerificationButton"
-        app:layout_constraintHorizontal_bias="0.923"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerButton" />
+        app:layout_constraintTop_toBottomOf="@+id/registerButton"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameInputLayout"
