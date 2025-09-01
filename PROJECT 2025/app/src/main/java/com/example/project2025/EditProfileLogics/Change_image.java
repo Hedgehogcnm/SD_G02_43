@@ -1,4 +1,4 @@
-package com.example.project2025;
+package com.example.project2025.EditProfileLogics;
 
 import android.Manifest;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -25,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.project2025.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -265,9 +265,8 @@ public class Change_image extends AppCompatActivity {
 
     private void uploadImageToStorage() {
         try {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-            String imageName = "profile_" + currentUser.getUid() + "_" + timeStamp + ".jpg";
-            StorageReference imageRef = storageRef.child("profile_images/" + imageName);
+            String imageName = "profile_" + currentUser.getUid() + ".jpg";
+            StorageReference imageRef = storageRef.child("profile_images/" + currentUser.getUid() + "/" + imageName);
 
             SharedPreferences sharedPreferences = getSharedPreferences("ROLE", MODE_PRIVATE);
             String role = sharedPreferences.getString("Role", "Users");

@@ -1,4 +1,4 @@
-package com.example.project2025;
+package com.example.project2025.SignIn_Login_Onboarding;
 
 /**
  * Login screen for existing users. Enforces that only email-verified accounts
@@ -31,22 +31,21 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.project2025.admin.AdminActivity;
+import com.example.project2025.R;
+import com.example.project2025.Specific_Admin.AdminActivity;
+import com.example.project2025.Specific_User.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

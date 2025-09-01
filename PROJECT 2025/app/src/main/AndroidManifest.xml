@@ -22,13 +22,13 @@
         android:theme="@style/Theme.KaiFeedCat.NoActionBar">
 
         <activity
-            android:name=".EditProfile"
+            android:name=".Specific_User.EditProfile"
             android:exported="false" />
         <activity
-            android:name=".Change_image"
+            android:name=".EditProfileLogics.Change_image"
             android:exported="false" />
         <activity
-            android:name=".Onboarding"
+            android:name=".SignIn_Login_Onboarding.Onboarding"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,23 +37,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".shared.ChangePasswordActivity"
+            android:name=".EditProfileLogics.ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".shared.ChangeUsernameActivity"
+            android:name=".EditProfileLogics.ChangeUsernameActivity"
             android:exported="false" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".SignIn_Login_Onboarding.SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".SignIn_Login_Onboarding.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Specific_User.MainActivity"
             android:exported="false"
             android:label="@string/app_name" />
         <activity
-            android:name=".admin.AdminActivity"
+            android:name=".Specific_Admin.AdminActivity"
             android:exported="false" />
     </application>
 

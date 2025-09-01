@@ -1,19 +1,15 @@
-package com.example.project2025.admin;
+package com.example.project2025.Specific_Admin;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.project2025.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.zip.Inflater;
 
 /**
  * AdminActivity - Main admin interface for the application

@@ -1,4 +1,4 @@
-package com.example.project2025;
+package com.example.project2025.SignIn_Login_Onboarding;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +12,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.project2025.admin.AdminActivity;
+import com.example.project2025.R;
+import com.example.project2025.Specific_Admin.AdminActivity;
+import com.example.project2025.Specific_User.MainActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

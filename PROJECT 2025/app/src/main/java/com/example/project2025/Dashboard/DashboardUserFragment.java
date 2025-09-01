@@ -1,4 +1,4 @@
-package com.example.project2025.ui.dashboard;
+package com.example.project2025.Dashboard;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 

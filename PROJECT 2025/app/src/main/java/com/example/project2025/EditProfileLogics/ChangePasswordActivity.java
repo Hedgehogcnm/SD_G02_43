@@ -1,4 +1,4 @@
-package com.example.project2025.shared;
+package com.example.project2025.EditProfileLogics;
 
 import android.os.Bundle;
 import android.util.Log;

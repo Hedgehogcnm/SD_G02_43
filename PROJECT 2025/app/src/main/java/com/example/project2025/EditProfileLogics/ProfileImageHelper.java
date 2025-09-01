@@ -1,4 +1,4 @@
-package com.example.project2025;
+package com.example.project2025.EditProfileLogics;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.project2025.R;
 
 /**
  * Utility class to help load and display profile images

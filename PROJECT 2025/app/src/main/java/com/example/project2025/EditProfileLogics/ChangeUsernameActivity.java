@@ -1,4 +1,4 @@
-package com.example.project2025.shared;
+package com.example.project2025.EditProfileLogics;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.project2025.R;
-import com.example.project2025.SignInActivity;
+import com.example.project2025.SignIn_Login_Onboarding.SignInActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

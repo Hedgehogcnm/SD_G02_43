@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".SignIn_Login_Onboarding.RegisterActivity">
 
     <!-- Use MaterialButton instead of regular Button -->
     <!-- Use TextInputLayout to wrap EditText to get Material Design features -->

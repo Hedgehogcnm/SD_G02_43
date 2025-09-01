@@ -1,4 +1,4 @@
-package com.example.project2025;
+package com.example.project2025.SignIn_Login_Onboarding;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,8 +16,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.project2025.R;
+import com.example.project2025.Specific_User.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

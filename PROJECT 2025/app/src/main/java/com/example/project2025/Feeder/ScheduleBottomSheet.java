@@ -1,4 +1,4 @@
-package com.example.project2025.ui.feeder;
+package com.example.project2025.Feeder;
 
 import android.graphics.Color;
 import android.graphics.Typeface;

@@ -1,10 +1,9 @@
-package com.example.project2025;
+package com.example.project2025.Specific_User;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,8 +14,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.project2025.shared.ChangePasswordActivity;
-import com.example.project2025.shared.ChangeUsernameActivity;
+import com.example.project2025.EditProfileLogics.Change_image;
+import com.example.project2025.EditProfileLogics.ProfileImageHelper;
+import com.example.project2025.R;
+import com.example.project2025.SignIn_Login_Onboarding.SignInActivity;
+import com.example.project2025.EditProfileLogics.ChangePasswordActivity;
+import com.example.project2025.EditProfileLogics.ChangeUsernameActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;

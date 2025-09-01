@@ -1,4 +1,4 @@
-package com.example.project2025.admin;
+package com.example.project2025.Dashboard;
 
 import android.os.Bundle;
 import android.util.Log;

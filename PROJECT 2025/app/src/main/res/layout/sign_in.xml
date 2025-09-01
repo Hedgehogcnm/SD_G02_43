@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".SignInActivity">
+    tools:context=".SignIn_Login_Onboarding.SignInActivity">
 
     <!-- Use TextInputLayout to wrap EditText to get Material Design features -->
     <com.google.android.material.textfield.TextInputLayout

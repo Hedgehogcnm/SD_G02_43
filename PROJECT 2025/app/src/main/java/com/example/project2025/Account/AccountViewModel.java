@@ -1,16 +1,16 @@
-package com.example.project2025.ui.dashboard;
+package com.example.project2025.Account;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardUserViewModel extends ViewModel {
+public class AccountViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public DashboardUserViewModel() {
+    public AccountViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is Dashboard fragment");
+        mText.setValue("This is account Menu fragment");
     }
 
     public LiveData<String> getText() {
