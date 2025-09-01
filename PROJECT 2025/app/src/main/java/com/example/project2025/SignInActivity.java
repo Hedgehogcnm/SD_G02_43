@@ -128,86 +128,20 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(SignInActivity.this, "Please enter your password", Toast.LENGTH_LONG).show();
                     return;
                 }
-
-                AtomicBoolean userExistInDb = new AtomicBoolean(false);
-
-
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
-                                DocumentReference adminRef = db.collection("Admin").document(user.getUid());
-                                DocumentReference userRef = db.collection("Users").document(user.getUid());
-
-                                adminRef.get().addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        if (task1.getResult().exists()) {
-                                            role = "Admin";
-                                            proceedAfterLogin(user, role);
-                                        } else {
-                                            userRef.get().addOnCompleteListener(task2 -> {
-                                                if (task2.isSuccessful()) {
-                                                    if (task2.getResult().exists()) {
-                                                        role = "User";
-                                                        proceedAfterLogin(user, role);
-                                                    } else {
-                                                        // To Resolve Ghost user
-                                                        role = "User";
-                                                        Map<String, Object> userProfile = new HashMap<>();
-                                                        userProfile.put("name", "Please change again.");
-                                                        userProfile.put("email", user.getEmail());
-                                                        userProfile.put("uid", user.getUid());
-                                                        userProfile.put("profilepic", "desperate_dog.jpg");
-                                                        userProfile.put("createdAt", System.currentTimeMillis());
-
-                                                        db.collection("Users").document(user.getUid())
-                                                                .set(userProfile, SetOptions.merge())
-                                                                .addOnSuccessListener(aVoid -> proceedAfterLogin(user, role))
-                                                                .addOnFailureListener(e ->
-                                                                        Toast.makeText(SignInActivity.this, "Failed to create profile", Toast.LENGTH_SHORT).show()
-                                                                );
-                                                    }
-                                                } else {
-                                                    Log.e("Firestore", "Error checking Users collection", task2.getException());
-                                                }
-                                            });
-                                        }
-                                    } else {
-                                        Toast.makeText(SignInActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                                fetchUserRole(user);
                             }
                         } else {
-                            CollectionReference adminRefExist = db.collection("Admin");
-                            CollectionReference userRefExist = db.collection("Users");
-
-                            Log.d("Debug", "Checking if user exists: " + email);
-
-                            adminRefExist.whereEqualTo("email", email).get().addOnCompleteListener(task1 -> {
-                                if (task1.isSuccessful()) {
-                                    if (!task1.getResult().isEmpty()) {
-                                        // Email found in Admin collection but password is wrong
-                                        Toast.makeText(SignInActivity.this, "Please enter a correct password", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        // If not found in Admin, check in Users
-                                        userRefExist.whereEqualTo("email", email).get().addOnCompleteListener(task2 -> {
-                                            if (task2.isSuccessful()) {
-                                                if (!task2.getResult().isEmpty()) {
-                                                    // Email found in Users collection but password is wrong
-                                                    Toast.makeText(SignInActivity.this, "Please enter a correct password", Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    // Email not found in either collection
-                                                    Toast.makeText(SignInActivity.this, "Please register your email", Toast.LENGTH_SHORT).show();
-                                                }
-                                            } else {
-                                                Log.e("Firestore", "Error checking Users collection", task2.getException());
-                                            }
-                                        });
-                                    }
+                            checkUserExistWithEmail(email, exists -> {
+                                if (exists) {
+                                    Toast.makeText(SignInActivity.this, "Please enter a correct password", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Log.e("Firestore", "Error checking Admin collection", task1.getException());
+                                    Toast.makeText(SignInActivity.this, "Please register your email", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -268,37 +202,12 @@ public class SignInActivity extends AppCompatActivity {
                     return; // Don't dismiss dialog
                 }
 
-                CollectionReference adminRefExist = db.collection("Admin");
-                CollectionReference userRefExist = db.collection("Users");
-
-                Log.d("Debug", "Checking if user exists: " + email);
-
-                adminRefExist.whereEqualTo("email", email).get().addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful()) {
-                        if (!task1.getResult().isEmpty()) {
-                            sendForgotPasswordEmail(email);
-                            dialog.dismiss(); // Only dismiss dialog on success
-                        } else {
-                            // If not found in Admin, check in Users
-                            userRefExist.whereEqualTo("email", email).get().addOnCompleteListener(task2 -> {
-                                if (task2.isSuccessful()) {
-                                    if (!task2.getResult().isEmpty()) {
-                                        sendForgotPasswordEmail(email);
-                                        dialog.dismiss(); // Only dismiss dialog on success
-                                    } else {
-                                        // Email not found in either collection
-                                        Toast.makeText(SignInActivity.this, "Please enter a registered email", Toast.LENGTH_SHORT).show();
-                                        // Don't dismiss dialog
-                                    }
-                                } else {
-                                    Log.e("Firestore", "Error checking Users collection", task2.getException());
-                                    // Don't dismiss dialog on error
-                                }
-                            });
-                        }
+                checkUserExistWithEmail(email, exists -> {
+                    if (exists) {
+                        sendForgotPasswordEmail(email);
+                        dialog.dismiss();
                     } else {
-                        Log.e("Firestore", "Error checking Admin collection", task1.getException());
-                        // Don't dismiss dialog on error
+                        Toast.makeText(SignInActivity.this, "Please enter a registered email", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -334,5 +243,66 @@ public class SignInActivity extends AppCompatActivity {
             user.sendEmailVerification();
             mAuth.signOut();
         }
+    }
+
+
+    private void checkUserExistWithEmail(String email, OnUserExistListener listener) {
+        CollectionReference adminRef = db.collection("Admin");
+        CollectionReference userRef = db.collection("Users");
+
+        adminRef.whereEqualTo("email", email).get().addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful() && !task1.getResult().isEmpty()) {
+                listener.onResult(true);
+            } else {
+                userRef.whereEqualTo("email", email).get().addOnCompleteListener(task2 -> {
+                    if (task2.isSuccessful() && !task2.getResult().isEmpty()) {
+                        listener.onResult(true);
+                    } else {
+                        listener.onResult(false); // not found
+                    }
+                });
+            }
+        });
+    }
+
+    interface OnUserExistListener {
+        void onResult(boolean exists);
+    }
+
+    private void fetchUserRole(FirebaseUser user) {
+        String uid = user.getUid();
+        DocumentReference adminRef = db.collection("Admin").document(uid);
+        DocumentReference userRef = db.collection("Users").document(uid);
+
+        adminRef.get().addOnSuccessListener(snapshot -> {
+            if (snapshot.exists()) {
+                proceedAfterLogin(user, "Admin");
+            } else {
+                userRef.get().addOnSuccessListener(userSnap -> {
+                    if (userSnap.exists()) {
+                        proceedAfterLogin(user, "User");
+                    } else {
+                        createGhostUser(user); // handles ghost user case
+                    }
+                }).addOnFailureListener(e -> Log.e("Firestore", "Error checking Users", e));
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(SignInActivity.this, "Failed to check role", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void createGhostUser(FirebaseUser user) {
+        Map<String, Object> userProfile = new HashMap<>();
+        userProfile.put("name", "Please change again.");
+        userProfile.put("email", user.getEmail());
+        userProfile.put("uid", user.getUid());
+        userProfile.put("profilepic", "desperate_dog.jpg");
+        userProfile.put("createdAt", System.currentTimeMillis());
+
+        db.collection("Users").document(user.getUid()).set(userProfile, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> proceedAfterLogin(user, "User"))
+                .addOnFailureListener(e ->
+                        Toast.makeText(SignInActivity.this, "Failed to create profile", Toast.LENGTH_SHORT).show()
+                );
     }
 }
