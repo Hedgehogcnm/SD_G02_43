@@ -105,13 +105,17 @@ public class Change_image extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Uri selectedImageUri = result.getData().getData();
                         if (selectedImageUri != null) {
-                            customImageUri = selectedImageUri;
-                            isCustomImage = true;
-                            change_image.setImageURI(customImageUri);
-                            Toast.makeText(this, "Image selected successfully", Toast.LENGTH_SHORT).show();
+                            if (isValidImageType(selectedImageUri)) {
+                                customImageUri = selectedImageUri;
+                                isCustomImage = true;
+                                change_image.setImageURI(customImageUri);
+                                Toast.makeText(this, "Image selected successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this, "Please upload a picture in a valid format (jpg, jpeg, or png)", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
-                });
+                }); 
     }
 
     private void setupClickListeners() {
@@ -206,6 +210,28 @@ public class Change_image extends AppCompatActivity {
         galleryLauncher.launch(intent);
     }
 
+
+    private boolean isValidImageType(Uri uri) {
+        String mimeType = getContentResolver().getType(uri);
+        if (mimeType != null) {
+            return mimeType.equals("image/jpeg") ||
+                    mimeType.equals("image/png");
+        }
+
+        // If MIME type is null, check file extension
+        String path = uri.getPath();
+        if (path != null) {
+            // Extract just the extension part
+            int lastDotIndex = path.lastIndexOf('.');
+            if (lastDotIndex >= 0) {
+                String extension = path.substring(lastDotIndex + 1).toLowerCase();
+                return extension.equals("jpg") ||
+                        extension.equals("jpeg") ||
+                        extension.equals("png");
+            }
+        }
+        return false;
+    }
     private void openCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
