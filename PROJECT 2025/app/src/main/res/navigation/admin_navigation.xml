@@ -12,6 +12,12 @@
         tools:layout="@layout/dashboard_fragment_admin"/>
 
     <fragment
+        android:id="@+id/nav_homepage_admin"
+        android:name="com.example.project2025.UserListFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/user_list"/>
+
+    <fragment
         android:id="@+id/nav_account_fragment"
         android:name="com.example.project2025.Specific_Admin.EditProfileFragment"
         android:label="Edit Profile"

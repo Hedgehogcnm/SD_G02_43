@@ -1,5 +1,6 @@
 package com.example.project2025.Dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,9 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.project2025.R;
+import com.example.project2025.UserListFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.AggregateQuery;
@@ -33,6 +36,7 @@ import java.net.Socket;
  */
 public class DashboardAdminFragment extends Fragment {
 
+    CardView tempUserListButton;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     TextView userCount;
     EditText ip_address ;
@@ -48,6 +52,15 @@ public class DashboardAdminFragment extends Fragment {
         ip_address = root.findViewById(R.id.ip_address);
         manualFeed = root.findViewById(R.id.manual_feed);
         userCount = root.findViewById(R.id.user_count);
+        tempUserListButton = root.findViewById(R.id.temp_user_list);
+
+        tempUserListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UserListFragment.class);
+                startActivity(intent);
+            }
+        });
         return root;
     }
 
