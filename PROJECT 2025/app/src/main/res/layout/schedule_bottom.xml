@@ -8,7 +8,7 @@
     <!-- cancel, set title, save -->
     <TextView
         android:id="@+id/setTitle"
-        android:text="Set Title"
+        android:text="Schedule Title"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_width="wrap_content"
@@ -17,7 +17,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackground"/>
 
     <TextView
         android:id="@+id/cancel"

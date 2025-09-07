@@ -33,7 +33,7 @@ public class DashboardUserFragment extends Fragment {
     private DashboardFragmentUserBinding binding;
     private LinearLayout feedButton;
     private WebView liveCam;
-    private static final String PI_IP = "192.168.180.159";
+    private static final String PI_IP = "192.168.180.158";
     private static final int FEED_PORT = 12345;
     private static final int HTTP_PORT = 8889;
     private static final String LIVE_FOLDER = "/cam1";
