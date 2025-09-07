@@ -10,6 +10,7 @@
         tools:ignore="SelectedPhotoAccess" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -61,6 +62,10 @@
         <activity
             android:name=".Specific_Admin.AdminActivity"
             android:exported="false" />
+        <receiver
+            android:name=".Feeder.FeedingAlarmReceiver"
+            android:exported="false" />
     </application>
 
 </manifest>
+

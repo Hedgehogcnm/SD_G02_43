@@ -2,10 +2,6 @@ package com.example.project2025.Models;
 
 public class UserList {
     private String username, email, UID;
-
-    public UserList() {
-
-    }
     public UserList(String username, String email, String UID) {
         this.username = username;
         this.email = email;

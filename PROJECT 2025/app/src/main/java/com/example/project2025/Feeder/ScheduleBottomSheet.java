@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.project2025.Models.ScheduleData;
 import com.example.project2025.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -20,6 +22,15 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
     private TextView[] dayViews;
     private TextView[] levelViews;
     private View foodBar;
+    private TimePicker timePicker;
+    private TextView setTitleTextView;
+    private int selectedFeedLevel = 1;
+
+    public interface ScheduleDataListener {
+        void onScheduleDataReceived(ScheduleData scheduleData);
+    }
+
+    private ScheduleDataListener listener;
 
     @Nullable
     @Override
@@ -29,6 +40,10 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.schedule_bottom, container, false);
 
         Toast.makeText(getContext(), "Bottom Sheet Opened", Toast.LENGTH_SHORT).show();
+
+        timePicker = view.findViewById(R.id.timePicker);
+        setTitleTextView = view.findViewById(R.id.setTitle);
+        try { timePicker.setIs24HourView(false); } catch (Throwable ignored) {}
 
         // ==== initialize dayViews ====
         dayViews = new TextView[]{
@@ -75,6 +90,7 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
             levelViews[i].setOnClickListener(v -> {
                 for (TextView lv : levelViews) lv.setSelected(false);
                 levelViews[index].setSelected(true);
+                selectedFeedLevel = index + 1;
 
                 foodBar.post(() -> {
                     int fullHeight = ((View) foodBar.getParent()).getHeight();
@@ -112,6 +128,43 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
             dismiss(); // close BottomSheet
         });
 
+        // Save button
+        TextView saveTextView = view.findViewById(R.id.save);
+        saveTextView.setOnClickListener(v -> saveScheduleData());
+
         return view;
+    }
+
+    public void setScheduleDataListener(ScheduleDataListener listener) {
+        this.listener = listener;
+    }
+
+    private void saveScheduleData() {
+        // Selected days
+        java.util.List<String> selectedDays = new java.util.ArrayList<>();
+        String[] dayNames = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        for (int i = 0; i < dayViews.length; i++) {
+            if (dayViews[i].isSelected()) selectedDays.add(dayNames[i]);
+        }
+
+        // Time formatted h:mm a
+        int hour = timePicker.getHour();
+        int minute = timePicker.getMinute();
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.set(java.util.Calendar.HOUR_OF_DAY, hour);
+        cal.set(java.util.Calendar.MINUTE, minute);
+        java.text.SimpleDateFormat out = new java.text.SimpleDateFormat("h:mm a", java.util.Locale.getDefault());
+        String timeString = out.format(cal.getTime());
+
+        // Title
+        String title = setTitleTextView != null ? setTitleTextView.getText().toString() : "";
+        if (title == null || title.trim().isEmpty() || "Set Title".contentEquals(title)) {
+            title = "Schedule " + System.currentTimeMillis();
+        }
+
+        ScheduleData scheduleData = new ScheduleData(title, timeString, selectedDays, selectedFeedLevel);
+        if (listener != null) listener.onScheduleDataReceived(scheduleData);
+        Toast.makeText(getContext(), "Schedule saved!", Toast.LENGTH_SHORT).show();
+        dismiss();
     }
 }
