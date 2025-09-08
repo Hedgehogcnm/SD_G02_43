@@ -228,7 +228,7 @@ public class SignInActivity extends AppCompatActivity {
     }
     private void proceedAfterLogin(FirebaseUser user, String role) {
         if (user.isEmailVerified()) {
-            Toast.makeText(SignInActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignInActivity.this, "Sign In Successful", Toast.LENGTH_SHORT).show();
             Intent intent;
             if ("Admin".equals(role)) {
                 intent = new Intent(getApplicationContext(), AdminActivity.class);

@@ -21,8 +21,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.example.project2025.R;
-import com.example.project2025.Adapters.FeedHistoryAdapter;
-import com.example.project2025.Models.FeedHistory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,6 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
     private List<ScheduleData> scheduleList;
     private int nextScheduleIndex = 1; // Track which schedule slot to use next
     private ListenerRegistration schedulesListener;
-    private FeedHistoryAdapter feedHistoryAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,20 +57,6 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
         });
 
-        // Setup feeding history recycler within the card
-        androidx.recyclerview.widget.RecyclerView historyRecycler = root.findViewById(R.id.feeder_history_recycler);
-        TextView emptyHistoryText = root.findViewById(R.id.empty_history_text);
-        feedHistoryAdapter = new FeedHistoryAdapter();
-        historyRecycler.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(getContext()));
-        historyRecycler.setAdapter(feedHistoryAdapter);
-
-        // Load history from wherever you populate it (if you have Firestore or local list)
-        // For now, show empty text if adapter has no items
-        if (feedHistoryAdapter.getItemCount() == 0) {
-            emptyHistoryText.setVisibility(View.VISIBLE);
-        } else {
-            emptyHistoryText.setVisibility(View.GONE);
-        }
 
         // Real-time schedules listener
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -82,15 +65,25 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             schedulesListener = db.collection("Users")
                     .document(user.getUid())
                     .collection("schedules")
-                    .orderBy("createdAt", Query.Direction.ASCENDING)
                     .addSnapshotListener((snap, err) -> {
-                        if (err != null || snap == null) return;
+                        if (err != null) {
+                            android.util.Log.e("FeederFragment", "Firebase listener error: " + err.getMessage());
+                            return;
+                        }
+                        if (snap == null) {
+                            android.util.Log.d("FeederFragment", "Firebase snapshot is null");
+                            return;
+                        }
+                        
+                        android.util.Log.d("FeederFragment", "Firebase listener triggered - " + snap.getDocuments().size() + " schedules found");
+                        
                         // Clear current UI and state, then repopulate from snapshot
                         clearScheduleDisplay();
                         scheduleList.clear();
                         nextScheduleIndex = 1;
 
                         for (DocumentSnapshot d : snap.getDocuments()) {
+                            android.util.Log.d("FeederFragment", "Processing schedule document: " + d.getId());
                             String title = d.getString("title");
                             String time = d.getString("time");
                             java.util.List<String> days = (java.util.List<String>) d.get("days");
@@ -119,6 +112,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
     }
 
     @Override
+
     public void onDestroyView() {
         super.onDestroyView();
         if (schedulesListener != null) {
@@ -129,17 +123,14 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
 
     @Override
     public void onScheduleDataReceived(ScheduleData scheduleData) {
-        // Add the new schedule to our list
-        scheduleList.add(scheduleData);
+        android.util.Log.d("FeederFragment", "New schedule received: " + scheduleData.getTitle());
         
-        // Update the UI with the new schedule
-        updateScheduleDisplay(scheduleData);
-
         // Schedule alarms on user device for selected days/time
         int base = (int) (System.currentTimeMillis() & 0xFFFF);
         ScheduleHelper.scheduleWeekly(requireContext(), scheduleData.getTime(), scheduleData.getSelectedDays(), base);
 
         // Save schedule to Firestore for persistence
+        // The Firebase listener will automatically update the UI when this is saved
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -154,14 +145,24 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             db.collection("Users")
               .document(user.getUid())
               .collection("schedules")
-              .add(doc);
+              .add(doc)
+              .addOnSuccessListener(documentReference -> {
+                  android.util.Log.d("FeederFragment", "Schedule saved to Firebase with ID: " + documentReference.getId());
+              })
+              .addOnFailureListener(e -> {
+                  android.util.Log.e("FeederFragment", "Failed to save schedule to Firebase: " + e.getMessage());
+              });
+        } else {
+            android.util.Log.e("FeederFragment", "User is null, cannot save schedule to Firebase");
         }
     }
     
     private void updateScheduleDisplay(ScheduleData scheduleData) {
+        android.util.Log.d("FeederFragment", "updateScheduleDisplay called for: " + scheduleData.getTitle());
+        
         // Find the next available schedule slot (1-4)
         if (nextScheduleIndex > 4) {
-            // All slots are full, you might want to show a message or replace the oldest
+            android.util.Log.w("FeederFragment", "All schedule slots are full (4/4)");
             return;
         }
         
@@ -182,6 +183,8 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                 "schedule_card" + scheduleId, "id", getContext().getPackageName()));
         
         if (titleView != null && timeView != null && daysView != null && feedLevelView != null && cardView != null) {
+            android.util.Log.d("FeederFragment", "All UI elements found for slot " + scheduleId + ", updating display");
+            
             // Update the text with the selected data
             titleView.setText(scheduleData.getTitle());
             timeView.setText("Time: " + formatTo12Hour(scheduleData.getTime()));
@@ -191,8 +194,17 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             // Make the card visible
             cardView.setVisibility(View.VISIBLE);
             
+            android.util.Log.d("FeederFragment", "Schedule " + scheduleData.getTitle() + " displayed in slot " + scheduleId);
+            
             // Move to next slot
             nextScheduleIndex++;
+        } else {
+            android.util.Log.e("FeederFragment", "Some UI elements not found for slot " + scheduleId + 
+                " - titleView: " + (titleView != null) + 
+                ", timeView: " + (timeView != null) + 
+                ", daysView: " + (daysView != null) + 
+                ", feedLevelView: " + (feedLevelView != null) + 
+                ", cardView: " + (cardView != null));
         }
     }
 

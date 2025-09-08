@@ -243,10 +243,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
-     * Navigate to the main app experience after verification and profile ensuring.
+     * Navigate to the sign-in page after verification and profile ensuring.
      */
     private void proceedToMain() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
         startActivity(intent);
         finish();
     }

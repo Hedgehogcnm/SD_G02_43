@@ -26,9 +26,6 @@
         android:theme="@style/Theme.KaiFeedCat.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".UserListFragment"
-            android:exported="false" />
-        <activity
             android:name=".Specific_User.EditProfile"
             android:exported="false" />
         <activity

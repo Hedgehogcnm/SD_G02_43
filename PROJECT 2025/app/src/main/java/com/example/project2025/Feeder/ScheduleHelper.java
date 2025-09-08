@@ -66,7 +66,19 @@ public class ScheduleHelper {
 
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             AlarmManager.AlarmClockInfo info = new AlarmManager.AlarmClockInfo(cal.getTimeInMillis(), null);
-            am.setAlarmClock(info, pi);
+            
+            // Check if we can schedule exact alarms before attempting to do so
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                if (am.canScheduleExactAlarms()) {
+                    am.setAlarmClock(info, pi);
+                } else {
+                    // Fallback to inexact alarm if exact alarms are not allowed
+                    am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
+                }
+            } else {
+                // For older Android versions, setAlarmClock is always available
+                am.setAlarmClock(info, pi);
+            }
         }
     }
 

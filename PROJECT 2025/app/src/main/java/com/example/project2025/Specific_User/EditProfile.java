@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -148,6 +149,9 @@ public class EditProfile extends AppCompatActivity {
                 .setPositiveButton("Yes", (dialog, which) -> {
                     // Sign out from Firebase
                     auth.signOut();
+                    
+                   
+                    Toast.makeText(EditProfile.this, "Sign Out Successful", Toast.LENGTH_SHORT).show();
                     
                     // Navigate to SignInActivity
                     Intent intent = new Intent(EditProfile.this, SignInActivity.class);
