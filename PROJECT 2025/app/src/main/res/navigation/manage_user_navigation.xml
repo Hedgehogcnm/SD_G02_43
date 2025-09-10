@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/manage_user_navigation.xml"
+    app:startDestination="@+id/feeder_fragment_navigation">>
+
+    <fragment
+        android:id="@+id/manage_user_admin_dashboard_navigation"
+        android:name="com.example.project2025.Dashboard.DashboardUserFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/dashboard_fragment_user" />
+
+    <fragment
+        android:id="@+id/manage_user_admin_feeder_navigation"
+        android:name="com.example.project2025.Feeder.FeederFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/feeder_fragment"
+        />
+</navigation>

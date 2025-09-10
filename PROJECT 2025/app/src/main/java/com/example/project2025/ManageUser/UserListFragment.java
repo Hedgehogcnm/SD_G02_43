@@ -1,5 +1,8 @@
-package com.example.project2025;
+package com.example.project2025.ManageUser;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project2025.Adapters.UserListAdapter;
 import com.example.project2025.Models.UserList;
+import com.example.project2025.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -23,6 +27,7 @@ public class UserListFragment extends Fragment {
 
     private RecyclerView userListRecyclerView;
     private UserListAdapter userListAdapter;
+    private SharedPreferences sharedPreferences;
     private FirebaseFirestore db;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,6 +41,13 @@ public class UserListFragment extends Fragment {
         userListAdapter = new UserListAdapter(new ArrayList<>(), new UserListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(UserList user) {
+                sharedPreferences = getActivity().getSharedPreferences("ADMINISTRATION", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("uid", user.getUID());
+                editor.putString("name", user.getUsername());
+                editor.putString("email", user.getEmail());
+                editor.apply();
+
                 Log.d("UserList", "Clicked user: " + user.getUsername());
                 Toast.makeText(root.getContext(), "Clicked user: " + user.getUsername(), Toast.LENGTH_SHORT).show();
             }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/manage_user_admin_dashboard_navigation"
+        android:icon="@drawable/ic_cam"
+        android:title="Live" />
+
+    <item
+        android:id="@+id/manage_user_admin_feeder_navigation"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Feeder" />
+</menu>
