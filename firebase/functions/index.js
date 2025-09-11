@@ -8,8 +8,8 @@
  */
 
 const admin = require("firebase-admin");
-const {setGlobalOptions} = require("firebase-functions");
-const {onRequest} = require("firebase-functions/https");
+const {setGlobalOptions} = require("firebase-functions/v2");
+const {onRequest} = require("firebase-functions/v2/https");
 // const logger = require("firebase-functions/logger");
 
 admin.initializeApp();
@@ -20,6 +20,9 @@ exports.deleteUser = onRequest(async (req, res) => {
     return res.status(400).send({error: "Missing UID"});
   } try {
     await admin.auth().deleteUser(uid);
+    const userDocRef = admin.firestore().collection("Users").doc(uid);
+    await userDocRef.delete();
+
     return res.status(200).send({message: uid + " deleted successfully"});
   } catch (error) {
     console.error("Error deleting user:", error);
