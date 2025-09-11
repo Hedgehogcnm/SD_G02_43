@@ -5,7 +5,17 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ManageUser.manage_user_user_detail">
+    tools:context=".ManageUser.ManageUserEditUser">
+
+    <ImageView
+        android:id="@+id/returnButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/return_button_foreground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/edit_text"
@@ -28,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@id/edit_text">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/change_image"
+            android:id="@+id/profile_image"
             android:layout_width="230dp"
             android:layout_height="200dp"
             android:src="@drawable/logo"
@@ -38,8 +48,8 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignEnd="@id/change_image"
-            android:layout_alignBottom="@id/change_image"
+            android:layout_alignEnd="@id/profile_image"
+            android:layout_alignBottom="@id/profile_image"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:clickable="true"
@@ -49,6 +59,7 @@
     </RelativeLayout>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -77,8 +88,8 @@
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -90,9 +101,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingStart="10dp"
                     android:text="Email"
                     android:textColor="#000000"
-                    android:paddingStart="10dp"
                     android:textSize="16sp" />
 
                 <TextView
@@ -109,8 +120,8 @@
                 android:id="@+id/Uid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -122,27 +133,28 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
                     android:text="Uid"
                     android:textColor="#000000"
-                    android:paddingStart="10dp"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/Uid_text"
+                    android:id="@+id/uid_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
-                    android:text="XXXX"
-                    android:textColor="#666666"
-                    android:textSize="16sp" />
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="XXXX" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/change_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -154,9 +166,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingStart="10dp"
                     android:text="Name"
                     android:textColor="#000000"
-                    android:paddingStart="10dp"
                     android:textSize="16sp" />
 
                 <TextView
@@ -171,9 +183,19 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@drawable/ic_chevron_right"/>
+                    android:src="@drawable/ic_chevron_right" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id = "@+id/delete_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Delete user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

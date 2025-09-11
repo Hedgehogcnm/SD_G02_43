@@ -2,13 +2,13 @@ package com.example.project2025.ManageUser;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,8 +48,10 @@ public class UserListFragment extends Fragment {
                 editor.putString("email", user.getEmail());
                 editor.apply();
 
+                Intent intent = new Intent(getActivity(), ManageUserAdministration.class);
+                startActivity(intent);
+
                 Log.d("UserList", "Clicked user: " + user.getUsername());
-                Toast.makeText(root.getContext(), "Clicked user: " + user.getUsername(), Toast.LENGTH_SHORT).show();
             }
         });
         userListRecyclerView.setAdapter(userListAdapter);

@@ -116,7 +116,7 @@ public class AccountFragment extends Fragment {
                     // Load and display the user's selected profile image
                     // This retrieves the profilepic field from Firebase and displays the corresponding drawable
                     String profilePic = document.getString("profilepic");
-                    ProfileImageHelper.loadProfileImage(getContext(), binding.changeImage, profilePic);
+                    ProfileImageHelper.loadProfileImage(getContext(), binding.profileImage, profilePic);
                 }
                 else {
                     Log.d("accountMenuFragment: ", "No such document");

@@ -121,7 +121,7 @@ public class Change_image extends AppCompatActivity {
     private void setupClickListeners() {
         returnButton = findViewById(R.id.returnButton);
         saveButton = findViewById(R.id.saveButton);
-        change_image = findViewById(R.id.change_image);
+        change_image = findViewById(R.id.profile_image);
 
         returnButton.setOnClickListener(v -> finish());
 
