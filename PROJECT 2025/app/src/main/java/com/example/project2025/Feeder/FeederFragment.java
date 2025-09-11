@@ -1,3 +1,4 @@
+
 package com.example.project2025.Feeder;
 
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -30,6 +32,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
 
     private LinearLayout scheduleContainer;
     private List<ScheduleData> scheduleList;
+    private List<String> scheduleDocIds;
     private int nextScheduleIndex = 1; // Track which schedule slot to use next
     private ListenerRegistration schedulesListener;
 
@@ -42,16 +45,22 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
 
         // Initialize schedule list and container
         scheduleList = new ArrayList<>();
+        scheduleDocIds = new ArrayList<>();
         scheduleContainer = root.findViewById(R.id.scheduleContainer);
 
         // Set feeder IP (persisted for alarms and manual trigger reuse)
         requireContext().getSharedPreferences("feeder", 0)
                 .edit()
-                .putString("feeder_ip", "192.168.180.158")
+                .putString("feeder_ip", "192.168.214.158")
                 .apply();
 
         ImageView createAlarmBtn = root.findViewById(R.id.alarm);
         createAlarmBtn.setOnClickListener(v -> {
+            // Enforce max 4 schedules before opening sheet
+            if (scheduleList != null && scheduleList.size() >= 4) {
+                Toast.makeText(requireContext(), "You can only create 4 schedules", Toast.LENGTH_SHORT).show();
+                return;
+            }
             ScheduleBottomSheet bottomSheet = new ScheduleBottomSheet();
             bottomSheet.setScheduleDataListener(this); // Set the listener
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
@@ -80,6 +89,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                         // Clear current UI and state, then repopulate from snapshot
                         clearScheduleDisplay();
                         scheduleList.clear();
+                        scheduleDocIds.clear();
                         nextScheduleIndex = 1;
 
                         for (DocumentSnapshot d : snap.getDocuments()) {
@@ -98,11 +108,16 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                             );
 
                             scheduleList.add(sd);
-                            updateScheduleDisplay(sd);
+                            scheduleDocIds.add(d.getId());
+                            updateScheduleDisplay(sd, d.getId());
 
                             if (Boolean.TRUE.equals(enabled)) {
-                                int base2 = (int) (System.currentTimeMillis() & 0xFFFF);
-                                ScheduleHelper.scheduleWeekly(requireContext(), sd.getTime(), sd.getSelectedDays(), base2);
+                                // Use a stable request base derived from documentId to avoid duplicate alarms
+                                String docId = d.getId();
+                                int base2 = (docId != null ? docId.hashCode() : 0) & 0x7FFF;
+                                // Ensure previous alarms for this schedule are cleared first
+                                ScheduleHelper.cancelWeekly(requireContext(), base2);
+                                ScheduleHelper.scheduleWeekly(requireContext(), sd.getTime(), sd.getSelectedDays(), base2, sd.getFeedLevel(), sd.getTitle(), docId);
                             }
                         }
                     });
@@ -124,10 +139,20 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
     @Override
     public void onScheduleDataReceived(ScheduleData scheduleData) {
         android.util.Log.d("FeederFragment", "New schedule received: " + scheduleData.getTitle());
+        // Double-check capacity and required fields before saving
+        if (scheduleList != null && scheduleList.size() >= 4) {
+            Toast.makeText(requireContext(), "Maximum of 4 schedules reached", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (scheduleData == null || scheduleData.getSelectedDays() == null || scheduleData.getSelectedDays().isEmpty()
+                || scheduleData.getFeedLevel() <= 0 || scheduleData.getTime() == null || scheduleData.getTime().trim().isEmpty()) {
+            Toast.makeText(requireContext(), "Enter all details for your schedule", Toast.LENGTH_SHORT).show();
+            return;
+        }
         
         // Schedule alarms on user device for selected days/time
         int base = (int) (System.currentTimeMillis() & 0xFFFF);
-        ScheduleHelper.scheduleWeekly(requireContext(), scheduleData.getTime(), scheduleData.getSelectedDays(), base);
+        // Do not schedule here to prevent duplicates. The realtime listener will schedule once with the document ID.
 
         // Save schedule to Firestore for persistence
         // The Firebase listener will automatically update the UI when this is saved
@@ -157,7 +182,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         }
     }
     
-    private void updateScheduleDisplay(ScheduleData scheduleData) {
+    private void updateScheduleDisplay(ScheduleData scheduleData, String documentId) {
         android.util.Log.d("FeederFragment", "updateScheduleDisplay called for: " + scheduleData.getTitle());
         
         // Find the next available schedule slot (1-4)
@@ -193,7 +218,76 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             
             // Make the card visible
             cardView.setVisibility(View.VISIBLE);
-            
+
+            // Enable title rename on click -> updates Firestore
+            titleView.setOnClickListener(v -> {
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());
+                builder.setTitle("Set your schedule title");
+                final android.widget.EditText input = new android.widget.EditText(requireContext());
+                input.setSingleLine(true);
+                input.setText(scheduleData.getTitle());
+                input.setSelection(input.getText().length());
+                builder.setView(input);
+                builder.setPositiveButton("Save", null);
+                builder.setNegativeButton("Cancel", (d, w) -> d.dismiss());
+
+                final android.app.AlertDialog dialog = builder.create();
+                dialog.setOnShowListener(di -> {
+                    android.widget.Button positive = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    positive.setOnClickListener(v1 -> {
+                        String newTitle = input.getText() != null ? input.getText().toString().trim() : "";
+                        if (newTitle.isEmpty()) {
+                            Toast.makeText(requireContext(), "Add your title", Toast.LENGTH_SHORT).show();
+                            return; // keep dialog open
+                        }
+                        FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
+                        if (u != null) {
+                            FirebaseFirestore.getInstance()
+                                    .collection("Users")
+                                    .document(u.getUid())
+                                    .collection("schedules")
+                                    .document(documentId)
+                                    .update("title", newTitle)
+                                    .addOnSuccessListener(unused -> {
+                                        titleView.setText(newTitle);
+                                        dialog.dismiss();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(requireContext(), "Failed to update title", Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                    });
+                });
+                dialog.show();
+            });
+
+            // Long-press card to delete
+            cardView.setOnLongClickListener(v -> {
+                new android.app.AlertDialog.Builder(requireContext())
+                        .setTitle("Delete Schedule")
+                        .setMessage("Are you sure you want to delete this schedule?")
+                        .setPositiveButton("Delete", (dialog, which) -> {
+                            FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
+                            if (u != null) {
+                                FirebaseFirestore.getInstance()
+                                        .collection("Users")
+                                        .document(u.getUid())
+                                        .collection("schedules")
+                                        .document(documentId)
+                                        .delete()
+                                        .addOnSuccessListener(unused -> {
+                                            Toast.makeText(requireContext(), "Schedule deleted", Toast.LENGTH_SHORT).show();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(requireContext(), "Failed to delete schedule", Toast.LENGTH_SHORT).show();
+                                        });
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+                return true;
+            });
+
             android.util.Log.d("FeederFragment", "Schedule " + scheduleData.getTitle() + " displayed in slot " + scheduleId);
             
             // Move to next slot

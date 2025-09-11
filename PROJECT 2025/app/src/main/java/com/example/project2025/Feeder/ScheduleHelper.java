@@ -10,7 +10,26 @@ import java.util.List;
 
 public class ScheduleHelper {
 
-    public static void scheduleWeekly(Context context, String timeHHmm, List<String> days, int requestBase) {
+    public static void cancelWeekly(Context context, int requestBase) {
+        if (context == null) return;
+        for (int dow : new int[]{java.util.Calendar.SUNDAY, java.util.Calendar.MONDAY, java.util.Calendar.TUESDAY,
+                java.util.Calendar.WEDNESDAY, java.util.Calendar.THURSDAY, java.util.Calendar.FRIDAY, java.util.Calendar.SATURDAY}) {
+            Intent intent = new Intent(context, FeedingAlarmReceiver.class);
+            int reqCode = requestBase + dow;
+            PendingIntent pi = PendingIntent.getBroadcast(
+                    context,
+                    reqCode,
+                    intent,
+                    PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE
+            );
+            if (pi != null) {
+                AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                am.cancel(pi);
+            }
+        }
+    }
+
+    public static void scheduleWeekly(Context context, String timeHHmm, List<String> days, int requestBase, int level, String title, String scheduleId) {
         if (timeHHmm == null || timeHHmm.isEmpty() || days == null || days.isEmpty()) {
             return;
         }
@@ -56,6 +75,9 @@ public class ScheduleHelper {
             cal.add(Calendar.DAY_OF_YEAR, diff);
 
             Intent intent = new Intent(context, FeedingAlarmReceiver.class);
+            intent.putExtra("level", level > 0 ? level : 1);
+            if (title != null) intent.putExtra("title", title);
+            if (scheduleId != null) intent.putExtra("scheduleId", scheduleId);
             int reqCode = requestBase + dow;
             PendingIntent pi = PendingIntent.getBroadcast(
                     context,

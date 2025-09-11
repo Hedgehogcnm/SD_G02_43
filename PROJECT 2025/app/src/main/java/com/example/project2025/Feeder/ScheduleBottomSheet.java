@@ -24,7 +24,7 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
     private View foodBar;
     private TimePicker timePicker;
     private TextView setTitleTextView;
-    private int selectedFeedLevel = 1;
+    private int selectedFeedLevel = 0;
 
     public interface ScheduleDataListener {
         void onScheduleDataReceived(ScheduleData scheduleData);
@@ -44,6 +44,36 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
         timePicker = view.findViewById(R.id.timePicker);
         setTitleTextView = view.findViewById(R.id.setTitle);
         try { timePicker.setIs24HourView(false); } catch (Throwable ignored) {}
+
+        // Title click -> prompt input dialog with validation
+        setTitleTextView.setOnClickListener(v -> {
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+            builder.setTitle("Set Schedule Title");
+            final android.widget.EditText input = new android.widget.EditText(getContext());
+            input.setSingleLine(true);
+            input.setText(setTitleTextView.getText());
+            input.setSelection(input.getText().length());
+            builder.setView(input);
+            builder.setPositiveButton("Save", null);
+            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+            final android.app.AlertDialog dialog = builder.create();
+            dialog.setOnShowListener(di -> {
+                android.widget.Button positive = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                positive.setOnClickListener(v1 -> {
+                    String t = input.getText() != null ? input.getText().toString().trim() : "";
+                    if (t.isEmpty()) {
+                        Toast.makeText(getContext(), "Please add your title", Toast.LENGTH_SHORT).show();
+                        // Do not dismiss
+                        return;
+                    }
+                    setTitleTextView.setText(t);
+                    Toast.makeText(getContext(), "Title has been set", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                });
+            });
+            dialog.show();
+        });
 
         // ==== initialize dayViews ====
         dayViews = new TextView[]{
@@ -147,19 +177,32 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
             if (dayViews[i].isSelected()) selectedDays.add(dayNames[i]);
         }
 
-        // Time formatted h:mm a
+        // Time formatted HH:mm (24-hour format for logic)
         int hour = timePicker.getHour();
         int minute = timePicker.getMinute();
         java.util.Calendar cal = java.util.Calendar.getInstance();
         cal.set(java.util.Calendar.HOUR_OF_DAY, hour);
         cal.set(java.util.Calendar.MINUTE, minute);
-        java.text.SimpleDateFormat out = new java.text.SimpleDateFormat("h:mm a", java.util.Locale.getDefault());
+        java.text.SimpleDateFormat out = new java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault());
         String timeString = out.format(cal.getTime());
 
-        // Title
+        // Validate required fields: at least one day selected and a feed level selected
+        boolean levelChosen = false;
+        if (levelViews != null) {
+            for (TextView lv : levelViews) {
+                if (lv.isSelected()) { levelChosen = true; break; }
+            }
+        }
+        if (selectedDays.isEmpty() || !levelChosen || timeString == null || timeString.trim().isEmpty()) {
+            Toast.makeText(getContext(), "Enter all details for your schedule", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Title must be non-empty
         String title = setTitleTextView != null ? setTitleTextView.getText().toString() : "";
         if (title == null || title.trim().isEmpty() || "Set Title".contentEquals(title)) {
-            title = "Schedule " + System.currentTimeMillis();
+            Toast.makeText(getContext(), "Enter all details for your schedule", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         ScheduleData scheduleData = new ScheduleData(title, timeString, selectedDays, selectedFeedLevel);
