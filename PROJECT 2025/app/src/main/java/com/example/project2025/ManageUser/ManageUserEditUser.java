@@ -64,8 +64,7 @@ public class ManageUserEditUser extends AppCompatActivity {
 
         deleteUserButton.setOnClickListener(v->{
             String uid = sharedPreferences.getString("uid", "");
-
-            FirebaseAuth.getInstance().
+            String APIurl = 
         });
     }
 
