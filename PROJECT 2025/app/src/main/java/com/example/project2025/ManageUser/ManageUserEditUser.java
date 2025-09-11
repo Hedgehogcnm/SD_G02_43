@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,12 +16,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.project2025.R;
 import com.example.project2025.EditProfileLogics.ProfileImageHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ManageUserEditUser extends AppCompatActivity {
 
@@ -64,7 +71,34 @@ public class ManageUserEditUser extends AppCompatActivity {
 
         deleteUserButton.setOnClickListener(v->{
             String uid = sharedPreferences.getString("uid", "");
-            String APIurl = 
+            if (uid == null || uid.isEmpty()) {
+                Toast.makeText(this, "No UID found", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String APIurl = "https://us-central1-divine-course-467504-m2.cloudfunctions.net/deleteUser";
+            JSONObject payload = new JSONObject();
+            try {
+                payload.put("uid", uid);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, APIurl, payload,
+                    response -> {
+                        Toast.makeText(this, "Deleted: " + response.toString(), Toast.LENGTH_SHORT).show();
+                    },
+                    error -> {
+                        if(error.getMessage() != null){
+                            int statusCode = error.networkResponse.statusCode;
+                            String responseBody = new String(error.networkResponse.data);
+                            Toast.makeText(this, "Error " + statusCode + ": " + responseBody, Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(this, "Network error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            Volley.newRequestQueue(getApplicationContext()).add(request);
         });
     }
 
