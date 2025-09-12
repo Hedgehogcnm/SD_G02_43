@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.example.project2025.R;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,9 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
     private List<String> scheduleDocIds;
     private int nextScheduleIndex = 1; // Track which schedule slot to use next
     private ListenerRegistration schedulesListener;
+    private FirebaseFirestore db;
+    private ImageView img;
+    private TextView percentage;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,10 +47,15 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
 
         View root = inflater.inflate(R.layout.feeder_fragment, container, false);
 
+        //for food level purpose (eq)
+        img = root.findViewById(R.id.device_pic);
+        percentage = root.findViewById(R.id.foodPercentage);
+
         // Initialize schedule list and container
         scheduleList = new ArrayList<>();
         scheduleDocIds = new ArrayList<>();
         scheduleContainer = root.findViewById(R.id.scheduleContainer);
+        db = FirebaseFirestore.getInstance();
 
         // Set feeder IP (persisted for alarms and manual trigger reuse)
         requireContext().getSharedPreferences("feeder", 0)
@@ -124,6 +133,12 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         }
 
         return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        showFoodLevel();
     }
 
     @Override
@@ -324,6 +339,48 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             return out.format(d);
         } catch (Exception e) {
             return time24;
+        }
+    }
+
+    void showFoodLevel(){
+        db.collection("Feeder").whereEqualTo("ip_address", "192.168.214.158").get().addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    double foodLevel = document.getDouble("food_level");
+                    checkFoodLevel(foodLevel);
+                    displayPercentage(foodLevel);
+                }
+            }
+        });
+    }
+    void checkFoodLevel(double foodLevel){
+        if(foodLevel <= 3){
+            img.setImageResource(R.drawable.food_level_100);
+        }
+        else if(foodLevel <= 6){
+            img.setImageResource(R.drawable.food_level_75);
+        }
+        else if(foodLevel <= 9){  // 125-(9/12*100)
+            img.setImageResource(R.drawable.food_level_50);
+        }
+        else if(foodLevel <= 12){
+            img.setImageResource(R.drawable.food_level_25);
+        }
+        else if(foodLevel <= 15){
+            img.setImageResource(R.drawable.food_level_0);
+        }
+    }
+    void displayPercentage(double foodLevel){
+        int result = (int) (125 - (foodLevel / 12 * 100));
+        if(foodLevel > 15){
+            percentage.setText("0%");
+        }
+        else if(foodLevel >= 3 && foodLevel <= 15){
+            percentage.setText(result + "%");
+        }
+        else if(foodLevel < 3){
+            percentage.setText("100%");
         }
     }
 }
