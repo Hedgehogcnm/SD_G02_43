@@ -24,21 +24,24 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview"
-        android:layout_width="380dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_alarge"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="3:2"
+        app:layout_constraintWidth_percent="0.86">
 
         <WebView
             android:id="@+id/ipCamera"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+           />
 
     </androidx.cardview.widget.CardView>
 

@@ -1,0 +1,11 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- 渐变：从深色到浅色，模拟食物 -->
+    <gradient
+        android:startColor="#FFA726"
+        android:endColor="#FFCC80"
+        android:angle="270" />
+
+    <corners android:radius="12dp" />
+</shape>

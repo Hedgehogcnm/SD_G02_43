@@ -1,43 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginBottom="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    android:layout_margin="@dimen/margin_medium"
+    app:cardCornerRadius="@dimen/card_radius"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardBackgroundColor="@android:color/white">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/card_padding2">
 
+        <!-- Username -->
         <TextView
             android:id="@+id/username"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="username"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:text="Username"
+            android:textSize="@dimen/text_large"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Split line -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:background="#DDDDDD"
+            app:layout_constraintTop_toBottomOf="@id/username"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Email -->
         <TextView
             android:id="@+id/user_email"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="email"
-            android:textSize="14sp" />
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="email@example.com"
+            android:textSize="@dimen/text_medium"
+            android:textColor="#666666"
+            android:drawableStart="@android:drawable/ic_dialog_email"
+            android:drawablePadding="6dp"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- UID -->
         <TextView
             android:id="@+id/user_uid"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="uid"
-            android:textSize="14sp" />
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="UID-123456"
+            android:textSize="@dimen/text_small"
+            android:textColor="#888888"
+            android:drawableStart="@android:drawable/ic_menu_info_details"
+            android:drawablePadding="6dp"
+            app:layout_constraintTop_toBottomOf="@id/user_email"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

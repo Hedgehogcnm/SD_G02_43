@@ -122,41 +122,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/weekDaySelector" />
 
-    <!-- feed level -->
+
     <!-- feed level -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginStart="60dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
         android:orientation="horizontal"
+        android:gravity="center"
         android:padding="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timePicker">
 
-        <!-- Left side: Container -->
-
-        <!-- Right side: Level options -->
-
+        <!-- 左边：喂食容器 -->
         <FrameLayout
             android:id="@+id/foodContainer"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:layout_weight="1"
-            android:background="@drawable/container_border">
+            android:layout_weight="1">
 
-            <!-- Level bar -->
+            <!-- 食物填充条（在底层） -->
             <View
                 android:id="@+id/foodLevelBar"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="bottom"
-                android:background="@color/foodFillColor" />
+                android:background="#FF9800" />
+
+            <!-- 烧杯边框（盖在上层） -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/container_beaker"
+                android:scaleType="fitXY"/>
         </FrameLayout>
 
+
+        <!-- 右边：Level 按钮 -->
         <LinearLayout
             android:id="@+id/levelOptions"
             android:layout_width="wrap_content"
@@ -167,49 +173,50 @@
 
             <TextView
                 android:id="@+id/level1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="6dp"
                 android:background="@drawable/level_selector"
                 android:gravity="center"
-                android:padding="8dp"
                 android:text="1"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:id="@+id/level2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="6dp"
                 android:background="@drawable/level_selector"
                 android:gravity="center"
-                android:padding="8dp"
                 android:text="2"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:id="@+id/level3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="6dp"
                 android:background="@drawable/level_selector"
                 android:gravity="center"
-                android:padding="8dp"
                 android:text="3"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:id="@+id/level4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="6dp"
                 android:background="@drawable/level_selector"
                 android:gravity="center"
-                android:padding="8dp"
                 android:text="4"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@android:color/black" />
         </LinearLayout>
     </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

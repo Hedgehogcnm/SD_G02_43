@@ -8,21 +8,20 @@
     android:background="#F8F9FA"
     tools:context=".Specific_User.EditProfile">
 
-
-    <!-- top bar -->
+    <!-- Top Bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
+        android:id="@+id/top_bar"
+        android:layout_width="0dp"
         android:layout_height="90dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
             android:id="@+id/return_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="@dimen/margin_large"
             android:layout_marginTop="28dp"
             android:src="@drawable/ic_chevron_left"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,21 +36,24 @@
             android:textColor="#000000"
             android:textSize="35sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <!-- Personal Information Card -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/personal_info_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/margin_medium"
+        app:cardCornerRadius="@dimen/card_radius"
+        app:cardElevation="@dimen/card_elevation"
+        app:layout_constraintTop_toBottomOf="@id/top_bar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintEnd_toEndOf="parent">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -234,18 +236,19 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/setting_logout"
         style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="330dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="72dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginBottom="@dimen/margin_ylarge"
         android:textStyle="bold"
         android:text="Sign Out"
         android:textColor="#F44336"
-        android:textSize="16sp"
+        android:textSize="@dimen/text_large"
         app:iconTint="#F44336"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:strokeColor="#F44336"
-        app:strokeWidth="2.5dp" />
+        app:strokeWidth="2.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.85" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

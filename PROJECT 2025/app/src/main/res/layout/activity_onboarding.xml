@@ -7,40 +7,46 @@
     android:layout_height="match_parent"
     tools:context=".SignIn_Login_Onboarding.Onboarding">
 
+    <!-- Onboarding Image -->
     <ImageView
         android:id="@+id/onboarding_image"
-        android:layout_width="match_parent"
-        android:layout_height="333dp"
-        android:layout_marginTop="100dp"
-        android:src="@drawable/onboarding"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,3:2"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        android:layout_marginTop="@dimen/margin_blarge"
+        android:src="@drawable/onboarding"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Use MaterialButton instead of regular Button -->
+    <!-- Sign In Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/onboarding_logInButton"
-        android:layout_width="330dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintWidth_percent="0.85"
+        android:layout_marginTop="@dimen/margin_large"
         android:text="Sign In"
-        android:textColor="#FFFFFF"
+        android:textColor="@android:color/white"
         app:backgroundTint="#000000"
         app:cornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/onboarding_image"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/onboarding_image" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Use MaterialButton instead of regular Button -->
+    <!-- Register Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/onboarding_RegisterButton"
-        android:layout_width="330dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        app:layout_constraintWidth_percent="0.85"
+        android:layout_marginTop="@dimen/margin_medium"
         android:text="Register"
-        android:textColor="#FFFFFF"
+        android:textColor="@android:color/white"
         app:backgroundTint="#000000"
         app:cornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/onboarding_logInButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/onboarding_logInButton" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

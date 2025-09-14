@@ -8,141 +8,141 @@
     android:background="#FFFFFF"
     tools:context=".SignIn_Login_Onboarding.SignInActivity">
 
-    <!-- Use TextInputLayout to wrap EditText to get Material Design features -->
+    <!-- Welcome text -->
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_zlarge"
+        android:text="Welcome back!\nGlad to see you, Again!"
+        android:textColor="@color/black"
+        android:textSize="@dimen/margin_xlarge"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Email input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailInputLayout"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="@dimen/margin_ylarge"
         app:boxBackgroundColor="@android:color/transparent"
         app:boxBackgroundMode="outline"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:boxCornerRadiusBottomEnd="@dimen/margin_small"
+        app:boxCornerRadiusBottomStart="@dimen/margin_small"
+        app:boxCornerRadiusTopEnd="@dimen/margin_small"
+        app:boxCornerRadiusTopStart="@dimen/margin_small"
+        app:layout_constraintTop_toBottomOf="@id/textView3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.85">
 
         <EditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="@dimen/edittext_height"
             android:background="@drawable/edittext_background"
             android:ems="10"
             android:hint="Enter your email"
             android:inputType="textEmailAddress"
-            android:paddingStart="16dp"
-            android:paddingEnd="10dp" />
+            android:paddingStart="@dimen/margin_medium"
+            android:paddingEnd="@dimen/margin_small" />
     </com.google.android.material.textfield.TextInputLayout>
 
-
+    <!-- Password input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordInputLayout"
-        android:layout_width="340dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="@dimen/margin_medium"
         app:boxBackgroundColor="@android:color/transparent"
         app:boxBackgroundMode="outline"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
+        app:boxCornerRadiusBottomEnd="@dimen/margin_small"
+        app:boxCornerRadiusBottomStart="@dimen/margin_small"
+        app:boxCornerRadiusTopEnd="@dimen/margin_small"
+        app:boxCornerRadiusTopStart="@dimen/margin_small"
         app:counterEnabled="true"
         app:counterMaxLength="30"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emailInputLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailInputLayout">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.85">
 
         <EditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="@dimen/edittext_height"
             android:background="@drawable/edittext_background"
             android:ems="10"
             android:hint="Enter your password"
             android:inputType="textPassword"
-            android:paddingStart="16dp"
-            android:paddingEnd="10dp" />
+            android:paddingStart="@dimen/margin_medium"
+            android:paddingEnd="@dimen/margin_small" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Forgot password -->
     <TextView
         android:id="@+id/forgotPasswordTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="@dimen/margin_small"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         android:text="Forgot Password?"
         android:textColor="#2196F3"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.838"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout" />
+        android:textSize="@dimen/text_medium"
+        app:layout_constraintTop_toBottomOf="@id/passwordInputLayout"
+        app:layout_constraintEnd_toEndOf="@id/passwordInputLayout" />
 
-
-    <!-- Use MaterialButton instead of regular Button -->
+    <!-- Login button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/logInButton"
-        android:layout_width="330dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="@dimen/margin_xlarge"
         android:text="Sign In"
         android:textColor="#FFFFFF"
         app:backgroundTint="#000000"
-        app:cornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:cornerRadius="@dimen/margin_small"
+        app:layout_constraintTop_toBottomOf="@id/forgotPasswordTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forgotPasswordTextView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8" />
 
-
+    <!-- Register section -->
     <TextView
         android:id="@+id/registerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="156dp"
-        android:layout_marginBottom="51dp"
+        android:layout_marginTop="@dimen/margin_zlarge"
+        android:layout_marginStart="@dimen/margin_wlarge"
         android:fontFamily="sans-serif"
         android:text="Don't have an account? "
         android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginStart="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/registerTextView"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:textSize="@dimen/text_medium"
+        app:layout_constraintTop_toBottomOf="@id/logInButton"
+        app:layout_constraintEnd_toStartOf="@id/registerTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logInButton"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/registerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="@dimen/margin_small"
         android:clickable="true"
         android:focusable="true"
         android:text="Register Now"
         android:textColor="#2196F3"
-        android:textSize="16sp"
+        android:textSize="@dimen/text_medium"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/registerText"
-        app:layout_constraintStart_toEndOf="@+id/registerText" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
-        android:text="Welcome back!\nGlad to see you, Again!"
-        android:textColor="@color/black"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBaseline_toBaselineOf="@id/registerText"
+        app:layout_constraintStart_toEndOf="@id/registerText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

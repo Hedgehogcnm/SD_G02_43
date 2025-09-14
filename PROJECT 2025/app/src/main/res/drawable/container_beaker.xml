@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- 烧杯外框 -->
+    <path
+        android:fillColor="#E3F2FD"
+        android:strokeColor="#2196F3"
+        android:strokeWidth="3"
+        android:pathData="M20,10 L80,10 L70,90 L30,90 Z"/>
+</vector>

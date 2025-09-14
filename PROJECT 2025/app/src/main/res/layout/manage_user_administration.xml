@@ -5,37 +5,68 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".ManageUser.ManageUserAdministration">
 
-    <TextView
-        android:id="@+id/username"
+    <!-- 水平 Guideline（居中对齐更稳定） -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="username"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.5"
+        android:orientation="vertical" />
+
+    <!-- top bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <Button
-        android:id="@+id/edit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="@+id/username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/username" />
+        <!-- Username -->
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="Username"
+            android:layout_marginStart="@dimen/margin_large"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_xlarge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@id/edit_button" />
 
+        <!-- Edit Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit_button"
+            android:layout_width="100dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:text="Edit"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@android:color/black"
+            app:cornerRadius="@dimen/margin_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!-- NavHost Fragment -->
     <fragment
         android:id="@+id/nav_host_fragment_activity_main"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

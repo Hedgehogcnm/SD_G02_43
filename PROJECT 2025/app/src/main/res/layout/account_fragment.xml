@@ -6,60 +6,64 @@
     android:layout_height="match_parent"
     tools:context=".Account.AccountFragment">
 
-
+    <!-- Settings Icon -->
     <ImageView
         android:id="@+id/gear_button"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginTop="@dimen/margin_xlarge"
+        android:layout_marginEnd="@dimen/margin_large"
         android:src="@drawable/menu_setting"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-
+    <!-- Profile Image -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="230dp"
-        android:layout_height="201dp"
-        android:src="@drawable/logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,16:9"
+        app:layout_constraintTop_toBottomOf="@id/gear_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
         app:civ_border_color="@color/black"
         app:civ_border_width="3dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.128" />
+        tools:layout_width="180dp"
+        tools:layout_height="180dp"
+        android:src="@drawable/logo" />
 
+    <!-- Username -->
     <TextView
         android:id="@+id/menu_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="@dimen/margin_small"
         android:text="name"
-        android:textSize="22dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        android:textSize="@dimen/text_ylarge"
+        app:layout_constraintTop_toBottomOf="@id/profile_image"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Feeding History Label -->
     <TextView
         android:id="@+id/menu_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_large"
         android:text="FEEDING HISTORY"
         android:textColor="@color/black"
-        android:textSize="20dp"
+        android:textSize="@dimen/text_zlarge"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.103"
+        android:gravity="left"
+        app:layout_constraintTop_toBottomOf="@id/menu_username"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menu_username"
-        app:layout_constraintVertical_bias="0.002" />
+       />
 
+    <!-- Card with RecyclerView -->
     <androidx.cardview.widget.CardView
         android:id="@+id/historyCardAccount"
         android:layout_width="0dp"
@@ -89,16 +93,13 @@
                 android:layout_weight="1"
                 android:overScrollMode="always" />
 
-            <TextView
-                android:id="@+id/empty_feed_history_text"
+            <TextView android:id="@+id/empty_feed_history_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No feeding history available"
                 android:textSize="16sp"
                 android:visibility="gone" />
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
