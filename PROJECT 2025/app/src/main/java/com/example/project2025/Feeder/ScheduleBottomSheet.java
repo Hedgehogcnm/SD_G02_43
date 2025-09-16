@@ -112,6 +112,7 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
                 view.findViewById(R.id.level4)
         };
 
+
         foodBar = view.findViewById(R.id.foodLevelBar);
         int[] heightPercents = {25, 50, 75, 100};
 
