@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
@@ -65,27 +66,52 @@ public class DashboardUserFragment extends Fragment {
         feedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendFeedCommand();
+                showLevelPickerAndFeed();
             }
         });
     }
 
-    private void sendFeedCommand() {
+    private void sendFeedCommand(int level) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Socket socket = new Socket(PI_IP, FEED_PORT);
-                    OutputStream output = socket.getOutputStream();
-                    output.write("Feed".getBytes());
-                    output.flush();
-                    socket.close();
+                    String ip = null;
+                    try {
+                        ip = requireContext().getSharedPreferences("feeder", 0).getString("feeder_ip", null);
+                    } catch (Throwable ignored) {}
+                    if (ip == null || ip.trim().isEmpty()) ip = PI_IP;
 
-                    // Save feed history to Firebase
+                    Socket socket = new Socket(ip, FEED_PORT);
+                    try {
+                        socket.setSoTimeout(4000);
+                    } catch (Throwable ignored) {}
+                    OutputStream output = socket.getOutputStream();
+                    String payload = "Feed:" + Math.max(1, Math.min(4, level));
+                    output.write(payload.getBytes());
+                    output.flush();
+
+                    String response = "";
+                    try {
+                        InputStream in = socket.getInputStream();
+                        byte[] buf = new byte[64];
+                        int n = in.read(buf);
+                        if (n > 0) response = new String(buf, 0, n).trim();
+                    } catch (Throwable ignored) {}
+                    try { socket.close(); } catch (Throwable ignored) {}
+
+                    final String finalResponse = response;
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(requireContext(), "Feeding time!", Toast.LENGTH_SHORT).show();
+                            if ("ACK".equals(finalResponse)) {
+                                Toast.makeText(requireContext(), "Feeding time! (Level " + level + ")", Toast.LENGTH_SHORT).show();
+                                try { saveFeedHistory(level); } catch (Throwable ignored) {}
+                            } else if (finalResponse != null && !finalResponse.isEmpty()) {
+                                Toast.makeText(requireContext(), "Feeder: " + finalResponse, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(requireContext(), "Command sent. Waiting on feeder...", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 } catch (IOException e) {
@@ -94,7 +120,7 @@ public class DashboardUserFragment extends Fragment {
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(requireContext(), "Failed because of : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("Manual Feed ERROR:", "Failed because of : " + e.getMessage());
                         }
                     });
@@ -102,8 +128,20 @@ public class DashboardUserFragment extends Fragment {
             }
         }).start();
     }
+
+    private void showLevelPickerAndFeed() {
+        final CharSequence[] items = new CharSequence[]{"Level 1", "Level 2", "Level 3", "Level 4"};
+        new android.app.AlertDialog.Builder(requireContext())
+                .setTitle("Choose feed level")
+                .setItems(items, (dialog, which) -> {
+                    int level = which + 1;
+                    sendFeedCommand(level);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
     
-    private void saveFeedHistory() {
+    private void saveFeedHistory(int level) {
         
         if (db == null) {
             db = FirebaseFirestore.getInstance();
@@ -123,13 +161,19 @@ public class DashboardUserFragment extends Fragment {
                     Timestamp.now(),
                     "Manual"
             );
+            // Also store level so it matches scheduled entries format
+            java.util.Map<String, Object> map = new java.util.HashMap<>();
+            map.put("userId", userId);
+            map.put("timestamp", feedHistory.getTimestamp());
+            map.put("feedType", feedHistory.getFeedType());
+            map.put("level", level);
             
             // Log the feed history object
             Log.d("FeedHistory", "Feed history object - userId: " + feedHistory.getUserId() + ", feedType: " + feedHistory.getFeedType());
             
             // Add to Firestore
             db.collection("FeedHistory")
-                    .add(feedHistory)
+                    .add(map)
                     .addOnSuccessListener(documentReference -> {
                         Log.d("FeedHistory", "Feed history saved with ID: " + documentReference.getId());
                     })

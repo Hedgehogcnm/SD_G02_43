@@ -97,21 +97,69 @@ public class DashboardAdminFragment extends Fragment {
         });
     }
     private void sendFeedCommand(String ip_address) {
+        final CharSequence[] items = new CharSequence[]{"Level 1", "Level 2", "Level 3", "Level 4"};
+        new android.app.AlertDialog.Builder(requireContext())
+                .setTitle("Choose feed level")
+                .setItems(items, (dialog, which) -> doSendFeed(ip_address, which + 1))
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void doSendFeed(String ip_address, int level) {
+        if (ip_address != null) {
+            try {
+                requireContext().getSharedPreferences("feeder", 0).edit().putString("feeder_ip", ip_address.trim()).apply();
+            } catch (Throwable ignored) {}
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Socket socket = new Socket(ip_address, PORT);
+                    try { socket.setSoTimeout(4000); } catch (Throwable ignored) {}
                     OutputStream output = socket.getOutputStream();
-                    output.write("Feed".getBytes());
+                    String payload = "Feed:" + Math.max(1, Math.min(4, level));
+                    output.write(payload.getBytes());
                     output.flush();
-                    socket.close();
+                    String resp = null;
+                    try {
+                        java.io.InputStream in = socket.getInputStream();
+                        byte[] b = new byte[64];
+                        int n = in.read(b);
+                        if (n > 0) resp = new String(b, 0, n).trim();
+                    } catch (Throwable ignored) {}
+                    try { socket.close(); } catch (Throwable ignored) {}
 
-
+                    final String finalResp = resp;
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(requireContext(), "Feeding time !", Toast.LENGTH_SHORT).show();
+                            if ("ACK".equals(finalResp)) {
+                                Toast.makeText(requireContext(), "Feeding time! (Level " + level + ")", Toast.LENGTH_SHORT).show();
+                                try {
+                                    com.google.firebase.firestore.FirebaseFirestore db = com.google.firebase.firestore.FirebaseFirestore.getInstance();
+                                    com.google.firebase.auth.FirebaseUser u = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+                                    if (u != null) {
+                                        java.util.Map<String, Object> entry = new java.util.HashMap<>();
+                                        entry.put("userId", u.getUid());
+                                        entry.put("timestamp", com.google.firebase.Timestamp.now());
+                                        entry.put("feedType", "Manual");
+                                        entry.put("level", level);
+                                        db.collection("FeedHistory").add(entry)
+                                                .addOnSuccessListener(doc -> {
+                                                    android.util.Log.d("FeedHistory", "Manual feed saved: " + doc.getId());
+                                                })
+                                                .addOnFailureListener(err -> {
+                                                    android.util.Log.e("FeedHistory", "Failed to save manual feed", err);
+                                                    Toast.makeText(requireContext(), "Failed to save history: " + err.getMessage(), Toast.LENGTH_SHORT).show();
+                                                });
+                                    }
+                                } catch (Throwable ignored) {}
+                            } else if (finalResp != null && !finalResp.isEmpty()) {
+                                Toast.makeText(requireContext(), "Feeder: " + finalResp, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(requireContext(), "Command sent.", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 } catch (IOException e) {

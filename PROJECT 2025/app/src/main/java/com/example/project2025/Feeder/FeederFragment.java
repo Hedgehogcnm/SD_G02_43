@@ -267,7 +267,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                                         titleView.setText(newTitle);
                                         dialog.dismiss();
                                     })
-                                    .addOnFailureListener(e -> {
+                                    .addOnFailureListener(e ->  {
                                         Toast.makeText(requireContext(), "Failed to update title", Toast.LENGTH_SHORT).show();
                                     });
                         }

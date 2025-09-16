@@ -83,6 +83,7 @@ public class ManageUserEditUser extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
 
+
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, APIurl, payload,
                     response -> {
                         Toast.makeText(this, "Deleted: " + response.toString(), Toast.LENGTH_SHORT).show();
@@ -99,6 +100,7 @@ public class ManageUserEditUser extends AppCompatActivity {
                     });
 
             Volley.newRequestQueue(getApplicationContext()).add(request);
+
         });
     }
 
