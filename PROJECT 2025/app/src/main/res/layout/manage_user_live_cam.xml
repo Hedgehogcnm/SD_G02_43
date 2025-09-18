@@ -213,5 +213,5 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonGrid"
         app:strokeColor="@color/black"
         app:strokeWidth="25dp" />
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>
