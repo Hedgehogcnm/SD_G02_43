@@ -25,19 +25,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <ImageView
+            android:id="@+id/returnButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/margin_large"
+            android:src="@drawable/return_button_foreground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <!-- Username -->
         <TextView
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginStart="10dp"
             android:text="Username"
-            android:layout_marginStart="@dimen/margin_large"
             android:textColor="@color/black"
             android:textSize="@dimen/text_xlarge"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBaseline_toBaselineOf="@id/edit_button" />
+            app:layout_constraintBaseline_toBaselineOf="@id/edit_button"
+            app:layout_constraintStart_toEndOf="@+id/returnButton"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Edit Button -->
         <com.google.android.material.button.MaterialButton
