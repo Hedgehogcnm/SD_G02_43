@@ -14,4 +14,5 @@
         android:id="@+id/account_fragment_navigation"
         android:icon="@drawable/ic_profile"
         android:title="Profile" />
+
 </menu>

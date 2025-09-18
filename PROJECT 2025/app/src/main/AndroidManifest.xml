@@ -26,6 +26,12 @@
         android:theme="@style/Theme.KaiFeedCat.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ManageUserFeeder"
+            android:exported="false" />
+        <activity
+            android:name=".ManageUserLiveCam"
+            android:exported="false" />
+        <activity
             android:name=".ManageUser.ManageUserChangeName"
             android:exported="false" />
         <activity
