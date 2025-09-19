@@ -1,5 +1,8 @@
 package com.example.project2025.Dashboard;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +24,7 @@ import com.example.project2025.databinding.DashboardFragmentUserBinding;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
@@ -32,9 +36,10 @@ import java.net.Socket;
 public class DashboardUserFragment extends Fragment {
 
     private DashboardFragmentUserBinding binding;
+    private SharedPreferences sharedPreferences;
     private LinearLayout feedButton;
     private WebView liveCam;
-    private static final String PI_IP = "192.168.214.158";
+    private String PI_IP = "127.0.0.1";
     private static final int FEED_PORT = 12345;
     private static final int HTTP_PORT = 8889;
     private static final String LIVE_FOLDER = "/cam1";
@@ -57,10 +62,11 @@ public class DashboardUserFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         WebSettings webSettings = liveCam.getSettings();
         webSettings.setJavaScriptEnabled(true);
         liveCam.setWebViewClient(new WebViewClient());
+        sharedPreferences = requireContext().getSharedPreferences("FEEDERIP", MODE_PRIVATE);
+        PI_IP = sharedPreferences.getString("feeder_ip", PI_IP);
 
         liveCam.loadUrl("http://" + PI_IP + ":" + HTTP_PORT + LIVE_FOLDER);
         feedButton.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +76,6 @@ public class DashboardUserFragment extends Fragment {
             }
         });
     }
-
     private void sendFeedCommand(int level) {
         new Thread(new Runnable() {
             @Override

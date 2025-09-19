@@ -1,5 +1,6 @@
 package com.example.project2025.ManageUser;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,9 +30,10 @@ import java.net.Socket;
 
 public class ManageUserLiveCam extends AppCompatActivity {
 
+    private SharedPreferences sharedPreferences;
     private LinearLayout feedButton;
     private WebView liveCam;
-    private static final String PI_IP = "192.168.214.158";
+    private String PI_IP = "127.0.0.1";
     private static final int FEED_PORT = 12345;
     private static final int HTTP_PORT = 8889;
     private static final String LIVE_FOLDER = "/cam1";
@@ -56,6 +58,8 @@ public class ManageUserLiveCam extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        sharedPreferences = getSharedPreferences("FEEDERIP", MODE_PRIVATE);
+        PI_IP = sharedPreferences.getString("feeder_ip", PI_IP);
 
         WebSettings webSettings = liveCam.getSettings();
         webSettings.setJavaScriptEnabled(true);

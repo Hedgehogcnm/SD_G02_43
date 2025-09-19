@@ -20,6 +20,8 @@ import com.example.project2025.R;
 import com.example.project2025.databinding.ActivityMainBinding;
 import com.example.project2025.databinding.ManageUserAdministrationBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ManageUserAdministration extends AppCompatActivity {
 
@@ -27,6 +29,7 @@ public class ManageUserAdministration extends AppCompatActivity {
     private Button editUserButton;
     private SharedPreferences sharedPreferences;
     private ManageUserAdministrationBinding binding;
+    private String username, email, uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,10 @@ public class ManageUserAdministration extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        // Initialize Firebase
+        db = FirebaseFirestore.getInstance();
+
+        // Initialize UI elements
         usernameTextView = findViewById(R.id.username);
         editUserButton = findViewById(R.id.edit_button);
 
@@ -57,7 +64,9 @@ public class ManageUserAdministration extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         sharedPreferences = getSharedPreferences("ADMINISTRATION", MODE_PRIVATE);
-        String username = sharedPreferences.getString("name", "username");
+        username = sharedPreferences.getString("name", "username");
+        email = sharedPreferences.getString("email", "email");
+        uid = sharedPreferences.getString("uid", "uid");
         usernameTextView.setText(username);
     }
 }

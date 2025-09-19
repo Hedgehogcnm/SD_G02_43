@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project2025.Adapters.UserListAdapter;
 import com.example.project2025.Models.UserList;
 import com.example.project2025.R;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -41,17 +42,27 @@ public class UserListFragment extends Fragment {
         userListAdapter = new UserListAdapter(new ArrayList<>(), new UserListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(UserList user) {
-                sharedPreferences = getActivity().getSharedPreferences("ADMINISTRATION", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("uid", user.getUID());
-                editor.putString("name", user.getUsername());
-                editor.putString("email", user.getEmail());
-                editor.apply();
+                db.collection("Users").document(user.getUID()).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String PI_IP = document.getString("feeder_ip");
+                            sharedPreferences = getActivity().getSharedPreferences("ADMINISTRATION", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("uid", user.getUID());
+                            editor.putString("name", user.getUsername());
+                            editor.putString("email", user.getEmail());
+                            editor.putString("feeder_ip", PI_IP);
 
-                Intent intent = new Intent(getActivity(), ManageUserAdministration.class);
-                startActivity(intent);
+                            editor.apply();
 
-                Log.d("UserList", "Clicked user: " + user.getUsername());
+                            Intent intent = new Intent(getActivity(), ManageUserAdministration.class);
+                            startActivity(intent);
+
+                            Log.d("UserList", "Clicked user: " + user.getUsername());
+                        }
+                    }
+                });
             }
         });
         userListRecyclerView.setAdapter(userListAdapter);

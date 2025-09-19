@@ -1,6 +1,8 @@
 
 package com.example.project2025.Feeder;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +40,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
     private int nextScheduleIndex = 1; // Track which schedule slot to use next
     private ListenerRegistration schedulesListener;
     private FirebaseFirestore db;
+    private String PI_IP = "127.0.0.1";
     private ImageView img;
     private TextView percentage;
 
@@ -58,11 +61,8 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         scheduleContainer = root.findViewById(R.id.scheduleContainer);
         db = FirebaseFirestore.getInstance();
 
-        // Set feeder IP (persisted for alarms and manual trigger reuse)
-        requireContext().getSharedPreferences("feeder", 0)
-                .edit()
-                .putString("feeder_ip", "192.168.214.158")
-                .apply();
+        // Initialize PI_IP
+        PI_IP = requireContext().getSharedPreferences("FEEDERIP", MODE_PRIVATE).getString("feeder_ip", PI_IP);
 
         ImageView createAlarmBtn = root.findViewById(R.id.alarm);
         createAlarmBtn.setOnClickListener(v -> {
@@ -344,7 +344,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
     }
 
     void showFoodLevel(){
-        db.collection("Feeder").whereEqualTo("ip_address", "192.168.214.158").get().addOnCompleteListener(task ->
+        db.collection("Feeder").whereEqualTo("ip_address", PI_IP).get().addOnCompleteListener(task ->
         {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {

@@ -46,6 +46,7 @@ public class EditProfile extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +196,8 @@ public class EditProfile extends AppCompatActivity {
                             Log.d("ChangeIP", "Update successful for UID: " + currentUser.getUid());
                             dialog.dismiss();
                             userFeederIP.setText(ip);
+                            sharedPreferences = getSharedPreferences("FEEDERIP", MODE_PRIVATE);
+                            sharedPreferences.edit().putString("feeder_ip", ip).apply();
                             Toast.makeText(getApplicationContext(), "Update Successfully", Toast.LENGTH_SHORT).show();
                         }
                         else{
