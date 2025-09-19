@@ -216,7 +216,7 @@
             android:id="@+id/loginTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SignIn Now"
+            android:text="Sign In Now"
             android:textColor="#50B6EB"
             android:textStyle="bold"
             android:textSize="@dimen/text_medium" />
