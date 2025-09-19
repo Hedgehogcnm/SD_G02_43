@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/manage_user_admin_dashboard_navigation"
-        android:name="com.example.project2025.Dashboard.DashboardUserFragment"
+        android:name="com.example.project2025.ManageUser.ManageUserLiveCam"
         android:label="Dashboard"
         tools:layout="@layout/manage_user_live_cam" />
 

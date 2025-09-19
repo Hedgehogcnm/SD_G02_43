@@ -1,9 +1,13 @@
 package com.example.project2025.ManageUser;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -11,11 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.project2025.Dashboard.DashboardUserViewModel;
 import com.example.project2025.Models.FeedHistory;
 import com.example.project2025.R;
 import com.google.firebase.Timestamp;
@@ -28,7 +36,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class ManageUserLiveCam extends AppCompatActivity {
+public class ManageUserLiveCam extends Fragment {
 
     private SharedPreferences sharedPreferences;
     private LinearLayout feedButton;
@@ -40,25 +48,20 @@ public class ManageUserLiveCam extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.manage_user_live_cam);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.manage_user_live_cam, container, false);
 
-        liveCam = findViewById(R.id.ipCamera);
-        feedButton = findViewById(R.id.feedButton);
+        liveCam = root.findViewById(R.id.ipCamera);
+        feedButton = root.findViewById(R.id.feedButton);
+
+        return root;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        sharedPreferences = getSharedPreferences("FEEDERIP", MODE_PRIVATE);
+        sharedPreferences = requireContext().getSharedPreferences("ADMINISTRATION", MODE_PRIVATE);
         PI_IP = sharedPreferences.getString("feeder_ip", PI_IP);
 
         WebSettings webSettings = liveCam.getSettings();
@@ -81,7 +84,7 @@ public class ManageUserLiveCam extends AppCompatActivity {
                 try {
                     String ip = null;
                     try {
-                        ip = getSharedPreferences("feeder", 0).getString("feeder_ip", null);
+                        ip = requireContext().getSharedPreferences("ADMINISTRATION", MODE_PRIVATE).getString("feeder_ip", null);
                     } catch (Throwable ignored) {}
                     if (ip == null || ip.trim().isEmpty()) ip = PI_IP;
 
@@ -104,26 +107,26 @@ public class ManageUserLiveCam extends AppCompatActivity {
                     try { socket.close(); } catch (Throwable ignored) {}
 
                     final String finalResponse = response;
-                    runOnUiThread(new Runnable() {
+                    requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             if ("ACK".equals(finalResponse)) {
-                                Toast.makeText(getApplicationContext(), "Feeding time! (Level " + level + ")", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(requireContext(), "Feeding time! (Level " + level + ")", Toast.LENGTH_SHORT).show();
                                 try { saveFeedHistory(level); } catch (Throwable ignored) {}
                             } else if (finalResponse != null && !finalResponse.isEmpty()) {
-                                Toast.makeText(getApplicationContext(), "Feeder: " + finalResponse, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(requireContext(), "Feeder: " + finalResponse, Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(getApplicationContext(), "Command sent. Waiting on feeder...", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(requireContext(), "Command sent. Waiting on feeder...", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 } catch (IOException e) {
                     e.printStackTrace();
 
-                    runOnUiThread(new Runnable() {
+                    requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.d("Manual Feed ERROR:", "Failed because of : " + e.getMessage());
                         }
                     });
@@ -134,7 +137,7 @@ public class ManageUserLiveCam extends AppCompatActivity {
 
     private void showLevelPickerAndFeed() {
         final CharSequence[] items = new CharSequence[]{"Level 1", "Level 2", "Level 3", "Level 4"};
-        new android.app.AlertDialog.Builder(this)
+        new android.app.AlertDialog.Builder(requireContext())
                 .setTitle("Choose feed level")
                 .setItems(items, (dialog, which) -> {
                     int level = which + 1;
@@ -187,4 +190,10 @@ public class ManageUserLiveCam extends AppCompatActivity {
             Log.e("FeedHistory", "Cannot save feed history: user is null");
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
 }
