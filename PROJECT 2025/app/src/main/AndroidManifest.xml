@@ -26,6 +26,9 @@
         android:theme="@style/Theme.KaiFeedCat.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ManageUserProfile"
+            android:exported="false" />
+        <activity
             android:name=".Specific_Admin.AdminEditProfile"
             android:exported="false" />
         <activity

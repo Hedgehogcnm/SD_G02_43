@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/manage_user_navigation"
-    app:startDestination="@+id/manage_user_admin_dashboard_navigation">>
+    app:startDestination="@+id/manage_user_admin_dashboard_navigation">
 
     <fragment
         android:id="@+id/manage_user_admin_dashboard_navigation"
@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/manage_user_admin_feeder_navigation"
-        android:name="com.example.project2025.Feeder.FeederFragment"
+        android:name="com.example.project2025.ManageUser.ManageUserFeeder"
         android:label="Dashboard"
         tools:layout="@layout/manage_user_feeder"
         />
