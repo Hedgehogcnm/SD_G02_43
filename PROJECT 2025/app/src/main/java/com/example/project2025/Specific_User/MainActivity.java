@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        //Initialize Firebase
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         // Get current user role
         sharedPreferences = getSharedPreferences("ROLE", MODE_PRIVATE);
         sharedPreferences.edit().putString("Role", "Users").apply();

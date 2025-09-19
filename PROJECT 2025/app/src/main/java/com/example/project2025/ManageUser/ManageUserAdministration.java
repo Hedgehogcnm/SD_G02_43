@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -17,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.project2025.R;
+import com.example.project2025.Specific_Admin.AdminActivity;
 import com.example.project2025.databinding.ActivityMainBinding;
 import com.example.project2025.databinding.ManageUserAdministrationBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,6 +29,7 @@ public class ManageUserAdministration extends AppCompatActivity {
 
     private TextView usernameTextView;
     private Button editUserButton;
+    private ImageView returnButton;
     private SharedPreferences sharedPreferences;
     private ManageUserAdministrationBinding binding;
     private String username, email, uid;
@@ -47,15 +50,17 @@ public class ManageUserAdministration extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        // Initialize Firebase
-        db = FirebaseFirestore.getInstance();
-
         // Initialize UI elements
         usernameTextView = findViewById(R.id.username);
         editUserButton = findViewById(R.id.edit_button);
+        returnButton = findViewById(R.id.returnButton);
 
         editUserButton.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), ManageUserEditUser.class);
+            startActivity(intent);
+        });
+        returnButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
             startActivity(intent);
         });
     }
