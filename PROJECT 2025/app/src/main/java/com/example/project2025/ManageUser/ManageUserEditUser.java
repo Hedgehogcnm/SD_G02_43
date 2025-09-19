@@ -1,5 +1,6 @@
 package com.example.project2025.ManageUser;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project2025.R;
 import com.example.project2025.EditProfileLogics.ProfileImageHelper;
+import com.example.project2025.SignIn_Login_Onboarding.SignInActivity;
 import com.example.project2025.Specific_Admin.AdminActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -38,7 +40,6 @@ public class ManageUserEditUser extends AppCompatActivity {
     private LinearLayout changeUsername;
     private ImageView profileImageView, returnButton;
     private FirebaseFirestore db;
-    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,39 +72,7 @@ public class ManageUserEditUser extends AppCompatActivity {
         });
 
         deleteUserButton.setOnClickListener(v->{
-            String uid = sharedPreferences.getString("uid", "");
-            if (uid == null || uid.isEmpty()) {
-                Toast.makeText(this, "No UID found", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            String APIurl = "https://us-central1-divine-course-467504-m2.cloudfunctions.net/deleteUser";
-            JSONObject payload = new JSONObject();
-            try {
-                payload.put("uid", uid);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, APIurl, payload,
-                    response -> {
-                        Toast.makeText(this, "Deleted: " + response.toString(), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                        startActivity(intent);
-                    },
-                    error -> {
-                        if(error.getMessage() != null){
-                            int statusCode = error.networkResponse.statusCode;
-                            String responseBody = new String(error.networkResponse.data);
-                            Toast.makeText(this, "Error " + statusCode + ": " + responseBody, Toast.LENGTH_LONG).show();
-                        }
-                        else{
-                            Toast.makeText(this, "Network error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-            Volley.newRequestQueue(getApplicationContext()).add(request);
-
+            showDeleteDialog();
         });
     }
 
@@ -135,5 +104,52 @@ public class ManageUserEditUser extends AppCompatActivity {
         }).addOnFailureListener(e -> {
             Log.e("ManageUserEditUser", "Error loading profile image", e);
         });
+    }
+
+    private void showDeleteDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete User")
+                .setMessage("Are you sure you want to delete " + sharedPreferences.getString("name", "") + "?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    deleteUser();
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+    private void deleteUser(){
+        String uid = sharedPreferences.getString("uid", "");
+        if (uid == null || uid.isEmpty()) {
+            Toast.makeText(this, "No UID found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String APIurl = "https://us-central1-divine-course-467504-m2.cloudfunctions.net/deleteUser";
+        JSONObject payload = new JSONObject();
+        try {
+            payload.put("uid", uid);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, APIurl, payload,
+                response -> {
+                    Toast.makeText(this, "Deleted User", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                    startActivity(intent);
+                },
+                error -> {
+                    if(error.getMessage() != null){
+                        int statusCode = error.networkResponse.statusCode;
+                        String responseBody = new String(error.networkResponse.data);
+                        Toast.makeText(this, "Deleted User ", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                        startActivity(intent);
+                    }
+                    else{
+                        Log.d("ManageUserEditUser", "Error: " + error.getMessage());
+                    }
+                });
+
+        Volley.newRequestQueue(getApplicationContext()).add(request);
     }
 }

@@ -60,8 +60,7 @@ public class ManageUserAdministration extends AppCompatActivity {
             startActivity(intent);
         });
         returnButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-            startActivity(intent);
+            finish();
         });
     }
 
