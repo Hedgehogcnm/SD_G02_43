@@ -9,4 +9,10 @@
         android:id="@+id/manage_user_admin_feeder_navigation"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="Feeder" />
+
+    <item
+        android:id="@+id/manage_user_admin_feed_history"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="History" />
+
 </menu>
