@@ -5,8 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA"
-    tools:context=".Specific_User.EditProfile">
+    tools:context=".Specific_Admin.AdminEditProfile">
 
     <!-- Top Bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -170,42 +169,6 @@
                     />
             </LinearLayout>
 
-            <!-- Privacy -->
-            <LinearLayout
-                android:id="@+id/feederIP"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingVertical="12dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Feeder IP"
-                    android:textColor="#000000"
-                    android:paddingStart="10dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/user_feeder_ip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="XXXX"
-                    android:textColor="#666666"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_chevron_right"
-                   />
-            </LinearLayout>
 
 
             <!-- About Us -->
@@ -218,7 +181,6 @@
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_marginTop="20dp"
                 android:paddingVertical="12dp">
 
                 <TextView

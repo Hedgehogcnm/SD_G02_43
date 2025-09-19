@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.project2025.R;
-import com.example.project2025.Specific_User.EditProfile;
 import com.example.project2025.SignIn_Login_Onboarding.SignInActivity;
 import com.example.project2025.EditProfileLogics.ProfileImageHelper;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,7 +52,7 @@ public class EditProfileFragment extends Fragment {
         // When admin clicks cancel, return to the Dashboard fragment
         ImageView createGearBtn = view.findViewById(R.id.gear_button);
         createGearBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EditProfile.class);
+            Intent intent = new Intent(getActivity(), AdminEditProfile.class);
             startActivity(intent);
         });
 

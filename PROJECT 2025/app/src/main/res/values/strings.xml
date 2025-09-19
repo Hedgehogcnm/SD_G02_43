@@ -13,4 +13,9 @@
     <string name="day_sat">Sat</string>
 
     <string name="user_device">User &amp; Device</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_manage_user_fragment">ManageUserFragment</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

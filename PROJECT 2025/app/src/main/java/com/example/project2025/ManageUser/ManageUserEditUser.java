@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project2025.R;
 import com.example.project2025.EditProfileLogics.ProfileImageHelper;
+import com.example.project2025.Specific_Admin.AdminActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -87,12 +88,14 @@ public class ManageUserEditUser extends AppCompatActivity {
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, APIurl, payload,
                     response -> {
                         Toast.makeText(this, "Deleted: " + response.toString(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                        startActivity(intent);
                     },
                     error -> {
                         if(error.getMessage() != null){
                             int statusCode = error.networkResponse.statusCode;
                             String responseBody = new String(error.networkResponse.data);
-                            Toast.makeText(this, "Error " + statusCode + ": " + responseBody, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Error " + statusCode + ": " + responseBody, Toast.LENGTH_LONG).show();
                         }
                         else{
                             Toast.makeText(this, "Network error: " + error.getMessage(), Toast.LENGTH_SHORT).show();

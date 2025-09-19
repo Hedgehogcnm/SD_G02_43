@@ -2,6 +2,7 @@
 package com.example.project2025.Feeder;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -350,7 +351,11 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                     double foodLevel = document.getDouble("food_level");
                     checkFoodLevel(foodLevel);
                     displayPercentage(foodLevel);
+                    Log.d("Feeder Fragment:", "Food Level: " + foodLevel + "%");
                 }
+            }
+            else {
+                Log.d("Feeder Fragment:", "Error getting documents: ", task.getException());
             }
         });
     }
@@ -361,7 +366,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         else if(foodLevel <= 6){
             img.setImageResource(R.drawable.food_level_75);
         }
-        else if(foodLevel <= 9){  // 125-(9/12*100)
+        else if(foodLevel <= 9){
             img.setImageResource(R.drawable.food_level_50);
         }
         else if(foodLevel <= 12){
@@ -376,11 +381,11 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         if(foodLevel > 15){
             percentage.setText("0%");
         }
-        else if(foodLevel >= 3 && foodLevel <= 15){
-            percentage.setText(result + "%");
-        }
         else if(foodLevel < 3){
             percentage.setText("100%");
+        }
+        else if(foodLevel >= 3 && foodLevel <= 15){
+            percentage.setText(result + "%");
         }
     }
 }

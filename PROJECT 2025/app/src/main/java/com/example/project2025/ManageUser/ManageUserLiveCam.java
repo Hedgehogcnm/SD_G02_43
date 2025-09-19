@@ -1,0 +1,186 @@
+package com.example.project2025.ManageUser;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import com.example.project2025.Models.FeedHistory;
+import com.example.project2025.R;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+public class ManageUserLiveCam extends AppCompatActivity {
+
+    private LinearLayout feedButton;
+    private WebView liveCam;
+    private static final String PI_IP = "192.168.214.158";
+    private static final int FEED_PORT = 12345;
+    private static final int HTTP_PORT = 8889;
+    private static final String LIVE_FOLDER = "/cam1";
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.manage_user_live_cam);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        liveCam = findViewById(R.id.ipCamera);
+        feedButton = findViewById(R.id.feedButton);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        WebSettings webSettings = liveCam.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        liveCam.setWebViewClient(new WebViewClient());
+
+        liveCam.loadUrl("http://" + PI_IP + ":" + HTTP_PORT + LIVE_FOLDER);
+        feedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLevelPickerAndFeed();
+            }
+        });
+    }
+
+    private void sendFeedCommand(int level) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String ip = null;
+                    try {
+                        ip = getSharedPreferences("feeder", 0).getString("feeder_ip", null);
+                    } catch (Throwable ignored) {}
+                    if (ip == null || ip.trim().isEmpty()) ip = PI_IP;
+
+                    Socket socket = new Socket(ip, FEED_PORT);
+                    try {
+                        socket.setSoTimeout(4000);
+                    } catch (Throwable ignored) {}
+                    OutputStream output = socket.getOutputStream();
+                    String payload = "Feed:" + Math.max(1, Math.min(4, level));
+                    output.write(payload.getBytes());
+                    output.flush();
+
+                    String response = "";
+                    try {
+                        InputStream in = socket.getInputStream();
+                        byte[] buf = new byte[64];
+                        int n = in.read(buf);
+                        if (n > 0) response = new String(buf, 0, n).trim();
+                    } catch (Throwable ignored) {}
+                    try { socket.close(); } catch (Throwable ignored) {}
+
+                    final String finalResponse = response;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if ("ACK".equals(finalResponse)) {
+                                Toast.makeText(getApplicationContext(), "Feeding time! (Level " + level + ")", Toast.LENGTH_SHORT).show();
+                                try { saveFeedHistory(level); } catch (Throwable ignored) {}
+                            } else if (finalResponse != null && !finalResponse.isEmpty()) {
+                                Toast.makeText(getApplicationContext(), "Feeder: " + finalResponse, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Command sent. Waiting on feeder...", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("Manual Feed ERROR:", "Failed because of : " + e.getMessage());
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+    private void showLevelPickerAndFeed() {
+        final CharSequence[] items = new CharSequence[]{"Level 1", "Level 2", "Level 3", "Level 4"};
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Choose feed level")
+                .setItems(items, (dialog, which) -> {
+                    int level = which + 1;
+                    sendFeedCommand(level);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void saveFeedHistory(int level) {
+
+        if (db == null) {
+            db = FirebaseFirestore.getInstance();
+        }
+        if (auth == null) {
+            auth = FirebaseAuth.getInstance();
+        }
+
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            Log.d("FeedHistory", "Saving feed history for user ID: " + userId);
+
+            // Create a new feed history entry
+            FeedHistory feedHistory = new FeedHistory(
+                    userId,
+                    Timestamp.now(),
+                    "Manual"
+            );
+            // Also store level so it matches scheduled entries format
+            java.util.Map<String, Object> map = new java.util.HashMap<>();
+            map.put("userId", userId);
+            map.put("timestamp", feedHistory.getTimestamp());
+            map.put("feedType", feedHistory.getFeedType());
+            map.put("level", level);
+
+            // Log the feed history object
+            Log.d("FeedHistory", "Feed history object - userId: " + feedHistory.getUserId() + ", feedType: " + feedHistory.getFeedType());
+
+            // Add to Firestore
+            db.collection("FeedHistory")
+                    .add(map)
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d("FeedHistory", "Feed history saved with ID: " + documentReference.getId());
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("FeedHistory", "Error saving feed history", e);
+                    });
+        } else {
+            Log.e("FeedHistory", "Cannot save feed history: user is null");
+        }
+    }
+}

@@ -35,8 +35,6 @@ import java.net.Socket;
  * This fragment will be used for admin-specific features in the future
  */
 public class DashboardAdminFragment extends Fragment {
-
-    CardView tempUserListButton;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     TextView userCount;
     EditText ip_address ;
@@ -52,15 +50,6 @@ public class DashboardAdminFragment extends Fragment {
         ip_address = root.findViewById(R.id.ip_address);
         manualFeed = root.findViewById(R.id.manual_feed);
         userCount = root.findViewById(R.id.user_count);
-        tempUserListButton = root.findViewById(R.id.temp_user_list);
-
-        tempUserListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UserListFragment.class);
-                startActivity(intent);
-            }
-        });
         return root;
     }
 
