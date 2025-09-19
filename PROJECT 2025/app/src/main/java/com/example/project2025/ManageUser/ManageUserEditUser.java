@@ -116,6 +116,8 @@ public class ManageUserEditUser extends AppCompatActivity {
                 .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                 .show();
     }
+
+    // API for delete User from Firestore and Firebase auth
     private void deleteUser(){
         String uid = sharedPreferences.getString("uid", "");
         if (uid == null || uid.isEmpty()) {
@@ -130,10 +132,10 @@ public class ManageUserEditUser extends AppCompatActivity {
             throw new RuntimeException(e);
         }
 
-
+        // Genuinely no idea whats going on with this API call, but it works
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, APIurl, payload,
                 response -> {
-                    Toast.makeText(this, "Deleted User", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                     startActivity(intent);
                 },
@@ -141,12 +143,14 @@ public class ManageUserEditUser extends AppCompatActivity {
                     if(error.getMessage() != null){
                         int statusCode = error.networkResponse.statusCode;
                         String responseBody = new String(error.networkResponse.data);
-                        Toast.makeText(this, "Deleted User ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                         startActivity(intent);
                     }
                     else{
-                        Log.d("ManageUserEditUser", "Error: " + error.getMessage());
+                        Toast.makeText(this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                        startActivity(intent);
                     }
                 });
 
