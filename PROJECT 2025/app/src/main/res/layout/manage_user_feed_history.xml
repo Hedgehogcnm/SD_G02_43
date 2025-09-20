@@ -10,14 +10,13 @@
     <!-- Feeding History Label -->
     <TextView
         android:id="@+id/menu_history"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginTop="24dp"
-        android:gravity="left"
+        android:layout_marginTop="@dimen/margin_large"
+        android:gravity="center"
         android:text="FEEDING HISTORY"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_zlarge"
+        android:textSize="@dimen/text_ylarge"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +28,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/margin_medium"
         android:layout_marginBottom="100dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="16dp"

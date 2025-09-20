@@ -8,7 +8,6 @@
 
     tools:context=".ManageUser.ManageUserAdministration">
 
-    <!-- 水平 Guideline（居中对齐更稳定） -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_center"
         android:layout_width="wrap_content"
@@ -21,6 +20,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_xlarge"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -29,6 +29,7 @@
             android:id="@+id/returnButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginStart="@dimen/margin_large"
             android:src="@drawable/return_button_foreground"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -73,7 +74,6 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_medium"
         app:navGraph="@navigation/manage_user_navigation"
         app:layout_constraintTop_toBottomOf="@id/constraintLayout"
         app:layout_constraintBottom_toBottomOf="parent"

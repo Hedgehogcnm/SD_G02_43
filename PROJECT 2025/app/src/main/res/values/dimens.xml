@@ -29,6 +29,10 @@
     <dimen name="margin_zlarge">80dp</dimen>
     <dimen name="margin_alarge">70dp</dimen>
     <dimen name="margin_blarge">100dp</dimen>
+    <dimen name="margin_clarge">65dp</dimen>
+    <dimen name="margin_dlarge">230dp</dimen>
+    <dimen name="margin_elarge">55dp</dimen>
+
 
 
     <!-- Text sizes -->

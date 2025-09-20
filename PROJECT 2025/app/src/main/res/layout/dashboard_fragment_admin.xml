@@ -59,7 +59,7 @@
             android:id="@+id/statsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_ylarge"
+            android:layout_marginTop="@dimen/margin_elarge"
             android:orientation="horizontal"
             android:weightSum="2"
             app:layout_constraintTop_toBottomOf="@id/ip_address"
@@ -177,6 +177,7 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/margin_medium"
             app:cardElevation="@dimen/card_elevation"
+            android:layout_marginTop="@dimen/margin_small"
             app:layout_constraintTop_toBottomOf="@id/activity_header"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -192,7 +193,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_small"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 

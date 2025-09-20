@@ -121,7 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_zlarge"
-        android:layout_marginStart="@dimen/margin_wlarge"
+        android:layout_marginStart="@dimen/margin_clarge"
         android:fontFamily="sans-serif"
         android:text="Don't have an account? "
         android:textColor="@color/black"

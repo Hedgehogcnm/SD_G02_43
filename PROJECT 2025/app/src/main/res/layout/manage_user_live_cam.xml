@@ -11,7 +11,7 @@
         android:id="@+id/cardview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_alarge"
+        android:layout_marginTop="@dimen/margin_large"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:cardCornerRadius="12dp"
