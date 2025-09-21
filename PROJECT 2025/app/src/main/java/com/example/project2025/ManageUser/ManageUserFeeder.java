@@ -38,6 +38,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -108,6 +109,7 @@ public class ManageUserFeeder extends Fragment implements ScheduleBottomSheet.Sc
         schedulesListener = db.collection("Users")
                 .document(uid)
                 .collection("schedules")
+                .orderBy("createdAt", Query.Direction.DESCENDING)
                 .addSnapshotListener((snap, err) -> {
                     if (err != null) {
                         android.util.Log.e("FeederFragment", "Firebase listener error: " + err.getMessage());
