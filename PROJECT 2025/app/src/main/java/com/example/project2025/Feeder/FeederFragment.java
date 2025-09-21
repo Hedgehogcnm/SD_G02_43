@@ -84,6 +84,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             schedulesListener = db.collection("Users")
                     .document(user.getUid())
                     .collection("schedules")
+                    .orderBy("createdAt", Query.Direction.DESCENDING)
                     .addSnapshotListener((snap, err) -> {
                         if (err != null) {
                             android.util.Log.e("FeederFragment", "Firebase listener error: " + err.getMessage());
