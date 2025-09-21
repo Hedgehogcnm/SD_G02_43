@@ -153,7 +153,7 @@ public class EditProfile extends AppCompatActivity {
 
         // Create the dialog layout with proper margins
         final EditText ipInput = new EditText(this);
-        ipInput.setHint("Enter your new ip");
+        ipInput.setHint("Enter your new IP");
         ipInput.setInputType(InputType.TYPE_CLASS_TEXT);
 
         // Add margin to the EditText
@@ -184,7 +184,7 @@ public class EditProfile extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(ip)) {
                     Log.d("ChangeIP", "IP = " + ip);
-                    Toast.makeText(getApplicationContext(), "Please enter your ip", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please enter your IP", Toast.LENGTH_SHORT).show();
                     return; // Don't dismiss dialog
                 }
 

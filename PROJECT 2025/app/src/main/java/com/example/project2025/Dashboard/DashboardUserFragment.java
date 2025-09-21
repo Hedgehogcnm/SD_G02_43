@@ -40,7 +40,7 @@ public class DashboardUserFragment extends Fragment {
     private LinearLayout feedButton;
     private WebView liveCam;
     private String PI_IP = "127.0.0.1";
-    private static final int FEED_PORT = 12345;
+    private static final int FEED_PORT = 12345  ;
     private static final int HTTP_PORT = 8889;
     private static final String LIVE_FOLDER = "/cam1";
     private FirebaseFirestore db;

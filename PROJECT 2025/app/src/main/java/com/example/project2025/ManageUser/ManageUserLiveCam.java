@@ -186,6 +186,26 @@ public class ManageUserLiveCam extends Fragment {
                     .addOnFailureListener(e -> {
                         Log.e("FeedHistory", "Error saving feed history", e);
                     });
+
+            // Add to User's feed history as well
+            map = new java.util.HashMap<>();
+            map.put("userId", sharedPreferences.getString("uid", null));
+            map.put("timestamp", feedHistory.getTimestamp());
+            map.put("feedType", feedHistory.getFeedType());
+            map.put("level", level);
+
+            // Log the feed history object
+            Log.d("FeedHistory", "Feed history object - userId: " + feedHistory.getUserId() + ", feedType: " + feedHistory.getFeedType());
+
+            // Add to Firestore
+            db.collection("FeedHistory")
+                    .add(map)
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d("FeedHistory", "Feed history saved with ID: " + documentReference.getId());
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("FeedHistory", "Error saving feed history", e);
+                    });
         } else {
             Log.e("FeedHistory", "Cannot save feed history: user is null");
         }
