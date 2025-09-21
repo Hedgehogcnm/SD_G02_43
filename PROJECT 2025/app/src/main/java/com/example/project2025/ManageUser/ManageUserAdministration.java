@@ -28,7 +28,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class ManageUserAdministration extends AppCompatActivity {
 
     private TextView usernameTextView;
-    private Button editUserButton;
     private ImageView returnButton;
     private SharedPreferences sharedPreferences;
     private ManageUserAdministrationBinding binding;
@@ -52,13 +51,8 @@ public class ManageUserAdministration extends AppCompatActivity {
 
         // Initialize UI elements
         usernameTextView = findViewById(R.id.username);
-        editUserButton = findViewById(R.id.edit_button);
         returnButton = findViewById(R.id.returnButton);
 
-        editUserButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), ManageUserEditUser.class);
-            startActivity(intent);
-        });
         returnButton.setOnClickListener(v -> {
             finish();
         });

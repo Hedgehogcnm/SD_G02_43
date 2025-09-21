@@ -5,21 +5,64 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ManageUser.ManageUserFeedHistory">
+    tools:context=".ManageUser.ManageUserProfile">
+
+    <!-- Settings Icon -->
+    <ImageView
+        android:id="@+id/gear_button"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="@dimen/margin_xlarge"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:src="@drawable/menu_setting"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Profile Image -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="H,16:9"
+        app:layout_constraintTop_toBottomOf="@id/gear_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="3dp"
+        tools:layout_width="180dp"
+        tools:layout_height="180dp"
+        android:src="@drawable/logo" />
+
+    <!-- Username -->
+    <TextView
+        android:id="@+id/menu_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="name"
+        android:textSize="@dimen/text_ylarge"
+        app:layout_constraintTop_toBottomOf="@id/profile_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Feeding History Label -->
     <TextView
         android:id="@+id/menu_history"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_large"
-        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_large"
         android:text="FEEDING HISTORY"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_ylarge"
+        android:textSize="@dimen/text_zlarge"
         android:textStyle="bold"
+        android:gravity="left"
+        app:layout_constraintTop_toBottomOf="@id/menu_username"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        />
 
     <!-- Card with RecyclerView -->
     <androidx.cardview.widget.CardView
@@ -28,7 +71,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="100dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="16dp"

@@ -2,47 +2,56 @@ package com.example.project2025.ManageUser;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project2025.Adapters.FeedHistoryAdapter;
+import com.example.project2025.EditProfileLogics.ProfileImageHelper;
 import com.example.project2025.Models.FeedHistory;
 import com.example.project2025.R;
+import com.example.project2025.Specific_User.EditProfile;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManageUserFeedHistory extends Fragment {
+public class ManageUserProfile extends Fragment {
 
+    private TextView username;
     private RecyclerView feedHistoryRecyclerView;
     private TextView emptyFeedHistoryText;
     private FeedHistoryAdapter feedHistoryAdapter;
     private FirebaseFirestore db;
     private SharedPreferences sharedPreferences;
     private String uid;
+    private ImageView profileImage;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.manage_user_feed_history, container, false);
+        View root = inflater.inflate(R.layout.manage_user_profile, container, false);
+
+        // Setup gear button
+        ImageView createGearBtn = root.findViewById(R.id.gear_button);
+        createGearBtn.setOnClickListener(v -> {
+            // Navigate to EditProfile activity instead of showing SettingProfile bottom sheet
+            Intent intent = new Intent(getActivity(), ManageUserEditUser.class);
+            startActivity(intent);
+        });
 
         //Initialize firebase
         db = FirebaseFirestore.getInstance();
@@ -74,6 +83,13 @@ public class ManageUserFeedHistory extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Initialize username and profile image
+        username = view.findViewById(R.id.menu_username);
+        profileImage = view.findViewById(R.id.profile_image);
+        username.setText(sharedPreferences.getString("name", null));
+        String profilePic = sharedPreferences.getString("profilepic", null);
+        ProfileImageHelper.loadProfileImage(getContext(), profileImage, profilePic);
 
         // Refresh uid just in case
         uid = sharedPreferences.getString("uid", null);

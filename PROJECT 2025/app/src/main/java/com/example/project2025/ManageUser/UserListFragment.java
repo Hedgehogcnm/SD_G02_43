@@ -47,13 +47,14 @@ public class UserListFragment extends Fragment {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             String PI_IP = document.getString("feeder_ip");
+                            String profilePic = document.getString("profilepic");
                             sharedPreferences = getActivity().getSharedPreferences("ADMINISTRATION", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("uid", user.getUID());
                             editor.putString("name", user.getUsername());
                             editor.putString("email", user.getEmail());
                             editor.putString("feeder_ip", PI_IP);
-
+                            editor.putString("profilepic", profilePic);
                             editor.apply();
 
                             Intent intent = new Intent(getActivity(), ManageUserAdministration.class);

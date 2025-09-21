@@ -46,23 +46,7 @@
             android:text="Username"
             android:textColor="@color/black"
             android:textSize="@dimen/text_xlarge"
-            app:layout_constraintBaseline_toBaselineOf="@id/edit_button"
             app:layout_constraintStart_toEndOf="@+id/returnButton"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Edit Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/edit_button"
-            android:layout_width="100dp"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginTop="@dimen/margin_large"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_large"
-            android:text="Edit"
-            android:textColor="@android:color/white"
-            app:backgroundTint="@android:color/black"
-            app:cornerRadius="@dimen/margin_small"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

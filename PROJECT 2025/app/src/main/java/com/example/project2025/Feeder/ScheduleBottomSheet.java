@@ -155,7 +155,7 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
                 foodBar.setLayoutParams(params);
             });
 
-            Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Schedule Cancelled", Toast.LENGTH_SHORT).show();
             dismiss(); // close BottomSheet
         });
 
@@ -195,20 +195,20 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
             }
         }
         if (selectedDays.isEmpty() || !levelChosen || timeString == null || timeString.trim().isEmpty()) {
-            Toast.makeText(getContext(), "Enter all details for your schedule", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please enter all details", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Title must be non-empty
         String title = setTitleTextView != null ? setTitleTextView.getText().toString() : "";
         if (title == null || title.trim().isEmpty() || "Set Title".contentEquals(title)) {
-            Toast.makeText(getContext(), "Enter all details for your schedule", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please enter all details", Toast.LENGTH_SHORT).show();
             return;
         }
 
         ScheduleData scheduleData = new ScheduleData(title, timeString, selectedDays, selectedFeedLevel);
         if (listener != null) listener.onScheduleDataReceived(scheduleData);
-        Toast.makeText(getContext(), "Schedule saved!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Schedule Saved!", Toast.LENGTH_SHORT).show();
         dismiss();
     }
 }

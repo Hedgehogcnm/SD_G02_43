@@ -292,7 +292,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                                         .document(documentId)
                                         .delete()
                                         .addOnSuccessListener(unused -> {
-                                            Toast.makeText(requireContext(), "Schedule deleted", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(requireContext(), "Schedule Deleted", Toast.LENGTH_SHORT).show();
                                         })
                                         .addOnFailureListener(e -> {
                                             Toast.makeText(requireContext(), "Failed to delete schedule", Toast.LENGTH_SHORT).show();
