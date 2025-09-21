@@ -392,7 +392,8 @@ public class ManageUserEditUser extends AppCompatActivity {
 
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
+        intent.setType("image/jpeg");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/jpeg", "image/jpg", "image/png"});
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
@@ -402,8 +403,21 @@ public class ManageUserEditUser extends AppCompatActivity {
         
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri imageUri = data.getData();
-            uploadImageToFirebase(imageUri);
+            
+            // Validate image format
+            if (isValidImageFormat(imageUri)) {
+                uploadImageToFirebase(imageUri);
+            } else {
+                Toast.makeText(this, "Please upload a picture in valid format (jpg,jpeg, or png)", Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+
+    private boolean isValidImageFormat(Uri imageUri) {
+        String mimeType = getContentResolver().getType(imageUri);
+        return mimeType != null && (mimeType.equals("image/jpeg") || 
+                                   mimeType.equals("image/jpg") || 
+                                   mimeType.equals("image/png"));
     }
 
     private void uploadImageToFirebase(Uri imageUri) {

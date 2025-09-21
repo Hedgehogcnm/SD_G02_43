@@ -25,7 +25,7 @@ public class ProfileImageHelper {
     public static void loadProfileImage(Context context, ImageView imageView, String profilePicFilename) {
         if (profilePicFilename == null || profilePicFilename.isEmpty()) {
             // If no profile picture set, use default
-            imageView.setImageResource(R.drawable.sad_mouse);
+            imageView.setImageResource(R.drawable.loading_circle);
             return;
         }
 
@@ -55,8 +55,8 @@ public class ProfileImageHelper {
                             // Step 2: If not cached → fallback to full load with placeholder
                             Glide.with(context)
                                     .load(profilePicFilename)
-                                    .placeholder(R.drawable.sad_mouse) // only used when cache is empty
-                                    .error(R.drawable.sad_mouse)
+                                    .placeholder(R.drawable.loading_circle) // only used when cache is empty
+                                    .error(R.drawable.loading_circle)
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(imageView);
                         }
@@ -95,9 +95,11 @@ public class ProfileImageHelper {
                 return R.drawable.desperate_dog;
             case "predefine_profile_image":
                 return R.drawable.predefine_profile_image;
+            case "loading_circle":
+                return R.drawable.loading_circle;
             case "sad_mouse":
             default:
-                return R.drawable.sad_mouse;
+                return R.drawable.loading_circle;
         }
     }
 }
