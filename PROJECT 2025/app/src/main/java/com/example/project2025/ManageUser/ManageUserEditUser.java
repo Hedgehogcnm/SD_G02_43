@@ -464,7 +464,7 @@ public class ManageUserEditUser extends AppCompatActivity {
                     Log.d("ChangeProfilePic", "Update successful for UID: " + uid);
                     // Update the profile image in the UI
                     ProfileImageHelper.loadProfileImage(ManageUserEditUser.this, profileImageView, newProfilePic);
-                    Toast.makeText(getApplicationContext(), "Profile picture updated successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Update Successfully", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e("ChangeProfilePic", "Update failed", task.getException());
                     Toast.makeText(getApplicationContext(), "Failed to update profile picture", Toast.LENGTH_SHORT).show();

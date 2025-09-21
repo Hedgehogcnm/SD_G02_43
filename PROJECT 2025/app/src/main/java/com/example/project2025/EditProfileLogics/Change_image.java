@@ -34,6 +34,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.w3c.dom.Document;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -153,6 +155,7 @@ public class Change_image extends AppCompatActivity {
         }
 
         // Then: refresh from Firestore
+        DocumentReference adminRef = db.collection("Admin").document(currentUser.getUid());
         DocumentReference userRef = db.collection("Users").document(currentUser.getUid());
         userRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -167,6 +170,23 @@ public class Change_image extends AppCompatActivity {
                 } else {
                     ProfileImageHelper.loadProfileImage(this, change_image, null);
                 }
+            }
+            else {
+                adminRef.get().addOnSuccessListener(innerDocumentSnapshot -> {
+                    if (innerDocumentSnapshot.exists()) {
+                        String currentProfilePic = innerDocumentSnapshot.getString("profilepic");
+
+                        if (currentProfilePic != null && !currentProfilePic.isEmpty()) {
+                            selectedImage = currentProfilePic;
+                            ProfileImageHelper.loadProfileImage(this, change_image, currentProfilePic);
+
+                            // 🔥 Save to cache
+                            prefs.edit().putString("profilepic", currentProfilePic).apply();
+                        } else {
+                            ProfileImageHelper.loadProfileImage(this, change_image, null);
+                        }
+                    }
+                });
             }
         }).addOnFailureListener(e -> {
             Log.e(TAG, "Error loading profile image", e);

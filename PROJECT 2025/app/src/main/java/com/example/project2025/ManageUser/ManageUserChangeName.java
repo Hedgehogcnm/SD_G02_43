@@ -69,7 +69,7 @@ public class ManageUserChangeName extends AppCompatActivity {
         String uid = sharedPreferences.getString("uid", "");
         db.collection("Users").document(uid).update("name", newName).addOnSuccessListener(aVoid -> {
             sharedPreferences.edit().putString("name", newName).apply();
-            Toast.makeText(getApplicationContext(), "Username updated successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Update Successfully", Toast.LENGTH_SHORT).show();
             finish();
         }).addOnFailureListener(e -> {
             Log.d("ManageUserChangeName", "Failed to update username");
