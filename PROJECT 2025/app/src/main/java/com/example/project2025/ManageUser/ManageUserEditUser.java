@@ -96,6 +96,11 @@ public class ManageUserEditUser extends AppCompatActivity {
             showChangeProfilePictureDialog();
         });
 
+        profileImageView.setOnClickListener(v -> {
+            Log.d("ManageUserEditUser", "Profile image clicked");
+            showChangeProfilePictureDialog();
+        });
+
         returnButton.setOnClickListener(v -> {
             finish();
         });

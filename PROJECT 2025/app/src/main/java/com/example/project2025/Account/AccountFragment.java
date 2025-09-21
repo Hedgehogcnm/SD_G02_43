@@ -162,9 +162,14 @@ public class AccountFragment extends Fragment {
                             return b.getTimestamp().compareTo(a.getTimestamp());
                         });
                         
+                        // Limit to latest 8 feed history items
+                        if (feedHistoryList.size() > 8) {
+                            feedHistoryList = feedHistoryList.subList(0, 8);
+                            Log.d("FeedHistory", "Limited to latest 8 feed history items");
+                        }
+                        
                         // Update UI based on results
                         if (feedHistoryList.isEmpty()) {
-
                             feedHistoryRecyclerView.setVisibility(View.GONE);
                             emptyFeedHistoryText.setVisibility(View.VISIBLE);
                         } else {
