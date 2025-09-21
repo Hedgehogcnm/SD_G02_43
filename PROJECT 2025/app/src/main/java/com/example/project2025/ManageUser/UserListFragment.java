@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +37,7 @@ public class UserListFragment extends Fragment {
         // Inflate the layout for this fragment
         // Currently shows "Admin Dashboard" and "(Empty for now)" text
         View root = inflater.inflate(R.layout.user_list, container, false);
-
+        Log.d("UserList", "Started");
         db = FirebaseFirestore.getInstance();
         userListRecyclerView = root.findViewById(R.id.user_list_recycler_view);
         userListRecyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
@@ -67,14 +69,13 @@ public class UserListFragment extends Fragment {
             }
         });
         userListRecyclerView.setAdapter(userListAdapter);
-
         return root;
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("UserList", "Started");
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         loadUser();
     }
 

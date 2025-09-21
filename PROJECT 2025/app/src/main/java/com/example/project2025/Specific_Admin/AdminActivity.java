@@ -1,13 +1,16 @@
 package com.example.project2025.Specific_Admin;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.project2025.ManageUser.UserListFragment;
 import com.example.project2025.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -33,4 +36,10 @@ public class AdminActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.admin_nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNav, navController);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
 }

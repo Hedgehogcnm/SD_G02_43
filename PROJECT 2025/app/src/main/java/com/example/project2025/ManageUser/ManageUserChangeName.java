@@ -47,6 +47,9 @@ public class ManageUserChangeName extends AppCompatActivity {
             if (!newUsername.isEmpty()) {
                 updateUsername(newUsername);
             }
+            else{
+                Toast.makeText(getApplicationContext(),"Please enter your new name", Toast.LENGTH_SHORT).show();
+            }
         });
 
         returnButtonImageView.setOnClickListener(v -> {

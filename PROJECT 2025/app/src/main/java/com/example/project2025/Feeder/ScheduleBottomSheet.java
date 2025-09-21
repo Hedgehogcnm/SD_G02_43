@@ -208,7 +208,7 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
 
         ScheduleData scheduleData = new ScheduleData(title, timeString, selectedDays, selectedFeedLevel);
         if (listener != null) listener.onScheduleDataReceived(scheduleData);
-        Toast.makeText(getContext(), "Schedule Saved!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Schedule Saved", Toast.LENGTH_SHORT).show();
         dismiss();
     }
 }
