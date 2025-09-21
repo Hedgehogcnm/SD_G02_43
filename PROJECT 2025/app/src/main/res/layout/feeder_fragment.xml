@@ -26,8 +26,8 @@
       android:text="0%"
       android:textSize="22sp"
       android:textStyle="bold"
-      android:layout_marginTop="@dimen/margin_small"
-      android:layout_marginStart="@dimen/margin_glarge"
+      android:layout_marginTop="@dimen/margin_xsmall"
+      android:layout_marginStart="@dimen/margin_xsmall"
       app:layout_constraintTop_toBottomOf="@id/device_pic"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent" />

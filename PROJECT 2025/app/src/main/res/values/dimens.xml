@@ -20,6 +20,7 @@
     <dimen name="live_cam_button_height">50dp</dimen>
 
     <!-- Margin / Padding -->
+    <dimen name="margin_xsmall">2dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_large">24dp</dimen>
@@ -34,7 +35,10 @@
     <dimen name="margin_elarge">55dp</dimen>
     <dimen name="margin_flarge">45dp</dimen>
     <dimen name="margin_glarge">20dp</dimen>
-    <dimen name="margin_hlarge">11dp</dimen>
+    <dimen name="margin_xxxlarge">11dp</dimen>
+    <dimen name="margin_hlarge">40dp</dimen>
+
+
 
 
     <!-- Text sizes -->
