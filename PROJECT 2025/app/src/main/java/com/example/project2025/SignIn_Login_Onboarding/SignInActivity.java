@@ -295,7 +295,7 @@ public class SignInActivity extends AppCompatActivity {
         userProfile.put("name", "Please change again.");
         userProfile.put("email", user.getEmail());
         userProfile.put("uid", user.getUid());
-        userProfile.put("profilepic", "desperate_dog.jpg");
+        userProfile.put("profilepic", "predefine_profile_image.png");
         userProfile.put("createdAt", System.currentTimeMillis());
         userProfile.put("feeder_ip", "Blank");
 

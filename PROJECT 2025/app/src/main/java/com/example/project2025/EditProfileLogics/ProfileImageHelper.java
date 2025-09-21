@@ -93,6 +93,8 @@ public class ProfileImageHelper {
                 return R.drawable.scared_cat;
             case "desperate_dog":
                 return R.drawable.desperate_dog;
+            case "predefine_profile_image":
+                return R.drawable.predefine_profile_image;
             case "sad_mouse":
             default:
                 return R.drawable.sad_mouse;

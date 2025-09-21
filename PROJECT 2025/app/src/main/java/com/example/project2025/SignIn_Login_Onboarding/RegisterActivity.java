@@ -175,7 +175,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 userProfile.put("name", name);
                                                 userProfile.put("email", email);
                                                 userProfile.put("uid", uid);
-                                                userProfile.put("profilepic", "desperate_dog.jpg");
+                                                userProfile.put("profilepic", "predefine_profile_image.png");
                                                 userProfile.put("createdAt", System.currentTimeMillis());
                                                 userProfile.put("feeder_ip", "Blank");
                                                 db.collection("Users").document(uid).set(userProfile, SetOptions.merge())
