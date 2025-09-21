@@ -42,10 +42,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/margin_zlarge"
             android:text="Username"
+            android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_xlarge"
+            android:textSize="@dimen/text_ylarge"
             app:layout_constraintStart_toEndOf="@+id/returnButton"
             app:layout_constraintTop_toTopOf="parent" />
 

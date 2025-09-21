@@ -166,25 +166,14 @@
             android:paddingStart="16dp">
 
             <TextView
-                android:id="@+id/level1"
+                android:id="@+id/level4"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_margin="4dp"
                 android:background="@drawable/level_selector"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="1"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/level2"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_margin="4dp"
-                android:background="@drawable/level_selector"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="2"
+                android:text="4"
                 android:textSize="18sp" />
 
             <TextView
@@ -199,15 +188,27 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/level4"
+                android:id="@+id/level2"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_margin="4dp"
                 android:background="@drawable/level_selector"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="4"
+                android:text="2"
                 android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/level1"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/level_selector"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="1"
+                android:textSize="18sp" />
+
         </LinearLayout>
     </LinearLayout>
 

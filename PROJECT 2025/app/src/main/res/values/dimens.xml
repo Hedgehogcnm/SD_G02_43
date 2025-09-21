@@ -30,9 +30,11 @@
     <dimen name="margin_alarge">70dp</dimen>
     <dimen name="margin_blarge">100dp</dimen>
     <dimen name="margin_clarge">65dp</dimen>
-    <dimen name="margin_dlarge">230dp</dimen>
+    <dimen name="margin_dlarge">250dp</dimen>
     <dimen name="margin_elarge">55dp</dimen>
-
+    <dimen name="margin_flarge">45dp</dimen>
+    <dimen name="margin_glarge">20dp</dimen>
+    <dimen name="margin_hlarge">11dp</dimen>
 
 
     <!-- Text sizes -->
