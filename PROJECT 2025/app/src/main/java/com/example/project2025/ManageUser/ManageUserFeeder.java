@@ -98,7 +98,7 @@ public class ManageUserFeeder extends Fragment implements ScheduleBottomSheet.Sc
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Get current PI_IP
-        PI_IP = requireContext().getSharedPreferences("FEEDERIP", MODE_PRIVATE).getString("feeder_ip", PI_IP);
+        PI_IP = requireContext().getSharedPreferences("ADMINISTRATION", MODE_PRIVATE).getString("feeder_ip", PI_IP);
         Log.d("Feeder Fragment:", "PI_IP: " + PI_IP);
         Log.d("Feeder Fragment:", "UID: " + uid);
         showFoodLevel();

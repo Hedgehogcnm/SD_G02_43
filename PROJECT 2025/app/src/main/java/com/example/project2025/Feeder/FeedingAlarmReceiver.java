@@ -18,12 +18,12 @@ public class FeedingAlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String ip = context.getSharedPreferences("feeder", 0).getString("feeder_ip", null);
+        String ip = context.getSharedPreferences("FEEDERIP", 0).getString("feeder_ip", null);
         int level = intent != null ? intent.getIntExtra("level", 1) : 1;
         String title = intent != null ? intent.getStringExtra("title") : null;
         String scheduleId = intent != null ? intent.getStringExtra("scheduleId") : null;
         if (ip == null || ip.isEmpty()) {
-            Toast.makeText(context, "Feeder IP not set", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,  "Feeder IP not set", Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -120,7 +120,7 @@
 
             <!-- Uid Row -->
             <LinearLayout
-                android:id="@+id/Uid"
+                android:id="@+id/feeder_ip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_medium"
@@ -138,19 +138,23 @@
                     android:layout_weight="1"
                     android:maxLines="1"
                     android:paddingStart="10dp"
-                    android:text="Uid"
+                    android:text="Feeder IP"
                     android:textColor="#000000"
                     android:textSize="@dimen/text_medium" />
 
                 <TextView
-                    android:id="@+id/uid_text"
+                    android:id="@+id/feeder_ip_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginEnd="8dp"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="XXXX"
                     android:textSize="@dimen/text_medium" />
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_chevron_right" />
             </LinearLayout>
 
             <!-- Name Row -->

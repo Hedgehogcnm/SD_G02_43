@@ -83,7 +83,7 @@ public class DashboardUserFragment extends Fragment {
                 try {
                     String ip = null;
                     try {
-                        ip = requireContext().getSharedPreferences("feeder", 0).getString("feeder_ip", null);
+                        ip = requireContext().getSharedPreferences("FEEDERIP", 0).getString("feeder_ip", null);
                     } catch (Throwable ignored) {}
                     if (ip == null || ip.trim().isEmpty()) ip = PI_IP;
 
