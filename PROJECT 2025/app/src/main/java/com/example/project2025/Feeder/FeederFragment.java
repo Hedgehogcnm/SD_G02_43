@@ -1,4 +1,3 @@
-
 package com.example.project2025.Feeder;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -8,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.project2025.Models.ScheduleData;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +31,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class FeederFragment extends Fragment implements ScheduleBottomSheet.ScheduleDataListener {
 
@@ -51,7 +51,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
 
         View root = inflater.inflate(R.layout.feeder_fragment, container, false);
 
-        //for food level purpose (eq)
+        //for food level purpose
         img = root.findViewById(R.id.device_pic);
         percentage = root.findViewById(R.id.foodPercentage);
 
@@ -66,16 +66,14 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
 
         ImageView createAlarmBtn = root.findViewById(R.id.alarm);
         createAlarmBtn.setOnClickListener(v -> {
-            // Enforce max 4 schedules before opening sheet
             if (scheduleList != null && scheduleList.size() >= 4) {
                 Toast.makeText(requireContext(), "You can only create 4 schedules", Toast.LENGTH_SHORT).show();
                 return;
             }
             ScheduleBottomSheet bottomSheet = new ScheduleBottomSheet();
-            bottomSheet.setScheduleDataListener(this); // Set the listener
+            bottomSheet.setScheduleDataListener(this);
             bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
         });
-
 
         // Real-time schedules listener
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -87,24 +85,22 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                     .orderBy("createdAt", Query.Direction.DESCENDING)
                     .addSnapshotListener((snap, err) -> {
                         if (err != null) {
-                            android.util.Log.e("FeederFragment", "Firebase listener error: " + err.getMessage());
+                            Log.e("FeederFragment", "Firebase listener error: " + err.getMessage());
                             return;
                         }
                         if (snap == null) {
-                            android.util.Log.d("FeederFragment", "Firebase snapshot is null");
+                            Log.d("FeederFragment", "Firebase snapshot is null");
                             return;
                         }
-                        
-                        android.util.Log.d("FeederFragment", "Firebase listener triggered - " + snap.getDocuments().size() + " schedules found");
-                        
-                        // Clear current UI and state, then repopulate from snapshot
+
+                        Log.d("FeederFragment", "Firebase listener triggered - " + snap.getDocuments().size() + " schedules found");
+
                         clearScheduleDisplay();
                         scheduleList.clear();
                         scheduleDocIds.clear();
                         nextScheduleIndex = 1;
 
                         for (DocumentSnapshot d : snap.getDocuments()) {
-                            android.util.Log.d("FeederFragment", "Processing schedule document: " + d.getId());
                             String title = d.getString("title");
                             String time = d.getString("time");
                             java.util.List<String> days = (java.util.List<String>) d.get("days");
@@ -123,10 +119,8 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                             updateScheduleDisplay(sd, d.getId());
 
                             if (Boolean.TRUE.equals(enabled)) {
-                                // Use a stable request base derived from documentId to avoid duplicate alarms
                                 String docId = d.getId();
                                 int base2 = (docId != null ? docId.hashCode() : 0) & 0x7FFF;
-                                // Ensure previous alarms for this schedule are cleared first
                                 ScheduleHelper.cancelWeekly(requireContext(), base2);
                                 ScheduleHelper.scheduleWeekly(requireContext(), sd.getTime(), sd.getSelectedDays(), base2, sd.getFeedLevel(), sd.getTitle(), docId);
                             }
@@ -144,7 +138,6 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
     }
 
     @Override
-
     public void onDestroyView() {
         super.onDestroyView();
         if (schedulesListener != null) {
@@ -155,8 +148,6 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
 
     @Override
     public void onScheduleDataReceived(ScheduleData scheduleData) {
-        android.util.Log.d("FeederFragment", "New schedule received: " + scheduleData.getTitle());
-        // Double-check capacity and required fields before saving
         if (scheduleList != null && scheduleList.size() >= 4) {
             Toast.makeText(requireContext(), "Maximum of 4 schedules reached", Toast.LENGTH_SHORT).show();
             return;
@@ -166,13 +157,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             Toast.makeText(requireContext(), "Enter all details for your schedule", Toast.LENGTH_SHORT).show();
             return;
         }
-        
-        // Schedule alarms on user device for selected days/time
-        int base = (int) (System.currentTimeMillis() & 0xFFFF);
-        // Do not schedule here to prevent duplicates. The realtime listener will schedule once with the document ID.
 
-        // Save schedule to Firestore for persistence
-        // The Firebase listener will automatically update the UI when this is saved
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -185,32 +170,17 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             doc.put("createdAt", FieldValue.serverTimestamp());
 
             db.collection("Users")
-              .document(user.getUid())
-              .collection("schedules")
-              .add(doc)
-              .addOnSuccessListener(documentReference -> {
-                  android.util.Log.d("FeederFragment", "Schedule saved to Firebase with ID: " + documentReference.getId());
-              })
-              .addOnFailureListener(e -> {
-                  android.util.Log.e("FeederFragment", "Failed to save schedule to Firebase: " + e.getMessage());
-              });
-        } else {
-            android.util.Log.e("FeederFragment", "User is null, cannot save schedule to Firebase");
+                    .document(user.getUid())
+                    .collection("schedules")
+                    .add(doc);
         }
     }
-    
+
     private void updateScheduleDisplay(ScheduleData scheduleData, String documentId) {
-        android.util.Log.d("FeederFragment", "updateScheduleDisplay called for: " + scheduleData.getTitle());
-        
-        // Find the next available schedule slot (1-4)
-        if (nextScheduleIndex > 4) {
-            android.util.Log.w("FeederFragment", "All schedule slots are full (4/4)");
-            return;
-        }
-        
-        // Get the TextViews for the current schedule slot
+        if (nextScheduleIndex > 4) return;
+
         String scheduleId = String.valueOf(nextScheduleIndex);
-        
+
         TextView titleView = getView().findViewById(getResources().getIdentifier(
                 "schedule_title" + scheduleId, "id", getContext().getPackageName()));
         TextView timeView = getView().findViewById(getResources().getIdentifier(
@@ -219,68 +189,23 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                 "schedule_days" + scheduleId, "id", getContext().getPackageName()));
         TextView feedLevelView = getView().findViewById(getResources().getIdentifier(
                 "schedule_feed_level" + scheduleId, "id", getContext().getPackageName()));
-        
-        // Get the card view using the card ID
+
         View cardView = getView().findViewById(getResources().getIdentifier(
                 "schedule_card" + scheduleId, "id", getContext().getPackageName()));
-        
+
         if (titleView != null && timeView != null && daysView != null && feedLevelView != null && cardView != null) {
-            android.util.Log.d("FeederFragment", "All UI elements found for slot " + scheduleId + ", updating display");
-            
-            // Update the text with the selected data
             titleView.setText(scheduleData.getTitle());
             timeView.setText("Time: " + formatTo12Hour(scheduleData.getTime()));
             daysView.setText("Days: " + scheduleData.getFormattedDays());
             feedLevelView.setText("Feed Level: " + scheduleData.getFeedLevel());
-            
-            // Make the card visible
             cardView.setVisibility(View.VISIBLE);
 
-            // Enable title rename on click -> updates Firestore
-            titleView.setOnClickListener(v -> {
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());
-                builder.setTitle("Set your schedule title");
-                final android.widget.EditText input = new android.widget.EditText(requireContext());
-                input.setSingleLine(true);
-                input.setText(scheduleData.getTitle());
-                input.setSelection(input.getText().length());
-                builder.setView(input);
-                builder.setPositiveButton("Save", null);
-                builder.setNegativeButton("Cancel", (d, w) -> d.dismiss());
+            // 🔧 使用新的方法来显示修改标题的对话框
+            titleView.setOnClickListener(v -> showChangeTitleDialog(titleView, scheduleData, documentId));
 
-                final android.app.AlertDialog dialog = builder.create();
-                dialog.setOnShowListener(di -> {
-                    android.widget.Button positive = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                    positive.setOnClickListener(v1 -> {
-                        String newTitle = input.getText() != null ? input.getText().toString().trim() : "";
-                        if (newTitle.isEmpty()) {
-                            Toast.makeText(requireContext(), "Add your title", Toast.LENGTH_SHORT).show();
-                            return; // keep dialog open
-                        }
-                        FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
-                        if (u != null) {
-                            FirebaseFirestore.getInstance()
-                                    .collection("Users")
-                                    .document(u.getUid())
-                                    .collection("schedules")
-                                    .document(documentId)
-                                    .update("title", newTitle)
-                                    .addOnSuccessListener(unused -> {
-                                        titleView.setText(newTitle);
-                                        dialog.dismiss();
-                                    })
-                                    .addOnFailureListener(e ->  {
-                                        Toast.makeText(requireContext(), "Failed to update title", Toast.LENGTH_SHORT).show();
-                                    });
-                        }
-                    });
-                });
-                dialog.show();
-            });
-
-            // Long-press card to delete
+            // 删除 schedule
             cardView.setOnLongClickListener(v -> {
-                new android.app.AlertDialog.Builder(requireContext())
+                new AlertDialog.Builder(requireContext())
                         .setTitle("Delete Schedule")
                         .setMessage("Are you sure you want to delete this schedule?")
                         .setPositiveButton("Delete", (dialog, which) -> {
@@ -294,9 +219,6 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                                         .delete()
                                         .addOnSuccessListener(unused -> {
                                             Toast.makeText(requireContext(), "Schedule Deleted", Toast.LENGTH_SHORT).show();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Toast.makeText(requireContext(), "Failed to delete schedule", Toast.LENGTH_SHORT).show();
                                         });
                             }
                         })
@@ -305,21 +227,46 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                 return true;
             });
 
-            android.util.Log.d("FeederFragment", "Schedule " + scheduleData.getTitle() + " displayed in slot " + scheduleId);
-            
-            // Move to next slot
             nextScheduleIndex++;
-        } else {
-            android.util.Log.e("FeederFragment", "Some UI elements not found for slot " + scheduleId + 
-                " - titleView: " + (titleView != null) + 
-                ", timeView: " + (timeView != null) + 
-                ", daysView: " + (daysView != null) + 
-                ", feedLevelView: " + (feedLevelView != null) + 
-                ", cardView: " + (cardView != null));
         }
     }
 
-    // Hide all schedule cards and reset labels
+    // 🔧 新的方法：展示修改标题的对话框
+    private void showChangeTitleDialog(TextView titleView, ScheduleData scheduleData, String documentId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Set your schedule title");
+        builder.setMessage("\nPlease enter a new title");
+
+        final EditText input = new EditText(requireContext());
+        input.setHint("\t\t\tEnter new title");
+        input.setSingleLine(true);
+
+
+        builder.setView(input);
+
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            String newTitle = input.getText().toString().trim();
+            if (newTitle.isEmpty()) {
+                Toast.makeText(requireContext(), "Title cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
+            if (u != null) {
+                FirebaseFirestore.getInstance()
+                        .collection("Users")
+                        .document(u.getUid())
+                        .collection("schedules")
+                        .document(documentId)
+                        .update("title", newTitle)
+                        .addOnSuccessListener(unused -> titleView.setText(newTitle))
+                        .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to update title", Toast.LENGTH_SHORT).show());
+            }
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
     private void clearScheduleDisplay() {
         int[] cardIds = new int[]{
                 getResources().getIdentifier("schedule_card1", "id", getContext().getPackageName()),
@@ -327,8 +274,8 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                 getResources().getIdentifier("schedule_card3", "id", getContext().getPackageName()),
                 getResources().getIdentifier("schedule_card4", "id", getContext().getPackageName())
         };
-        for (int i = 0; i < cardIds.length; i++) {
-            View card = getView().findViewById(cardIds[i]);
+        for (int id : cardIds) {
+            View card = getView().findViewById(id);
             if (card != null) card.setVisibility(View.GONE);
         }
     }
@@ -345,8 +292,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
     }
 
     void showFoodLevel(){
-        db.collection("Feeder").whereEqualTo("ip_address", PI_IP).get().addOnCompleteListener(task ->
-        {
+        db.collection("Feeder").whereEqualTo("ip_address", PI_IP).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     double foodLevel = document.getDouble("food_level");
@@ -355,11 +301,9 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                     Log.d("Feeder Fragment:", "Food Level: " + foodLevel + "%");
                 }
             }
-            else {
-                Log.d("Feeder Fragment:", "Error getting documents: ", task.getException());
-            }
         });
     }
+
     void checkFoodLevel(double foodLevel){
         if(foodLevel <= 3){
             img.setImageResource(R.drawable.food_level_100);
@@ -377,6 +321,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             img.setImageResource(R.drawable.food_level_0);
         }
     }
+
     void displayPercentage(double foodLevel){
         int result = (int) (125 - (foodLevel / 12 * 100));
         if(foodLevel > 15){
