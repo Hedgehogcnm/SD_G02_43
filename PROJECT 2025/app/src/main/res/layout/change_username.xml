@@ -33,7 +33,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_ylarge"
             android:textStyle="bold"
-            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_xlarge"
             app:layout_constraintStart_toEndOf="@id/returnButton"
             app:layout_constraintTop_toTopOf="@id/returnButton"
             app:layout_constraintBottom_toBottomOf="@id/returnButton"

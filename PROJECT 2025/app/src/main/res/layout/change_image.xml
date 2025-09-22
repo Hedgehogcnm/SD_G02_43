@@ -34,6 +34,7 @@
             android:textColor="@color/black"
             android:textSize="24dp"
             android:textStyle="bold"
+            android:paddingStart="@dimen/margin_large"
             app:layout_constraintStart_toEndOf="@+id/returnButton"
             app:layout_constraintTop_toTopOf="@+id/returnButton"
             app:layout_constraintBottom_toBottomOf="@+id/returnButton"/>

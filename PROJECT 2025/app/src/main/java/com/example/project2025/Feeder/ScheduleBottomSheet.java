@@ -1,11 +1,13 @@
 package com.example.project2025.Feeder;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -112,25 +114,43 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
                 view.findViewById(R.id.level4)
         };
 
+// 找到你的图片和百分比 TextView
+        ImageView devicePic = view.findViewById(R.id.device_pic);
+        TextView foodPercentage = view.findViewById(R.id.foodPercentage);
 
-        foodBar = view.findViewById(R.id.foodLevelBar);
-        int[] heightPercents = {25, 50, 75, 100};
+// 定义每个 level 对应的图片和百分比
+        int[] levelDrawables = {
+                R.drawable.food_level_25, // level1
+                R.drawable.food_level_50, // level2
+                R.drawable.food_level_75, // level3
+                R.drawable.food_level_100  // level4
+        };
+        String[] levelPercentages = {"25%", "50%", "75%", "100%"};
 
         for (int i = 0; i < levelViews.length; i++) {
             final int index = i;
             levelViews[i].setOnClickListener(v -> {
+                // 取消所有选择
                 for (TextView lv : levelViews) lv.setSelected(false);
+
+                // 设置当前选中的
                 levelViews[index].setSelected(true);
                 selectedFeedLevel = index + 1;
 
-                foodBar.post(() -> {
-                    int fullHeight = ((View) foodBar.getParent()).getHeight();
-                    ViewGroup.LayoutParams params = foodBar.getLayoutParams();
-                    params.height = (fullHeight * heightPercents[index]) / 100;
-                    foodBar.setLayoutParams(params);
-                });
+                // 更新图片
+                if (devicePic != null) {
+                    devicePic.setImageResource(levelDrawables[index]);
+                }
+
+                // 更新百分比
+                if (foodPercentage != null) {
+                    foodPercentage.setText(levelPercentages[index]);
+                }
+
+                Toast.makeText(getContext(), "Selected Level " + selectedFeedLevel, Toast.LENGTH_SHORT).show();
             });
         }
+
 
         // ==== set cancel button ====
         TextView cancelTextView = view.findViewById(R.id.cancel);
@@ -208,7 +228,7 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
 
         ScheduleData scheduleData = new ScheduleData(title, timeString, selectedDays, selectedFeedLevel);
         if (listener != null) listener.onScheduleDataReceived(scheduleData);
-        Toast.makeText(getContext(), "Schedule Saved!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Schedule Saved", Toast.LENGTH_SHORT).show();
         dismiss();
     }
 }
