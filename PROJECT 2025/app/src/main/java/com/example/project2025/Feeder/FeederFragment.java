@@ -200,10 +200,9 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             feedLevelView.setText("Feed Level: " + scheduleData.getFeedLevel());
             cardView.setVisibility(View.VISIBLE);
 
-            // 🔧 使用新的方法来显示修改标题的对话框
             titleView.setOnClickListener(v -> showChangeTitleDialog(titleView, scheduleData, documentId));
 
-            // 删除 schedule
+            // delete schedule
             cardView.setOnLongClickListener(v -> {
                 new AlertDialog.Builder(requireContext())
                         .setTitle("Delete Schedule")
@@ -231,14 +230,15 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         }
     }
 
-    // 🔧 新的方法：展示修改标题的对话框
+
     private void showChangeTitleDialog(TextView titleView, ScheduleData scheduleData, String documentId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Set your schedule title");
         builder.setMessage("\nPlease enter a new title");
 
         final EditText input = new EditText(requireContext());
-        input.setHint("\t\t\tEnter new title");
+        input.setPadding(70, 1, 50, 30);
+        input.setHint("Enter new title");
         input.setSingleLine(true);
 
 

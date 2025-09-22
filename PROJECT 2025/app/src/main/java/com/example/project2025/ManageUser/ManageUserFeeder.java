@@ -16,13 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -31,9 +26,6 @@ import com.example.project2025.Feeder.ScheduleBottomSheet;
 import com.example.project2025.Feeder.ScheduleHelper;
 import com.example.project2025.Models.ScheduleData;
 import com.example.project2025.R;
-import com.example.project2025.databinding.ManageUserFeederBinding;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -252,39 +244,34 @@ public class ManageUserFeeder extends Fragment implements ScheduleBottomSheet.Sc
             titleView.setOnClickListener(v -> {
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());
                 builder.setTitle("Set your schedule title");
+                builder.setMessage("\nPlease enter a new title");
+
                 final android.widget.EditText input = new android.widget.EditText(requireContext());
                 input.setSingleLine(true);
-                input.setText(scheduleData.getTitle());
-                input.setSelection(input.getText().length());
+                input.setPadding(70, 1, 50, 30);
+                input.setHint("Enter new title");
                 builder.setView(input);
-                builder.setPositiveButton("Save", null);
-                builder.setNegativeButton("Cancel", (d, w) -> d.dismiss());
 
-                final android.app.AlertDialog dialog = builder.create();
-                dialog.setOnShowListener(di -> {
-                    android.widget.Button positive = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                    positive.setOnClickListener(v1 -> {
-                        String newTitle = input.getText() != null ? input.getText().toString().trim() : "";
-                        if (newTitle.isEmpty()) {
-                            Toast.makeText(requireContext(), "Add your title", Toast.LENGTH_SHORT).show();
-                            return; // keep dialog open
-                        }
-                        FirebaseFirestore.getInstance()
-                                .collection("Users")
-                                .document(uid)
-                                .collection("schedules")
-                                .document(documentId)
-                                .update("title", newTitle)
-                                .addOnSuccessListener(unused -> {
-                                    titleView.setText(newTitle);
-                                    dialog.dismiss();
-                                })
-                                .addOnFailureListener(e ->  {
-                                    Toast.makeText(requireContext(), "Failed to update title", Toast.LENGTH_SHORT).show();
-                                });
-                    });
+                builder.setPositiveButton("Save", (dialog, which) -> {
+                    String newTitle = input.getText() != null ? input.getText().toString().trim() : "";
+                    if (newTitle.isEmpty()) {
+                        Toast.makeText(requireContext(), "Title cannot be empty", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    FirebaseFirestore.getInstance()
+                            .collection("Users")
+                            .document(uid)
+                            .collection("schedules")
+                            .document(documentId)
+                            .update("title", newTitle)
+                            .addOnSuccessListener(unused -> titleView.setText(newTitle))
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(requireContext(), "Failed to update title", Toast.LENGTH_SHORT).show();
+                            });
                 });
-                dialog.show();
+
+                builder.setNegativeButton("Cancel", (d, w) -> d.dismiss());
+                builder.show();
             });
 
             // Long-press card to delete
