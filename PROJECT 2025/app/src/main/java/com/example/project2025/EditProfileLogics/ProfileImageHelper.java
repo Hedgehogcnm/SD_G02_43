@@ -2,6 +2,9 @@ package com.example.project2025.EditProfileLogics;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -24,8 +27,20 @@ public class ProfileImageHelper {
      */
     public static void loadProfileImage(Context context, ImageView imageView, String profilePicFilename) {
         if (profilePicFilename == null || profilePicFilename.isEmpty()) {
-            // If no profile picture set, use default
-            imageView.setImageResource(R.drawable.loading_circle);
+            // If no profile picture set, use default loading circle with rotation animation
+            imageView.setImageResource(R.drawable.ic_loading);
+            
+            // Create and apply rotation animation
+            RotateAnimation rotate = new RotateAnimation(
+                0f, 360f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f
+            );
+            rotate.setDuration(1000);
+            rotate.setRepeatCount(Animation.INFINITE);
+            rotate.setInterpolator(new LinearInterpolator());
+            
+            imageView.startAnimation(rotate);
             return;
         }
 
@@ -53,10 +68,23 @@ public class ProfileImageHelper {
                         @Override
                         public void onLoadFailed(Drawable errorDrawable) {
                             // Step 2: If not cached → fallback to full load with placeholder
+                            imageView.setImageResource(R.drawable.ic_loading);
+                            
+                            // Create and apply rotation animation
+                            RotateAnimation rotate = new RotateAnimation(
+                                0f, 360f,
+                                Animation.RELATIVE_TO_SELF, 0.5f,
+                                Animation.RELATIVE_TO_SELF, 0.5f
+                            );
+                            rotate.setDuration(1000);
+                            rotate.setRepeatCount(Animation.INFINITE);
+                            rotate.setInterpolator(new LinearInterpolator());
+                            
+                            imageView.startAnimation(rotate);
+                            
+                            // Load the actual image
                             Glide.with(context)
                                     .load(profilePicFilename)
-                                    .placeholder(R.drawable.loading_circle) // only used when cache is empty
-                                    .error(R.drawable.loading_circle)
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(imageView);
                         }
@@ -96,10 +124,10 @@ public class ProfileImageHelper {
             case "predefine_profile_image":
                 return R.drawable.predefine_profile_image;
             case "loading_circle":
-                return R.drawable.loading_circle;
+                return R.drawable.ic_loading;
             case "sad_mouse":
             default:
-                return R.drawable.loading_circle;
+                return R.drawable.ic_loading;
         }
     }
 }
