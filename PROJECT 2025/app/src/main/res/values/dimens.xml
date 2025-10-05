@@ -39,8 +39,6 @@
     <dimen name="margin_hlarge">40dp</dimen>
 
 
-
-
     <!-- Text sizes -->
     <dimen name="text_small">12sp</dimen>
     <dimen name="text_medium">14sp</dimen>
@@ -64,5 +62,6 @@
 
     <!-- RecyclerView Item -->
     <dimen name="recycler_item_height">56dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>
