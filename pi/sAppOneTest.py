@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 import time
 import socket
 import sys
+import threading
 
 # -----------------------------
 # GPIO + Servo setup
@@ -21,21 +22,18 @@ LEVEL_DURATIONS = {
 OPEN_POS = 10.0     # duty cycle for "open"
 CLOSED_POS = 7.5    # duty cycle for "closed"
 
+# One PWM instance shared by everything
+pwm = GPIO.PWM(SERVO_PIN, 50)   # 50Hz for servo
+pwm.start(CLOSED_POS)           # start closed
 
 # -----------------------------
 # Feed Action
 # -----------------------------
 def feed_action(level):
     print(f"Starting feed sequence - Level {level}")
-    pwm = GPIO.PWM(SERVO_PIN, 50)   # 50 Hz servo signal
-    pwm.start(CLOSED_POS)
-
     try:
         duration = LEVEL_DURATIONS.get(level, 1.5)
 
-        # Open
-        pwm.ChangeDutyCycle(OPEN_POS)
-        
         # Open
         pwm.ChangeDutyCycle(OPEN_POS)
         print(f"Latch OPEN for {duration} seconds")
@@ -46,12 +44,10 @@ def feed_action(level):
         print("Closing latch...")
         time.sleep(0.5)
 
+        print("Latch CLOSED - refresher will keep it secure")
+
     except Exception as e:
         print(f"Error during feed action: {e}")
-
-    finally:
-        pwm.stop()  # release PWM completely -> no jitter
-        print("Latch CLOSED - feeding complete")
 
 
 # -----------------------------
@@ -105,9 +101,10 @@ def run_server(port=12345):
     except Exception as e:
         print(f"Server error: {e}")
     finally:
+        pwm.stop()
         GPIO.cleanup()
         print("GPIO cleanup complete")
-        
+
 
 # -----------------------------
 # Main
