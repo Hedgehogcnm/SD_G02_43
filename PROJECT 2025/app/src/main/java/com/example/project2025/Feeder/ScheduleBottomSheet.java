@@ -49,33 +49,31 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
 
         // Title click -> prompt input dialog with validation
         setTitleTextView.setOnClickListener(v -> {
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
-            builder.setTitle("Set Schedule Title");
-            final android.widget.EditText input = new android.widget.EditText(getContext());
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());
+            builder.setTitle("Set your schedule title");
+            builder.setMessage("\nPlease enter a title");
+
+            final android.widget.EditText input = new android.widget.EditText(requireContext());
             input.setSingleLine(true);
-            input.setText(setTitleTextView.getText());
+            input.setPadding(70, 1, 50, 30);
+            input.setHint("\nEnter title");
             input.setSelection(input.getText().length());
             builder.setView(input);
-            builder.setPositiveButton("Save", null);
-            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
 
-            final android.app.AlertDialog dialog = builder.create();
-            dialog.setOnShowListener(di -> {
-                android.widget.Button positive = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                positive.setOnClickListener(v1 -> {
-                    String t = input.getText() != null ? input.getText().toString().trim() : "";
-                    if (t.isEmpty()) {
-                        Toast.makeText(getContext(), "Please add your title", Toast.LENGTH_SHORT).show();
-                        // Do not dismiss
-                        return;
-                    }
-                    setTitleTextView.setText(t);
-                    Toast.makeText(getContext(), "Title has been set", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                });
+            builder.setPositiveButton("Save", (dialog, which) -> {
+                String newTitle = input.getText() != null ? input.getText().toString().trim() : "";
+                if (newTitle.isEmpty()) {
+                    Toast.makeText(requireContext(), "Title cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                setTitleTextView.setText(newTitle);
+                Toast.makeText(requireContext(), "Title has been set", Toast.LENGTH_SHORT).show();
             });
-            dialog.show();
+
+            builder.setNegativeButton("Cancel", (d, w) -> d.dismiss());
+            builder.show();
         });
+
 
         // ==== initialize dayViews ====
         dayViews = new TextView[]{
