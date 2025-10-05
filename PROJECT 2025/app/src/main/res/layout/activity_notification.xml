@@ -77,8 +77,8 @@
             <!-- Feed Icon -->
             <ImageView
                 android:id="@+id/feedIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:contentDescription="Feed Icon"
                 android:src="@drawable/ic_feed"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,8 +152,8 @@
             <!-- Warning Icon -->
             <ImageView
                 android:id="@+id/warningIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
                 android:src="@drawable/ic_warning"
                 android:contentDescription="Warning Icon"
                 app:layout_constraintStart_toStartOf="parent"
@@ -176,12 +176,12 @@
                 android:id="@+id/lowFood_schedule_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:text="Schedule Title: "
                 android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/food_alert"
-                app:layout_constraintTop_toBottomOf="@id/food_alert"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/food_alert" />
 
             <TextView
                 android:id="@+id/schedule_feed_level3"
