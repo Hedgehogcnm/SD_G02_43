@@ -249,7 +249,7 @@ public class ManageUserFeeder extends Fragment implements ScheduleBottomSheet.Sc
                 final android.widget.EditText input = new android.widget.EditText(requireContext());
                 input.setSingleLine(true);
                 input.setPadding(70, 1, 50, 30);
-                input.setHint("Enter new title");
+                input.setHint("\nEnter new title");
                 builder.setView(input);
 
                 builder.setPositiveButton("Save", (dialog, which) -> {
@@ -268,6 +268,7 @@ public class ManageUserFeeder extends Fragment implements ScheduleBottomSheet.Sc
                             .addOnFailureListener(e -> {
                                 Toast.makeText(requireContext(), "Failed to update title", Toast.LENGTH_SHORT).show();
                             });
+                    Toast.makeText(requireContext(), "Title has been set", Toast.LENGTH_SHORT).show();
                 });
 
                 builder.setNegativeButton("Cancel", (d, w) -> d.dismiss());

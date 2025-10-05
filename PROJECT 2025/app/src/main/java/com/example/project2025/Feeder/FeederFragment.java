@@ -238,9 +238,8 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
 
         final EditText input = new EditText(requireContext());
         input.setPadding(70, 1, 50, 30);
-        input.setHint("Enter new title");
+        input.setHint("\nEnter new title");
         input.setSingleLine(true);
-
 
         builder.setView(input);
 
@@ -261,6 +260,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
                         .addOnSuccessListener(unused -> titleView.setText(newTitle))
                         .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to update title", Toast.LENGTH_SHORT).show());
             }
+            Toast.makeText(requireContext(), "Title has been set", Toast.LENGTH_SHORT).show();
         });
 
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
