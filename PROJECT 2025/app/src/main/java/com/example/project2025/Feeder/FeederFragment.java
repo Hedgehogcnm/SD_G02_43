@@ -57,7 +57,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         img = root.findViewById(R.id.device_pic);
         percentage = root.findViewById(R.id.foodPercentage);
 
-        // NEW CODE: 点击 notification 图标跳转到 activity_notification
+        // click notification icon intent to activity_notification
         ImageView notificationBtn = root.findViewById(R.id.notification);
         notificationBtn.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), activity_notification.class);
