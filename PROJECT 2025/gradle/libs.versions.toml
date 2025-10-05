@@ -19,6 +19,7 @@ kotlin = "2.0.21"
 lifecycleRuntimeKtx = "2.9.2"
 activityCompose = "1.10.1"
 composeBom = "2024.09.00"
+okhttp = "5.1.0"
 volley = "1.2.1"
 
 [libraries]
@@ -39,6 +40,7 @@ firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }

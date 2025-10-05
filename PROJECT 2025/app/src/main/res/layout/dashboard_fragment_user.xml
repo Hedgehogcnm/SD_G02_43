@@ -108,6 +108,7 @@
             app:cardElevation="4dp">
 
             <LinearLayout
+                android:id="@+id/micButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"

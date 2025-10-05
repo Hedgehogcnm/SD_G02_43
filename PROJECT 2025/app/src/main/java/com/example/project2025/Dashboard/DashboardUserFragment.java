@@ -2,10 +2,13 @@ package com.example.project2025.Dashboard;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -18,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.project2025.AudioHelper;
 import com.example.project2025.Models.FeedHistory;
 import com.example.project2025.R;
 import com.example.project2025.databinding.DashboardFragmentUserBinding;
@@ -27,22 +31,32 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class DashboardUserFragment extends Fragment {
 
     private DashboardFragmentUserBinding binding;
     private SharedPreferences sharedPreferences;
-    private LinearLayout feedButton;
+    private LinearLayout feedButton, micButton;
     private WebView liveCam;
     private String PI_IP = "127.0.0.1";
     private static final int FEED_PORT = 12345  ;
     private static final int HTTP_PORT = 8889;
+    private static final int AUDIO_PORT = 5000;
     private static final String LIVE_FOLDER = "/cam1";
+    private AudioHelper audioHelper;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
@@ -55,16 +69,18 @@ public class DashboardUserFragment extends Fragment {
 
         liveCam = root.findViewById(R.id.ipCamera);
         feedButton = root.findViewById(R.id.feedButton);
-
+        micButton = root.findViewById(R.id.micButton);
         return root;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onStart() {
         super.onStart();
         WebSettings webSettings = liveCam.getSettings();
         webSettings.setJavaScriptEnabled(true);
         liveCam.setWebViewClient(new WebViewClient());
+        audioHelper = new AudioHelper(getContext());
         sharedPreferences = requireContext().getSharedPreferences("FEEDERIP", MODE_PRIVATE);
         PI_IP = sharedPreferences.getString("feeder_ip", PI_IP);
 
@@ -74,6 +90,19 @@ public class DashboardUserFragment extends Fragment {
             public void onClick(View v) {
                 showLevelPickerAndFeed();
             }
+        });
+
+        micButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    audioHelper.startStreaming(PI_IP, AUDIO_PORT); // start recording
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    audioHelper.stopStreaming(); // stop and upload
+                    v.performClick();
+                    return true;
+            }
+            return false;
         });
     }
     private void sendFeedCommand(int level) {
