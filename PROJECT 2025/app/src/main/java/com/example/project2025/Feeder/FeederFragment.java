@@ -2,6 +2,7 @@ package com.example.project2025.Feeder;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.example.project2025.R;
+import com.example.project2025.activity_notification;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -54,6 +56,13 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         //for food level purpose
         img = root.findViewById(R.id.device_pic);
         percentage = root.findViewById(R.id.foodPercentage);
+
+        // NEW CODE: 点击 notification 图标跳转到 activity_notification
+        ImageView notificationBtn = root.findViewById(R.id.notification);
+        notificationBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), activity_notification.class);
+            startActivity(intent);
+        });
 
         // Initialize schedule list and container
         scheduleList = new ArrayList<>();
