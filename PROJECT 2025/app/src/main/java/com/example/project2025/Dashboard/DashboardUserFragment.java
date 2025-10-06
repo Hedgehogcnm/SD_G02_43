@@ -141,6 +141,8 @@ public class DashboardUserFragment extends Fragment {
                             if ("ACK".equals(finalResponse)) {
                                 Toast.makeText(requireContext(), "Feeding time! (Level " + level + ")", Toast.LENGTH_SHORT).show();
                                 try { saveFeedHistory(level); } catch (Throwable ignored) {}
+                                // Show notification and vibrate
+                                com.example.project2025.Utils.NotificationHelper.showFeedingCompletedNotification(requireContext(), level);
                             } else if (finalResponse != null && !finalResponse.isEmpty()) {
                                 Toast.makeText(requireContext(), "Feeder: " + finalResponse, Toast.LENGTH_SHORT).show();
                             } else {

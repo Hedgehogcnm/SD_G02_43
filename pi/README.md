@@ -34,3 +34,11 @@
    - Same procedure as connecting firebase
    - *from firebase_admin import **firestore**, credentials*
    - ***db = firestore.client()***
+
+## Live Audio
+1. - sudo apt update
+   - sudo apt install portaudio19-dev python3-pyaudio
+   - sudo apt install python3-flask ffmpeg alsa-utils
+   - sudo apt install python3-flask
+   - sudo apt install python3-pyaudio
+   - pip install pyaudio

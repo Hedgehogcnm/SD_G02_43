@@ -12,6 +12,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 
@@ -43,7 +46,19 @@ public class FeedingAlarmReceiver extends BroadcastReceiver {
                 String payload = level > 0 ? ("Feed:" + level) : "Feed";
                 output.write(payload.getBytes());
                 output.flush();
+                
+                // Wait for response from IoT device
+                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String response = reader.readLine();
+                Log.d("FeedingAlarmReceiver", "Response from device: " + response);
+                
                 socket.close();
+
+                // Check if feeding was successful (ACK response)
+                if ("ACK".equals(response)) {
+                    // Show notification and vibrate
+                    com.example.project2025.Utils.NotificationHelper.showFeedingCompletedNotification(context, level);
+                }
 
                 // Save scheduled feed history
                 try {
@@ -83,7 +98,8 @@ public class FeedingAlarmReceiver extends BroadcastReceiver {
                         db.collection("FeedHistory").add(entry);
                     }
                 } catch (Throwable ignored) {}
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                Log.e("FeedingAlarmReceiver", "Error during scheduled feeding", e);
             }
         }).start();
     }
