@@ -43,6 +43,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
     private String PI_IP = "127.0.0.1";
     private ImageView img;
     private TextView percentage;
+    private static boolean lowFoodNotificationShown = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -332,6 +333,16 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         }
         else if(foodLevel >= 3 && foodLevel <= 15){
             percentage.setText(result + "%");
+            
+            // Check if food level is at or below 25% and show notification
+            if (result <= 25 && !lowFoodNotificationShown) {
+                com.example.project2025.Utils.NotificationHelper.showLowFoodLevelNotification(requireContext());
+                lowFoodNotificationShown = true;
+            }
+            // Reset notification flag if food level goes above 25%
+            else if (result > 25) {
+                lowFoodNotificationShown = false;
+            }
         }
     }
 }

@@ -36,7 +36,7 @@ public class NotificationHelper {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_feed) // Use your feed icon
                 .setContentTitle("Feeding Completed !")
-                .setContentText("Manual feeding completed at Level " + feedLevel)
+                .setContentText("Feeding completed at Level " + feedLevel)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
@@ -48,6 +48,40 @@ public class NotificationHelper {
         
         if (notificationManager != null) {
             notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+        }
+        
+        // Vibrate the device
+        vibrateDevice(context);
+    }
+    
+    public static void showLowFoodLevelNotification(Context context) {
+        // Create notification channel for Android 8.0+
+        createNotificationChannel(context);
+        
+        // Create intent for when notification is tapped
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context, 0, intent, 
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        
+        // Build the notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_feed) // Use your feed icon
+                .setContentTitle("Low Food Level")
+                .setContentText("Food level is low. Please add more food for your pets!")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setDefaults(NotificationCompat.DEFAULT_ALL);
+        
+        // Show the notification with a specific ID for low food level
+        NotificationManager notificationManager = 
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        
+        if (notificationManager != null) {
+            // Use a specific ID for low food level notifications
+            notificationManager.notify(999, builder.build());
         }
         
         // Vibrate the device
@@ -95,3 +129,4 @@ public class NotificationHelper {
         }
     }
 }
+
