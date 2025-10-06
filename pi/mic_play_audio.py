@@ -9,14 +9,15 @@ p = pyaudio.PyAudio()
 stream = p.open(format=pyaudio.paInt16,
                 channels=1,
                 rate=16000,
-                output=True)
+                output=True,
+                output_device_index=2)
 
 print(f"Server listening on {HOST}:{PORT}...")
 
 # Create socket
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
-server.listen(1)
+server.listen(1)    
 
 while True:
     print("Waiting for a client...")

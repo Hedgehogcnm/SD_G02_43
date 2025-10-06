@@ -40,7 +40,7 @@ public class AudioHelper {
 
         isStreaming = true;
         streamThread = new Thread(() -> {
-            int sampleRate = 16000;
+            int sampleRate = 48000;
             int channelConfig = AudioFormat.CHANNEL_IN_MONO;
             int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
             int minBufSize = AudioRecord.getMinBufferSize(sampleRate, channelConfig, audioFormat);
