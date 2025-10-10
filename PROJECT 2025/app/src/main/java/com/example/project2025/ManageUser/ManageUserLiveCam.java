@@ -2,16 +2,27 @@ package com.example.project2025.ManageUser;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -35,15 +46,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import com.example.project2025.AudioHelper;
+
 
 public class ManageUserLiveCam extends Fragment {
 
     private SharedPreferences sharedPreferences;
-    private LinearLayout feedButton;
+    private LinearLayout feedButton, micButton, camButton, photoButton;
+    private TextView camOffText;
     private WebView liveCam;
+    private boolean camState = false;
     private String PI_IP = "127.0.0.1";
     private static final int FEED_PORT = 12345;
     private static final int HTTP_PORT = 8889;
+    private static final int AUDIO_PORT = 5000;
+    private AudioHelper audioHelper;
     private static final String LIVE_FOLDER = "/cam1";
     private FirebaseFirestore db;
     private FirebaseAuth auth;
@@ -53,11 +70,16 @@ public class ManageUserLiveCam extends Fragment {
         View root = inflater.inflate(R.layout.manage_user_live_cam, container, false);
 
         liveCam = root.findViewById(R.id.ipCamera);
+        camOffText = root.findViewById(R.id.cameraOffText);
         feedButton = root.findViewById(R.id.feedButton);
+        micButton = root.findViewById(R.id.micButton);
+        camButton = root.findViewById(R.id.camButton);
+        photoButton = root.findViewById(R.id.photoButton);
 
         return root;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onStart() {
         super.onStart();
@@ -67,12 +89,42 @@ public class ManageUserLiveCam extends Fragment {
         WebSettings webSettings = liveCam.getSettings();
         webSettings.setJavaScriptEnabled(true);
         liveCam.setWebViewClient(new WebViewClient());
+        startCamera();
+        audioHelper = new AudioHelper(getContext());
 
-        liveCam.loadUrl("http://" + PI_IP + ":" + HTTP_PORT + LIVE_FOLDER);
+
+        camButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                camState = !camState;
+                startCamera();
+            }
+        });
+
         feedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showLevelPickerAndFeed();
+            }
+        });
+
+        micButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    audioHelper.startStreaming(PI_IP, AUDIO_PORT); // start recording
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    audioHelper.stopStreaming(); // stop and upload
+                    v.performClick();
+                    return true;
+            }
+            return false;
+        });
+
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takeScreenshot();
             }
         });
     }
@@ -208,6 +260,66 @@ public class ManageUserLiveCam extends Fragment {
                     });
         } else {
             Log.e("FeedHistory", "Cannot save feed history: user is null");
+        }
+    }
+
+    private void startCamera(){
+        if(camState){
+            String url = "http://" + PI_IP + ":" + HTTP_PORT + "/" + LIVE_FOLDER;
+            liveCam.setVisibility(View.VISIBLE);
+            camOffText.setVisibility(View.GONE);
+            liveCam.setBackgroundColor(Color.WHITE);
+            liveCam.loadUrl(url);
+        }
+        else{
+            liveCam.loadUrl(null);
+            liveCam.setBackgroundColor(Color.BLACK);
+            liveCam.setVisibility(View.GONE);
+
+            camOffText.setVisibility(View.VISIBLE);
+            camOffText.bringToFront();
+        }
+
+    }
+
+    private void takeScreenshot() {
+        try {
+            Bitmap bitmap = Bitmap.createBitmap(
+                    liveCam.getWidth(),
+                    liveCam.getHeight(),
+                    Bitmap.Config.ARGB_8888
+            );
+            Canvas canvas = new Canvas(bitmap);
+            liveCam.draw(canvas);
+
+            String fileName = "webview_screenshot_" + System.currentTimeMillis() + ".png";
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+            values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/Screenshots");
+            values.put(MediaStore.Images.Media.IS_PENDING, 1);
+
+            ContentResolver resolver = requireContext().getContentResolver();
+            Uri uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+            if (uri == null) {
+                Toast.makeText(requireContext(), "Failed to access media store", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            OutputStream out = resolver.openOutputStream(uri);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            if (out != null) out.close();
+
+            values.clear();
+            values.put(MediaStore.Images.Media.IS_PENDING, 0);
+            resolver.update(uri, values, null, null);
+
+            Toast.makeText(requireContext(), "Screenshot saved to Gallery!", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(requireContext(), "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

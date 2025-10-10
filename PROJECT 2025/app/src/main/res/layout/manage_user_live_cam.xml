@@ -20,13 +20,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintDimensionRatio="3:2"
-        app:layout_constraintWidth_percent="0.86">
+        app:layout_constraintWidth_percent="0.86"
+        android:background="#000000"
+        app:cardBackgroundColor="#000000">
 
-        <WebView
-            android:id="@+id/ipCamera"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent">
+
+            <WebView
+                android:id="@+id/ipCamera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000" />
+
+            <TextView
+                android:id="@+id/cameraOffText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Camera Off"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#80FFFFFF"
+                android:visibility="gone" />
+        </FrameLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -57,6 +75,7 @@
             app:cardElevation="4dp">
 
             <LinearLayout
+                android:id="@+id/photoButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -93,6 +112,7 @@
             app:cardElevation="4dp">
 
             <LinearLayout
+                android:id="@+id/micButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -129,6 +149,7 @@
             app:cardElevation="4dp">
 
             <LinearLayout
+                android:id="@+id/camButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
