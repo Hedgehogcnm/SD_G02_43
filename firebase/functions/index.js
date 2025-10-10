@@ -22,6 +22,8 @@ exports.deleteUser = onRequest(async (req, res) => {
     await admin.auth().deleteUser(uid);
     const userDocRef = admin.firestore().collection("Users").doc(uid);
     await userDocRef.delete();
+    const StorageDocRef = admin.storage().bucket();
+    await StorageDocRef.deleteFiles({prefix: `profile_images/${uid}/`});
 
     return res.status(200).send({message: uid + " deleted successfully"});
   } catch (error) {

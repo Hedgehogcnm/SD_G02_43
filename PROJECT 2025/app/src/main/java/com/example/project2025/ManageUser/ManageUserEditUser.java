@@ -158,7 +158,7 @@ public class ManageUserEditUser extends AppCompatActivity {
             Toast.makeText(this, "No UID found", Toast.LENGTH_SHORT).show();
             return;
         }
-        String APIurl = "https://us-central1-divine-course-467504-m2.cloudfunctions.net/deleteUser";
+        String APIurl = "https://deleteuser-rzkly4y7ja-uc.a.run.app";
         JSONObject payload = new JSONObject();
         try {
             payload.put("uid", uid);
@@ -431,7 +431,8 @@ public class ManageUserEditUser extends AppCompatActivity {
         Toast.makeText(this, "Uploading image...", Toast.LENGTH_SHORT).show();
 
         // Create a reference to the image in Firebase Storage
-        StorageReference imageRef = storage.getReference().child("profile_images").child(uid + "_" + System.currentTimeMillis() + ".jpg");
+        String imageName = "profile_" + uid + ".jpg";
+        StorageReference imageRef = storage.getReference().child("profile_images/" + uid + "/" + imageName);
 
         // Upload the image
         imageRef.putFile(imageUri)
