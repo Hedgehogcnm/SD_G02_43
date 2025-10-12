@@ -228,26 +228,4 @@
         </androidx.cardview.widget.CardView>
 
     </GridLayout>
-
-    <!-- Feed Record Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/feed_record"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="322dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:text="Feed Record"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:cornerRadius="15dp"
-        app:iconGravity="textStart"
-        app:iconPadding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGrid"
-        app:strokeColor="@color/black"
-        app:strokeWidth="25dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

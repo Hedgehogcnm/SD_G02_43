@@ -94,7 +94,7 @@
                     android:id="@+id/profile_picture"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/logo" />
+                    android:src="@drawable/logo_old" />
 
                 <ImageView
                     android:layout_width="16dp"

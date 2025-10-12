@@ -12,33 +12,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- IP Address Input -->
-        <EditText
-            android:id="@+id/ip_address"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/edittext_height"
-            android:hint="Enter IP address"
-            android:inputType="text"
-            android:paddingStart="@dimen/margin_medium"
+        <!-- Title -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
-            android:layout_marginEnd="@dimen/margin_medium"
+            android:text="Admin Dashboard"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_ylarge"
+            android:textStyle="bold"
+            android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/manual_feed"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Manual Feed Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/manual_feed"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_height"
-            android:text="Manual Feed"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="#000000"
-            app:cornerRadius="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_large"
-            app:layout_constraintStart_toEndOf="@id/ip_address"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- Title -->
         <TextView
@@ -51,7 +37,7 @@
             android:textSize="@dimen/text_large"
             android:textStyle="bold"
             android:paddingStart="@dimen/margin_medium"
-            app:layout_constraintTop_toBottomOf="@id/ip_address"
+            app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -63,7 +49,7 @@
             android:layout_marginTop="@dimen/margin_elarge"
             android:orientation="horizontal"
             android:weightSum="2"
-            app:layout_constraintTop_toBottomOf="@id/ip_address"
+            app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -75,7 +61,7 @@
                 android:layout_marginEnd="@dimen/margin_small"
                 android:layout_weight="1"
                 app:cardCornerRadius="@dimen/card_radius"
-                app:cardElevation="@dimen/card_elevation"
+                app:cardElevation="1dp"
                 app:cardBackgroundColor="@android:color/transparent">
 
                 <LinearLayout
@@ -119,7 +105,7 @@
                 android:layout_marginStart="@dimen/margin_small"
                 android:layout_weight="1"
                 app:cardCornerRadius="@dimen/card_radius"
-                app:cardElevation="@dimen/card_elevation"
+                app:cardElevation="1dp"
                 app:cardBackgroundColor="@android:color/transparent">
 
                 <LinearLayout
@@ -190,81 +176,15 @@
                 android:orientation="vertical"
                 android:padding="@dimen/card_padding">
 
-                <!-- Activity Item 1 -->
+                <!-- graph -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/profile1"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        app:tint="#666666" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_medium"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="john_doe"
-                            android:textColor="#000000"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/margin_small"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Level : Medium"
-                                android:textColor="#666666"
-                                android:textSize="@dimen/text_small" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="@dimen/margin_small"
-                                android:text=" • "
-                                android:textColor="#666666"
-                                android:textSize="@dimen/text_small" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="9:50 AM"
-                                android:textColor="#666666"
-                                android:textSize="@dimen/text_small" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="@dimen/margin_small"
-                                android:text=" • "
-                                android:textColor="#666666"
-                                android:textSize="@dimen/text_small" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="25/8/2025"
-                                android:textColor="#666666"
-                                android:textSize="@dimen/text_small" />
-                        </LinearLayout>
-                    </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
