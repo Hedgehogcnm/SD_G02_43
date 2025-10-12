@@ -47,8 +47,8 @@ public class DashboardAdminFragment extends Fragment {
         // Currently shows "Admin Dashboard" and "(Empty for now)" text
         View root = inflater.inflate(R.layout.dashboard_fragment_admin, container, false);
 
-        ip_address = root.findViewById(R.id.ip_address);
-        manualFeed = root.findViewById(R.id.manual_feed);
+        //ip_address = root.findViewById(R.id.ip_address);
+        //manualFeed = root.findViewById(R.id.manual_feed);
         userCount = root.findViewById(R.id.user_count);
         return root;
     }
@@ -58,6 +58,7 @@ public class DashboardAdminFragment extends Fragment {
         super.onStart();
         getUserCount();
 
+        /*
         manualFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,8 +66,8 @@ public class DashboardAdminFragment extends Fragment {
                 sendFeedCommand(ip_address_text);
             }
         });
+         */
     }
-
     private void getUserCount(){
         Query query = db.collection("Users");
         AggregateQuery countQuery = query.count();
@@ -85,6 +86,7 @@ public class DashboardAdminFragment extends Fragment {
             }
         });
     }
+
     private void sendFeedCommand(String ip_address) {
         final CharSequence[] items = new CharSequence[]{"Level 1", "Level 2", "Level 3", "Level 4"};
         new android.app.AlertDialog.Builder(requireContext())
