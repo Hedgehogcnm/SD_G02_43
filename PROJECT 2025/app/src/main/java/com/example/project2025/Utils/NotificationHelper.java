@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.project2025.R;
 import com.example.project2025.Specific_User.MainActivity;
+import com.example.project2025.Specific_Admin.AdminActivity;
 
 public class NotificationHelper {
     
@@ -27,7 +28,12 @@ public class NotificationHelper {
         createNotificationChannel(context);
         
         // Create intent for when notification is tapped
-        Intent intent = new Intent(context, MainActivity.class);
+        String role = null;
+        try {
+            role = context.getSharedPreferences("ROLE", 0).getString("Role", null);
+        } catch (Throwable ignored) {}
+
+        Intent intent = new Intent(context, ("Admin".equals(role) ? AdminActivity.class : MainActivity.class));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context, 0, intent, 
