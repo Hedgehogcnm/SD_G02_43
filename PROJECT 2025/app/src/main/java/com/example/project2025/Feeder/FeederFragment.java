@@ -88,6 +88,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         // Real-time schedules listener
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d("FeederFragment", "Current user: " + (user != null ? user.getUid() : "null"));
         if (user != null) {
             schedulesListener = db.collection("Users")
                     .document(user.getUid())
@@ -179,10 +180,18 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
             doc.put("enabled", true);
             doc.put("createdAt", FieldValue.serverTimestamp());
 
+            Log.d("FeederFragment", "Saving schedule for user: " + user.getUid());
             db.collection("Users")
                     .document(user.getUid())
                     .collection("schedules")
-                    .add(doc);
+                    .add(doc)
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d("FeederFragment", "Schedule saved successfully with ID: " + documentReference.getId());
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("FeederFragment", "Failed to save schedule: " + e.getMessage());
+                        Toast.makeText(requireContext(), "Failed to save schedule: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
         }
     }
 

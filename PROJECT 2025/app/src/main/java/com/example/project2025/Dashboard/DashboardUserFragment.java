@@ -142,6 +142,7 @@ public class DashboardUserFragment extends Fragment {
         });
     }
     private void sendFeedCommand(int level) {
+        final long startTime = System.currentTimeMillis();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -154,10 +155,11 @@ public class DashboardUserFragment extends Fragment {
 
                     Socket socket = new Socket(ip, FEED_PORT);
                     try {
-                        socket.setSoTimeout(4000);
+                        socket.setSoTimeout(15000); // Increased to 15 seconds for level 4
                     } catch (Throwable ignored) {}
                     OutputStream output = socket.getOutputStream();
                     String payload = "Feed:" + Math.max(1, Math.min(4, level));
+                    Log.d("ManualFeed", "Sending command: " + payload + " to " + ip);
                     output.write(payload.getBytes());
                     output.flush();
 
@@ -178,8 +180,10 @@ public class DashboardUserFragment extends Fragment {
                                 Toast.makeText(requireContext(), "Feeding time! (Level " + level + ")", Toast.LENGTH_SHORT).show();
                                 try { saveFeedHistory(level); } catch (Throwable ignored) {}
                                 // Show notification and vibrate
+                                Log.d("ManualFeed", "ACK received - showing notification for level " + level + " after " + (System.currentTimeMillis() - startTime) + "ms");
                                 com.example.project2025.Utils.NotificationHelper.showFeedingCompletedNotification(requireContext(), level);
                             } else if (finalResponse != null && !finalResponse.isEmpty()) {
+                                Log.d("ManualFeed", "Response received: '" + finalResponse + "' - not ACK after " + (System.currentTimeMillis() - startTime) + "ms");
                                 Toast.makeText(requireContext(), "Feeder: " + finalResponse, Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(requireContext(), "Command sent. Waiting on feeder...", Toast.LENGTH_SHORT).show();

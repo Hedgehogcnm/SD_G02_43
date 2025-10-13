@@ -97,6 +97,7 @@ public class DashboardAdminFragment extends Fragment {
     }
 
     private void doSendFeed(String ip_address, int level) {
+        final long startTime = System.currentTimeMillis();
         if (ip_address != null) {
             try {
                 requireContext().getSharedPreferences("feeder", 0).edit().putString("feeder_ip", ip_address.trim()).apply();
@@ -107,9 +108,10 @@ public class DashboardAdminFragment extends Fragment {
             public void run() {
                 try {
                     Socket socket = new Socket(ip_address, PORT);
-                    try { socket.setSoTimeout(4000); } catch (Throwable ignored) {}
+                    try { socket.setSoTimeout(15000); } catch (Throwable ignored) {} // Increased timeout
                     OutputStream output = socket.getOutputStream();
                     String payload = "Feed:" + Math.max(1, Math.min(4, level));
+                    android.util.Log.d("AdminFeed", "Sending command: " + payload + " to " + ip_address);
                     output.write(payload.getBytes());
                     output.flush();
                     String resp = null;
@@ -146,7 +148,11 @@ public class DashboardAdminFragment extends Fragment {
                                                 });
                                     }
                                 } catch (Throwable ignored) {}
+                                // Show notification and vibrate for admin
+                                android.util.Log.d("AdminFeed", "ACK received - showing notification for level " + level + " after " + (System.currentTimeMillis() - startTime) + "ms");
+                                com.example.project2025.Utils.NotificationHelper.showFeedingCompletedNotification(requireContext(), level);
                             } else if (finalResp != null && !finalResp.isEmpty()) {
+                                android.util.Log.d("AdminFeed", "Response received: '" + finalResp + "' - not ACK after " + (System.currentTimeMillis() - startTime) + "ms");
                                 Toast.makeText(requireContext(), "Feeder: " + finalResp, Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(requireContext(), "Command sent.", Toast.LENGTH_SHORT).show();

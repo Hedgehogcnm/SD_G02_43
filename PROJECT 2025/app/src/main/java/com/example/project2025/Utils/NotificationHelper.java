@@ -22,6 +22,7 @@ public class NotificationHelper {
     private static final String CHANNEL_DESCRIPTION = "Notifications for feeding activities";
     
     public static void showFeedingCompletedNotification(Context context, int feedLevel) {
+        android.util.Log.d("NotificationHelper", "showFeedingCompletedNotification called with level: " + feedLevel);
         // Create notification channel for Android 8.0+
         createNotificationChannel(context);
         
@@ -48,6 +49,9 @@ public class NotificationHelper {
         
         if (notificationManager != null) {
             notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+            android.util.Log.d("NotificationHelper", "Feeding completed notification sent");
+        } else {
+            android.util.Log.e("NotificationHelper", "NotificationManager is null");
         }
         
         // Vibrate the device
