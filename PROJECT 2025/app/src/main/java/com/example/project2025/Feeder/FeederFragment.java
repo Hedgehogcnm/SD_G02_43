@@ -42,6 +42,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
     private int nextScheduleIndex = 1; // Track which schedule slot to use next
     private ListenerRegistration schedulesListener;
     private FirebaseFirestore db;
+    private ListenerRegistration feederListener;
     private String PI_IP = "127.0.0.1";
     private ImageView img;
     private TextView percentage;
@@ -145,7 +146,7 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
     @Override
     public void onStart() {
         super.onStart();
-        showFoodLevel();
+        startFoodLevelListener();
     }
 
     @Override
@@ -154,6 +155,10 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         if (schedulesListener != null) {
             schedulesListener.remove();
             schedulesListener = null;
+        }
+        if (feederListener != null) {
+            feederListener.remove();
+            feederListener = null;
         }
     }
 
@@ -310,17 +315,28 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         }
     }
 
-    void showFoodLevel(){
-        db.collection("Feeder").whereEqualTo("ip_address", PI_IP).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    double foodLevel = document.getDouble("food_level");
-                    checkFoodLevel(foodLevel);
-                    displayPercentage(foodLevel);
-                    Log.d("Feeder Fragment:", "Food Level: " + foodLevel + "%");
-                }
-            }
-        });
+    void startFoodLevelListener(){
+        if (db == null) db = FirebaseFirestore.getInstance();
+        if (feederListener != null) {
+            feederListener.remove();
+            feederListener = null;
+        }
+        feederListener = db.collection("Feeder")
+                .whereEqualTo("ip_address", PI_IP)
+                .addSnapshotListener((snap, err) -> {
+                    if (err != null) {
+                        Log.e("Feeder Fragment:", "Food level listener error: " + err.getMessage());
+                        return;
+                    }
+                    if (snap == null) return;
+                    for (QueryDocumentSnapshot document : snap) {
+                        Double foodLevel = document.getDouble("food_level");
+                        if (foodLevel == null) continue;
+                        checkFoodLevel(foodLevel);
+                        displayPercentage(foodLevel);
+                        Log.d("Feeder Fragment:", "Food Level: " + foodLevel + "%");
+                    }
+                });
     }
 
     void checkFoodLevel(double foodLevel){
@@ -351,15 +367,50 @@ public class FeederFragment extends Fragment implements ScheduleBottomSheet.Sche
         }
         else if(foodLevel >= 3 && foodLevel <= 15){
             percentage.setText(result + "%");
-            
-            // Check if food level is at or below 25% and show notification
-            if (result <= 25 && !lowFoodNotificationShown) {
-                com.example.project2025.Utils.NotificationHelper.showLowFoodLevelNotification(requireContext());
-                lowFoodNotificationShown = true;
+            // Update container image based on displayed percentage so visuals match the number
+            if (result >= 90) {
+                img.setImageResource(R.drawable.food_level_100);
+            } else if (result >= 70) {
+                img.setImageResource(R.drawable.food_level_75);
+            } else if (result >= 50) {
+                img.setImageResource(R.drawable.food_level_50);
+            } else if (result >= 25) {
+                img.setImageResource(R.drawable.food_level_25);
+            } else {
+                img.setImageResource(R.drawable.food_level_0);
             }
-            // Reset notification flag if food level goes above 25%
-            else if (result > 25) {
-                lowFoodNotificationShown = false;
+            
+            // Repeating notifications at or below 40% with cooldown
+            // Stores last notify timestamp in SharedPreferences
+            final String PREFS = "LOW_FOOD_ALERT_USER";
+            final String KEY_LAST_TS = "last_ts";
+            final String KEY_INTERVAL_MIN = "interval_min"; // legacy minutes key
+            final String KEY_INTERVAL_SEC = "interval_sec"; // new seconds key
+            long now = System.currentTimeMillis();
+            android.content.SharedPreferences prefs = requireContext().getSharedPreferences(PREFS, MODE_PRIVATE);
+            long lastTs = prefs.getLong(KEY_LAST_TS, 0L);
+            int intervalSec = prefs.getInt(KEY_INTERVAL_SEC, -1);
+            if (intervalSec <= 0) {
+                // Fallback: if old minutes key exists, convert to seconds; else default 10 seconds
+                if (prefs.contains(KEY_INTERVAL_MIN)) {
+                    int intervalMin = prefs.getInt(KEY_INTERVAL_MIN, 30);
+                    intervalSec = Math.max(1, intervalMin) * 60;
+                } else {
+                    intervalSec = 10; // default 10 seconds
+                }
+            }
+            long intervalMs = Math.max(1, intervalSec) * 1000L;
+
+            if (result <= 40) {
+                if (lastTs == 0L || now - lastTs >= intervalMs) {
+                    com.example.project2025.Utils.NotificationHelper.showLowFoodLevelNotification(requireContext());
+                    prefs.edit().putLong(KEY_LAST_TS, now).apply();
+                }
+            } else {
+                // Reset once above threshold so next drop triggers immediately
+                if (lastTs != 0L) {
+                    prefs.edit().putLong(KEY_LAST_TS, 0L).apply();
+                }
             }
         }
     }

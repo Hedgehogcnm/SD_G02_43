@@ -62,6 +62,9 @@ public class NotificationHelper {
         
         // Vibrate the device
         vibrateDevice(context);
+
+        // Log feeding notification for history as FEEDING (source will be set by caller separately for manual/scheduled)
+        try { NotificationLogger.logFeeding(context, null, null, feedLevel, null, null, null); } catch (Throwable ignored) {}
     }
     
     public static void showLowFoodLevelNotification(Context context) {
@@ -69,7 +72,11 @@ public class NotificationHelper {
         createNotificationChannel(context);
         
         // Create intent for when notification is tapped
-        Intent intent = new Intent(context, MainActivity.class);
+        String role = null;
+        try {
+            role = context.getSharedPreferences("ROLE", 0).getString("Role", null);
+        } catch (Throwable ignored) {}
+        Intent intent = new Intent(context, ("Admin".equals(role) ? AdminActivity.class : MainActivity.class));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context, 0, intent, 
@@ -79,7 +86,7 @@ public class NotificationHelper {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_feed) // Use your feed icon
                 .setContentTitle("Low Food Level")
-                .setContentText("Food level is low. Please add more food for your pets!")
+                .setContentText("Low Food Level, please add more food for your kitties !")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
@@ -96,6 +103,9 @@ public class NotificationHelper {
         
         // Vibrate the device
         vibrateDevice(context);
+
+        // Log low food notification in history
+        try { NotificationLogger.logLowFood(context, null, null); } catch (Throwable ignored) {}
     }
     
     private static void createNotificationChannel(Context context) {

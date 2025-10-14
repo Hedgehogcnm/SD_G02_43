@@ -58,6 +58,17 @@ public class FeedingAlarmReceiver extends BroadcastReceiver {
                 if ("ACK".equals(response)) {
                     // Show notification and vibrate
                     com.example.project2025.Utils.NotificationHelper.showFeedingCompletedNotification(context, level);
+                    // Log scheduled/admin feeding notification for history
+                    try {
+                        String roleLocal = role;
+                        com.example.project2025.Utils.NotificationLogger.logFeeding(context,
+                                (title != null || scheduleId != null) ? "SCHEDULED" : "MANUAL",
+                                roleLocal,
+                                level,
+                                title,
+                                scheduleId,
+                                ("Admin".equals(roleLocal)) ? context.getSharedPreferences("ADMINISTRATION", 0).getString("uid", null) : null);
+                    } catch (Throwable ignored) {}
                 }
 
                 // Save scheduled feed history
