@@ -5,35 +5,49 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#f7f2ee"
     app:layout_constraintHorizontal_chainStyle="packed"
     tools:context=".SignIn_Login_Onboarding.RegisterActivity">
 
+    <!--title-->
+    <ImageView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="@dimen/margin_ilarge"
+        android:layout_marginTop="@dimen/margin_ilarge"
+        android:src="@drawable/welcome_font"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/usernameInputLayout"/>
 
-    <!-- Title -->
-    <TextView
+<!--
+       <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_zlarge"
         android:text="Hello!\nRegister to Started!"
-        android:textColor="@color/black"
+        android:textColor="#704533"
         android:textSize="@dimen/text_xlarge"
+        android:fontFamily="casual"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/usernameInputLayout"
-
         />
+    -->
+
 
     <!-- Username -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_medium"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusTopStart="10dp"
         app:boxCornerRadiusTopEnd="10dp"
@@ -154,7 +168,7 @@
         android:layout_marginTop="@dimen/margin_large"
         android:text="Register"
         android:textColor="@android:color/white"
-        app:backgroundTint="@color/black"
+        app:backgroundTint="#704533"
         app:cornerRadius="10dp"
         app:layout_constraintTop_toBottomOf="@id/confirm_passwordInputLayout"
         app:layout_constraintStart_toStartOf="parent"
@@ -168,14 +182,14 @@
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_large"
         android:layout_marginEnd="2dp"
-    android:text="I've verified"
-    android:textColor="@android:color/white"
-    app:backgroundTint="#575757"
-    app:cornerRadius="10dp"
-    app:layout_constraintTop_toBottomOf="@id/registerButton"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/resendVerificationButton"
-    app:layout_constraintWidth_percent="0.4"/>
+        android:text="I've verified"
+        android:textColor="@android:color/white"
+        app:backgroundTint="#937668"
+        app:cornerRadius="10dp"
+        app:layout_constraintTop_toBottomOf="@id/registerButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/resendVerificationButton"
+        app:layout_constraintWidth_percent="0.4"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/resendVerificationButton"
@@ -185,7 +199,7 @@
         android:layout_marginStart="2dp"
     android:text="RESEND"
     android:textColor="@android:color/white"
-    app:backgroundTint="#575757"
+    app:backgroundTint="#937668"
     app:cornerRadius="10dp"
     app:layout_constraintTop_toTopOf="@id/verifiedContinueButton"
     app:layout_constraintStart_toEndOf="@id/verifiedContinueButton"

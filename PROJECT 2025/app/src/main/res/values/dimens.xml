@@ -37,6 +37,7 @@
     <dimen name="margin_glarge">20dp</dimen>
     <dimen name="margin_xxxlarge">11dp</dimen>
     <dimen name="margin_hlarge">40dp</dimen>
+    <dimen name="margin_ilarge">33dp</dimen>
 
 
     <!-- Text sizes -->
