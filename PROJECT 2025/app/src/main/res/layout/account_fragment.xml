@@ -33,7 +33,7 @@
         app:civ_border_width="3dp"
         tools:layout_width="180dp"
         tools:layout_height="180dp"
-        android:src="@drawable/logo_old" />
+        android:src="@drawable/logo_final1" />
 
     <!-- Username -->
     <TextView
