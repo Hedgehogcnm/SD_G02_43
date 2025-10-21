@@ -92,12 +92,12 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
 
                 if (isSelected) {
                     day.setSelected(false);
-                    day.setTextColor(Color.parseColor("#888888"));
+                    day.setTextColor(Color.parseColor("#704533"));
                     day.setTypeface(null, Typeface.NORMAL);
                     day.setBackgroundColor(Color.TRANSPARENT);
                 } else {
                     day.setSelected(true);
-                    day.setTextColor(Color.parseColor("#FF4081"));
+                    day.setTextColor(Color.parseColor("#FFFFFFF"));
                     day.setTypeface(null, Typeface.BOLD);
                     day.setBackgroundResource(R.drawable.selected_day_background);
                 }

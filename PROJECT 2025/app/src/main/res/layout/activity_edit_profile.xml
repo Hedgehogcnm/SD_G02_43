@@ -27,20 +27,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/setSetting"
+            android:layout_width="330dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/margin_large"
+            android:src="@drawable/settings"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--
         <TextView
             android:id="@+id/setSetting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Settings"
-            android:textColor="#000000"
+            android:textColor="#704533"
             android:textSize="35sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+        -->
 
     <!-- Personal Information Card -->
     <androidx.cardview.widget.CardView

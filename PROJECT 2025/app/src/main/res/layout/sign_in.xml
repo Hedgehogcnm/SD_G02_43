@@ -63,6 +63,7 @@
             android:hint="Enter your email"
             android:inputType="textEmailAddress"
             android:paddingStart="@dimen/margin_medium"
+            android:textColor="@color/black"
             android:paddingEnd="@dimen/margin_small" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,6 +96,7 @@
             android:ems="10"
             android:hint="Enter your password"
             android:inputType="textPassword"
+            android:textColor="@color/black"
             android:paddingStart="@dimen/margin_medium"
             android:paddingEnd="@dimen/margin_small" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -121,6 +123,7 @@
         android:layout_height="@dimen/button_height"
         android:layout_marginTop="@dimen/margin_xlarge"
         android:text="Sign In"
+        android:textStyle="bold"
         android:textColor="#FFFFFF"
         app:backgroundTint="#704533"
         app:cornerRadius="@dimen/margin_small"

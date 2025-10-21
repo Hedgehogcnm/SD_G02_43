@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f7f2ee"
     tools:context=".ManageUser.ManageUserLiveCam">
 
     <androidx.cardview.widget.CardView
@@ -88,14 +89,15 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:src="@drawable/ic_photo_camera"
-                    app:tint="#000000" />
+                    app:tint="#754533" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Photo"
+                    android:textStyle="bold"
                     android:textSize="14sp"
-                    android:textColor="#000000"
+                    android:textColor="#704533"
                     android:layout_marginTop="8dp" />
 
             </LinearLayout>
@@ -125,14 +127,15 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:src="@drawable/ic_mic"
-                    app:tint="#000000" />
+                    app:tint="#754533" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Audio"
                     android:textSize="14sp"
-                    android:textColor="#000000"
+                    android:textColor="#704533"
+                    android:textStyle="bold"
                     android:layout_marginTop="8dp" />
 
             </LinearLayout>
@@ -162,14 +165,15 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:src="@drawable/ic_videocam"
-                    app:tint="#000000" />
+                    app:tint="#754533" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Video"
                     android:textSize="14sp"
-                    android:textColor="#000000"
+                    android:textColor="#704533"
+                    android:textStyle="bold"
                     android:layout_marginTop="8dp" />
 
             </LinearLayout>
@@ -199,14 +203,15 @@
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:src="@drawable/ic_feed"
-                    app:tint="#000000" />
+                    app:tint="#754533" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Feed"
                     android:textSize="14sp"
-                    android:textColor="#000000"
+                    android:textColor="#704533"
+                    android:textStyle="bold"
                     android:layout_marginTop="8dp" />
 
             </LinearLayout>

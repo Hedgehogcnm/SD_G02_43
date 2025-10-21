@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/margin_medium"
+    android:background="#f7f2ee"
     tools:context=".activity_notification">
 
     <!-- Top Bar -->
@@ -14,35 +15,46 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/margin_small"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/returnButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="@dimen/margin_large"
-            android:src="@drawable/return_button_foreground"
+            android:layout_marginTop="@dimen/margin_glarge"
             android:contentDescription="Return"
+            android:src="@drawable/ic_chevron_left"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/title"
+            android:layout_width="250dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/margin_glarge"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:src="@drawable/notification"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+        <!--
         <TextView
             android:id="@+id/textView9"
-            android:layout_width="0dp"
+            android:layout_width="266dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_ylarge"
             android:paddingStart="@dimen/text_zlarge"
             android:text="Notification"
-            android:textColor="@color/black"
+            android:textColor="#704533"
             android:textSize="@dimen/text_ylarge"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/returnButton"
-            app:layout_constraintTop_toTopOf="@id/returnButton"
-            app:layout_constraintBottom_toBottomOf="@id/returnButton"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="12dp" />
+            -->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Filter Icon -->
@@ -52,6 +64,7 @@
         android:layout_height="32dp"
         android:src="@drawable/ic_filter"
         android:contentDescription="Filter"
+        app:tint="#754533"
         app:layout_constraintTop_toBottomOf="@id/top_bar"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/margin_small"
@@ -62,6 +75,7 @@
         android:id="@+id/notificationsRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:textColor="#A17B6D"
         app:layout_constraintTop_toBottomOf="@id/filterIcon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

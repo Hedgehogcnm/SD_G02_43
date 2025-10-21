@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="#f7f2ee"
     tools:context=".ManageUser.ManageUserFeeder">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +45,7 @@
             android:layout_height="wrap_content"
             android:text="SCHEDULE"
             android:textSize="@dimen/text_ylarge"
-            android:textColor="@color/black"
+            android:textColor="#704533"
             android:textStyle="bold"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginStart="@dimen/margin_large"

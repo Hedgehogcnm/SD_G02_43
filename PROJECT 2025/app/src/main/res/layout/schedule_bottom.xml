@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#f7f2ee"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- cancel, set title, save -->
@@ -15,7 +16,8 @@
         android:clickable="true"
         android:focusable="true"
         android:text="Schedule Title"
-        android:textSize="18sp"
+        android:textColor="#704533"
+        android:textSize="@dimen/text_ylarge"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:text="cancel"
+        android:textColor="#A17B6D"
         android:textSize="18sp"
         android:layout_marginStart="@dimen/margin_medium"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,6 +45,7 @@
         android:layout_marginTop="36dp"
         android:text="save"
         android:textSize="18sp"
+        android:textColor="#A17B6D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.903"
         app:layout_constraintStart_toStartOf="parent"
@@ -119,6 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:timePickerMode="spinner"
+        android:theme="@style/CustomTimePickerTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
