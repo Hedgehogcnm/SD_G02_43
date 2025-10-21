@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f7f2ee"
     tools:context=".Account.AccountFragment">
 
     <!-- Settings Icon -->
@@ -29,11 +30,11 @@
         android:layout_marginTop="@dimen/margin_medium"
         android:layout_marginStart="@dimen/margin_large"
         android:layout_marginEnd="@dimen/margin_large"
-        app:civ_border_color="@color/black"
+        app:civ_border_color="#704533"
         app:civ_border_width="3dp"
         tools:layout_width="180dp"
         tools:layout_height="180dp"
-        android:src="@drawable/logo_final1" />
+        android:src="@drawable/logo_o" />
 
     <!-- Username -->
     <TextView
@@ -43,6 +44,7 @@
         android:layout_marginTop="@dimen/margin_small"
         android:text="name"
         android:textSize="@dimen/text_ylarge"
+        android:textColor="#A17B6D"
         app:layout_constraintTop_toBottomOf="@id/profile_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -55,7 +57,7 @@
         android:layout_marginTop="@dimen/margin_large"
         android:layout_marginStart="@dimen/margin_large"
         android:text="FEEDING HISTORY"
-        android:textColor="@color/black"
+        android:textColor="#704533"
         android:textSize="@dimen/text_zlarge"
         android:textStyle="bold"
         android:gravity="left"
@@ -96,6 +98,7 @@
             <TextView android:id="@+id/empty_feed_history_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#A17B6D"
                 android:text="No feeding history available"
                 android:textSize="16sp"
                 android:visibility="gone" />
