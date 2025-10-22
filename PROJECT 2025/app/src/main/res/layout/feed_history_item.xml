@@ -5,10 +5,11 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     android:background="#f7f2ee"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp">
 
     <LinearLayout
+        android:background="@drawable/card_border3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

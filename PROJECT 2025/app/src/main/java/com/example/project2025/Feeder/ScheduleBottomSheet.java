@@ -97,7 +97,7 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
                     day.setBackgroundColor(Color.TRANSPARENT);
                 } else {
                     day.setSelected(true);
-                    day.setTextColor(Color.parseColor("#FFFFFFF"));
+                    day.setTextColor(Color.parseColor("#FFFFFF"));
                     day.setTypeface(null, Typeface.BOLD);
                     day.setBackgroundResource(R.drawable.selected_day_background);
                 }
@@ -128,19 +128,21 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
         for (int i = 0; i < levelViews.length; i++) {
             final int index = i;
             levelViews[i].setOnClickListener(v -> {
-                // 取消所有选择
-                for (TextView lv : levelViews) lv.setSelected(false);
+                // 重置所有 Level 的文字颜色
+                for (TextView lv : levelViews) {
+                    lv.setSelected(false);
+                    lv.setTextColor(Color.parseColor("#704533")); // 棕色字（未选中）
+                }
 
-                // 设置当前选中的
+                // 设置当前选中的 Level
                 levelViews[index].setSelected(true);
+                levelViews[index].setTextColor(Color.parseColor("#FFFFFF")); // 白色字
                 selectedFeedLevel = index + 1;
 
-                // 更新图片
+                // 更新图片与百分比
                 if (devicePic != null) {
                     devicePic.setImageResource(levelDrawables[index]);
                 }
-
-                // 更新百分比
                 if (foodPercentage != null) {
                     foodPercentage.setText(levelPercentages[index]);
                 }
@@ -148,6 +150,8 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
                 Toast.makeText(getContext(), "Selected Level " + selectedFeedLevel, Toast.LENGTH_SHORT).show();
             });
         }
+
+
 
 
         // ==== set cancel button ====

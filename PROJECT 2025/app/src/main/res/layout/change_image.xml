@@ -28,9 +28,10 @@
 
         <ImageView
             android:id="@+id/title"
-            android:layout_width="250dp"
+            android:layout_width="230dp"
             android:layout_height="45dp"
             android:layout_marginTop="@dimen/margin_glarge"
+            android:layout_marginStart="@dimen/margin_glarge"
             android:src="@drawable/change_image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +97,7 @@
             android:id="@+id/profile_image"
             android:layout_width="230dp"
             android:layout_height="201dp"
-            android:src="@drawable/logo_o"
+            android:src="@drawable/logo_zy"
             app:civ_border_color="#704533"
             app:civ_border_width="3dp"/>
 

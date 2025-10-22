@@ -16,7 +16,7 @@
         <!-- Title -->
         <ImageView
             android:id="@+id/title"
-            android:layout_width="330dp"
+            android:layout_width="320dp"
             android:layout_height="45dp"
             android:layout_marginTop="@dimen/margin_large"
             android:src="@drawable/admin_dashboard"

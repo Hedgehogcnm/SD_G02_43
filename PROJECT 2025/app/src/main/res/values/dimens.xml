@@ -38,6 +38,7 @@
     <dimen name="margin_xxxlarge">11dp</dimen>
     <dimen name="margin_hlarge">40dp</dimen>
     <dimen name="margin_ilarge">33dp</dimen>
+    <dimen name="margin_Jlarge">28dp</dimen>
 
 
     <!-- Text sizes -->
@@ -50,10 +51,12 @@
     <dimen name="text_zlarge">22sp</dimen>
 
     <!-- Card -->
+    <dimen name="card_radius_small">12dp</dimen>
     <dimen name="card_radius">16dp</dimen>
     <dimen name="card_padding">16dp</dimen>
     <dimen name="card_padding2">12dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_elevation1">1dp</dimen>
     <dimen name="card_height">150dp</dimen>
 
     <!-- Button / Input -->

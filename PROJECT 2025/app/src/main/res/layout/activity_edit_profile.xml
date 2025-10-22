@@ -29,13 +29,14 @@
 
         <ImageView
             android:id="@+id/setSetting"
-            android:layout_width="330dp"
-            android:layout_height="45dp"
+            android:layout_width="333dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="@dimen/margin_glarge"
             android:layout_marginTop="@dimen/margin_large"
             android:src="@drawable/settings"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--
@@ -106,7 +107,7 @@
                     android:id="@+id/profile_picture"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/logo_o" />
+                    android:src="@drawable/logo_zy" />
 
                 <ImageView
                     android:layout_width="16dp"

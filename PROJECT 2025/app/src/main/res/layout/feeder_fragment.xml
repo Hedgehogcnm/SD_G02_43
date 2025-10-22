@@ -40,7 +40,7 @@
       android:layout_height="wrap_content"
       android:text="SCHEDULE"
       android:textSize="@dimen/text_ylarge"
-      android:textColor="@color/black"
+      android:textColor="#704533"
       android:textStyle="bold"
       android:layout_marginTop="@dimen/margin_medium"
       android:layout_marginStart="@dimen/margin_large"
@@ -81,9 +81,9 @@
       android:layout_marginEnd="@dimen/margin_medium"
       android:layout_marginTop="@dimen/margin_small"
       android:layout_marginBottom="@dimen/margin_alarge"
-      app:cardBackgroundColor="@android:color/white"
-      app:cardCornerRadius="@dimen/card_radius"
-      app:cardElevation="@dimen/card_elevation"
+      app:cardUseCompatPadding="true"
+      app:cardCornerRadius="@dimen/card_radius_small"
+      app:cardElevation="@dimen/card_elevation1"
       app:layout_constraintTop_toBottomOf="@id/schedule"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -95,11 +95,13 @@
         android:fillViewport="true">
 
       <LinearLayout
+          android:background="@drawable/card_border2"
           android:id="@+id/scheduleContainer"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical"
-          android:padding="16dp">
+          android:padding="16dp"
+          app:cardBackgroundColor="@android:color/transparent">
 
         <!-- Schedule Card 1 -->
         <androidx.cardview.widget.CardView
@@ -110,12 +112,13 @@
             android:visibility="gone"
             app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="12dp"
-            app:cardElevation="1dp">
+            app:cardElevation="0dp">
 
           <LinearLayout
+              android:background="@drawable/card_border3"
+              app:cardBackgroundColor="@android:color/transparent"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@drawable/card_border"
               android:orientation="vertical"
               android:padding="16dp">
 
@@ -164,12 +167,14 @@
           android:visibility="gone"
           app:cardBackgroundColor="@android:color/transparent"
           app:cardCornerRadius="12dp"
-          app:cardElevation="1dp">
+          app:cardElevation="0dp"
+          >
 
         <LinearLayout
+            android:background="@drawable/card_border3"
+            app:cardBackgroundColor="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card_border"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -219,12 +224,13 @@
           android:visibility="gone"
           app:cardBackgroundColor="@android:color/transparent"
           app:cardCornerRadius="12dp"
-          app:cardElevation="1dp">
+          app:cardElevation="0dp">
 
         <LinearLayout
+            android:background="@drawable/card_border3"
+            app:cardBackgroundColor="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card_border"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -274,12 +280,13 @@
           android:visibility="gone"
           app:cardBackgroundColor="@android:color/transparent"
           app:cardCornerRadius="12dp"
-          app:cardElevation="1dp">
+          app:cardElevation="0dp">
 
       <LinearLayout
+          android:background="@drawable/card_border3"
+          app:cardBackgroundColor="@android:color/transparent"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:background="@drawable/card_border"
           android:orientation="vertical"
           android:padding="16dp">
 

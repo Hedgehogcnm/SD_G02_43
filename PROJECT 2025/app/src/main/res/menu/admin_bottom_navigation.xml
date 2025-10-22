@@ -9,12 +9,10 @@
     <item
         android:id="@+id/nav_homepage_admin"
         android:icon="@drawable/ic_admin_user"
-        app:tint="#000000"
         android:title="Home" />
 
     <item
         android:id="@+id/nav_account_fragment"
         android:icon="@drawable/ic_profile"
-        app:tint="#000000"
         android:title="Profile" />
 </menu>
