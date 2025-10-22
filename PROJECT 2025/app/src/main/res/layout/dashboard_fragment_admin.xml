@@ -189,14 +189,37 @@
                 android:orientation="vertical"
                 android:padding="@dimen/card_padding">
 
-                <!-- graph -->
-                <LinearLayout
+                <!-- graph title -->
+                <!-- graph title -->
+                <TextView
+                    android:id="@+id/userGrowthTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_small"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-                </LinearLayout>
+                    android:text="Number of Users By Each Month"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/margin_small"/>
+
+                <!-- graph -->
+                <com.example.project2025.Utils.LineChartView
+                    android:id="@+id/userGrowthChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="@dimen/margin_small"/>
+
+                <!-- x-axis label -->
+                <TextView
+                    android:id="@+id/userGrowthXAxis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Month (Each month is represented as the first letter of the month)"
+                    android:textColor="#666666"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/margin_xsmall"
+                    android:layout_marginBottom="@dimen/margin_large"/>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

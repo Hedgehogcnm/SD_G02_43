@@ -38,6 +38,12 @@ public class activity_notification extends AppCompatActivity {
             return insets;
         });
 
+        // Return button -> go back to previous screen (Feeder)
+        ImageView returnBtn = findViewById(R.id.returnButton);
+        if (returnBtn != null) {
+            returnBtn.setOnClickListener(v -> finish());
+        }
+
         // find filter icon
         ImageView filterIcon = findViewById(R.id.filterIcon);
 

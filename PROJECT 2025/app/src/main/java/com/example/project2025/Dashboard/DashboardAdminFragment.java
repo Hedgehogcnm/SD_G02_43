@@ -1,5 +1,6 @@
 package com.example.project2025.Dashboard;
 
+import com.example.project2025.Utils.LineChartView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.project2025.R;
 import com.example.project2025.ManageUser.UserListFragment;
+import com.example.project2025.Utils.LineChartView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.AggregateQuery;
@@ -37,6 +39,7 @@ import java.net.Socket;
 public class DashboardAdminFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     TextView userCount;
+    LineChartView userGrowthChart;
     EditText ip_address ;
     Button manualFeed;
     private static final int PORT = 12345;
@@ -50,6 +53,7 @@ public class DashboardAdminFragment extends Fragment {
         //ip_address = root.findViewById(R.id.ip_address);
         //manualFeed = root.findViewById(R.id.manual_feed);
         userCount = root.findViewById(R.id.user_count);
+        userGrowthChart = root.findViewById(R.id.userGrowthChart);
         return root;
     }
 
@@ -57,6 +61,7 @@ public class DashboardAdminFragment extends Fragment {
     public void onStart() {
         super.onStart();
         getUserCount();
+        loadUserGrowthChart();
 
         /*
         manualFeed.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +90,73 @@ public class DashboardAdminFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void loadUserGrowthChart(){
+        // Aggregate current calendar year Jan -> Dec based on Users.createdAt (millis)
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.set(java.util.Calendar.MONTH, java.util.Calendar.JANUARY);
+        cal.set(java.util.Calendar.DAY_OF_MONTH, 1);
+        cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        cal.set(java.util.Calendar.MINUTE, 0);
+        cal.set(java.util.Calendar.SECOND, 0);
+        cal.set(java.util.Calendar.MILLISECOND, 0);
+
+        // Prepare month labels and buckets for Jan..Dec
+        // Fixed January to December labels -> first letter (J, F, M, ...)
+        String[] fixedMonths = new java.text.DateFormatSymbols().getShortMonths();
+        java.util.List<Integer> counts = new java.util.ArrayList<>();
+        java.util.List<String> labels = new java.util.ArrayList<>();
+
+        java.util.List<long[]> ranges = new java.util.ArrayList<>();
+        java.util.Calendar iter = (java.util.Calendar) cal.clone();
+        for (int i = 0; i < 12; i++) {
+            long start = iter.getTimeInMillis();
+            java.util.Calendar endCal = (java.util.Calendar) iter.clone();
+            endCal.add(java.util.Calendar.MONTH, 1);
+            long end = endCal.getTimeInMillis() - 1;
+            ranges.add(new long[]{start, end});
+            int m = iter.get(java.util.Calendar.MONTH);
+            String lbl = fixedMonths[m];
+            if (lbl == null || lbl.isEmpty()) {
+                lbl = new java.text.SimpleDateFormat("MMM", java.util.Locale.getDefault()).format(iter.getTime());
+            }
+            // Ensure single-letter uppercase label
+            if (lbl.length() > 0) {
+                lbl = lbl.substring(0, 1).toUpperCase(java.util.Locale.getDefault());
+            }
+            labels.add(lbl);
+            counts.add(0);
+            iter.add(java.util.Calendar.MONTH, 1);
+        }
+
+        // Fetch all users created from Jan 1 to Dec 31 and bucket client-side
+        long minStart = ranges.get(0)[0];
+        long maxEnd = ranges.get(ranges.size() - 1)[1];
+        db.collection("Users")
+                .whereGreaterThanOrEqualTo("createdAt", minStart)
+                .whereLessThanOrEqualTo("createdAt", maxEnd)
+                .get()
+                .addOnSuccessListener(snap -> {
+                    for (com.google.firebase.firestore.DocumentSnapshot d : snap.getDocuments()) {
+                        Long createdAt = d.getLong("createdAt");
+                        if (createdAt == null) continue;
+                        for (int i = 0; i < ranges.size(); i++) {
+                            long[] r = ranges.get(i);
+                            if (createdAt >= r[0] && createdAt <= r[1]) {
+                                counts.set(i, counts.get(i) + 1);
+                                break;
+                            }
+                        }
+                    }
+                    java.util.List<Float> floatCounts = new java.util.ArrayList<>();
+                    for (Integer c : counts) floatCounts.add(c != null ? c.floatValue() : 0f);
+                    userGrowthChart.setData(floatCounts, labels, "");
+                })
+                .addOnFailureListener(err -> {
+                    android.util.Log.e("AdminChart", "Failed to load user growth", err);
+                    userGrowthChart.setData(new java.util.ArrayList<>(), labels, "");
+                });
     }
 
     private void sendFeedCommand(String ip_address) {

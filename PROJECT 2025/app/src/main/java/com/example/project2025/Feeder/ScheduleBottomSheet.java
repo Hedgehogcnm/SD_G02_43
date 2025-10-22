@@ -170,12 +170,20 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
                 level.setSelected(false);
             }
 
-            // reset foodBar height
-            foodBar.post(() -> {
-                ViewGroup.LayoutParams params = foodBar.getLayoutParams();
-                params.height = 0;
-                foodBar.setLayoutParams(params);
-            });
+            // reset foodBar height (guard if not present in layout)
+            if (foodBar != null) {
+                foodBar.post(() -> {
+                    ViewGroup.LayoutParams params = foodBar.getLayoutParams();
+                    params.height = 0;
+                    foodBar.setLayoutParams(params);
+                });
+            }
+
+            // reset selected level and title (if visible)
+            selectedFeedLevel = 0;
+            if (setTitleTextView != null) {
+                setTitleTextView.setText("Set Title");
+            }
 
             Toast.makeText(getContext(), "Schedule Cancelled", Toast.LENGTH_SHORT).show();
             dismiss(); // close BottomSheet
