@@ -124,9 +124,11 @@ public class DashboardUserFragment extends Fragment {
         micButton.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    v.setPressed(true);
                     audioHelper.startStreaming(PI_IP, AUDIO_PORT); // start recording
                     return true;
                 case MotionEvent.ACTION_UP:
+                    v.setPressed(false);
                     audioHelper.stopStreaming(); // stop and upload
                     v.performClick();
                     return true;
