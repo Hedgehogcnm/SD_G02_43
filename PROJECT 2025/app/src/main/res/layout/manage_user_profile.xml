@@ -8,10 +8,6 @@
     android:background="#f7f2ee"
     tools:context=".ManageUser.ManageUserProfile">
 
-    <!-- this page is for admin - user -->
-    <!-- this page is for admin - user -->
-    <!-- this page is for admin - user -->
-
     <!-- Settings Icon -->
     <ImageView
         android:id="@+id/gear_button"
@@ -79,7 +75,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="70dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="12dp"
         app:layout_constraintTop_toBottomOf="@+id/menu_history"

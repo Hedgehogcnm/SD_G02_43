@@ -56,7 +56,7 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/p"
+                    android:src="@drawable/phua"
                     android:scaleType="centerCrop"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/circle_mask"
@@ -97,7 +97,7 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/y"
+                    android:src="@drawable/eq"
                     android:scaleType="centerCrop"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/circle_mask"
@@ -138,7 +138,7 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/t"
+                    android:src="@drawable/tamy"
                     android:scaleType="centerCrop"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/circle_mask"
@@ -179,7 +179,7 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/c"
+                    android:src="@drawable/chai"
                     android:scaleType="centerCrop"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/circle_mask"
@@ -220,7 +220,7 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/m"
+                    android:src="@drawable/kai"
                     android:scaleType="centerCrop"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/circle_mask"
@@ -261,7 +261,7 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/l"
+                    android:src="@drawable/pe"
                     android:scaleType="centerCrop"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/circle_mask"
