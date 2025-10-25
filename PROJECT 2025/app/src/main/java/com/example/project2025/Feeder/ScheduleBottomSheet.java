@@ -104,7 +104,7 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
             });
         }
 
-        // ==== initialize levelViews and foodBar ====
+        // initialize levelViews and foodBar
         levelViews = new TextView[]{
                 view.findViewById(R.id.level1),
                 view.findViewById(R.id.level2),
@@ -112,11 +112,11 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
                 view.findViewById(R.id.level4)
         };
 
-// 找到你的图片和百分比 TextView
+// Find your image and percentage TextView
         ImageView devicePic = view.findViewById(R.id.device_pic);
         TextView foodPercentage = view.findViewById(R.id.foodPercentage);
 
-// 定义每个 level 对应的图片和百分比
+// Define the image and percentage corresponding to each level
         int[] levelDrawables = {
                 R.drawable.food_level_25, // level1
                 R.drawable.food_level_50, // level2
@@ -128,18 +128,18 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
         for (int i = 0; i < levelViews.length; i++) {
             final int index = i;
             levelViews[i].setOnClickListener(v -> {
-                // 重置所有 Level 的文字颜色
+                // Reset the text color of all Levels
                 for (TextView lv : levelViews) {
                     lv.setSelected(false);
-                    lv.setTextColor(Color.parseColor("#704533")); // 棕色字（未选中）
+                    lv.setTextColor(Color.parseColor("#704533")); //unselected color
                 }
 
-                // 设置当前选中的 Level
+                // Set the currently selected Level
                 levelViews[index].setSelected(true);
-                levelViews[index].setTextColor(Color.parseColor("#FFFFFF")); // 白色字
+                levelViews[index].setTextColor(Color.parseColor("#FFFFFF"));
                 selectedFeedLevel = index + 1;
 
-                // 更新图片与百分比
+                // Update image and percentage
                 if (devicePic != null) {
                     devicePic.setImageResource(levelDrawables[index]);
                 }
@@ -147,14 +147,14 @@ public class ScheduleBottomSheet extends BottomSheetDialogFragment {
                     foodPercentage.setText(levelPercentages[index]);
                 }
 
-                Toast.makeText(getContext(), "Selected Level " + selectedFeedLevel, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Selected Level " + selectedFeedLevel, Toast.LENGTH_SHORT).show();
             });
         }
 
 
 
 
-        // ==== set cancel button ====
+        // set cancel button
         TextView cancelTextView = view.findViewById(R.id.cancel);
         cancelTextView.setOnClickListener(v -> {
             // clear dayView status

@@ -14,6 +14,7 @@
         android:layout_height="wrap_content">
 
         <!-- Title -->
+        <!-- change to : User & Device -->
         <ImageView
             android:id="@+id/title"
             android:layout_width="320dp"
@@ -40,6 +41,7 @@
 -->
 
         <!-- Title -->
+        <!--
         <TextView
             android:id="@+id/xxx"
             android:layout_width="match_parent"
@@ -53,13 +55,14 @@
             app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+            -->
 
         <!-- Stats Cards -->
         <LinearLayout
             android:id="@+id/statsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_elarge"
+            android:layout_marginTop="@dimen/margin_medium"
             android:orientation="horizontal"
             android:weightSum="2"
             app:layout_constraintTop_toBottomOf="@id/title"

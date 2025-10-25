@@ -68,7 +68,7 @@
         app:layout_constraintTop_toBottomOf="@id/top_bar"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginEnd="@dimen/margin_xlarge" />
+        android:layout_marginEnd="@dimen/margin_wlarge" />
 
     <!-- RecyclerView for history -->
     <androidx.recyclerview.widget.RecyclerView

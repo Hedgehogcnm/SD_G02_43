@@ -57,7 +57,7 @@
       android:src="@drawable/ic_notification"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:tint="#000000" />
+      app:tint="#704533" />
 
   <!-- Alarm Icon -->
   <ImageView
@@ -70,7 +70,7 @@
       app:layout_constraintBottom_toBottomOf="@id/schedule"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/notification"
-      app:tint="#000000" />
+      app:tint="#704533" />
 
   <!-- Card with Schedule List -->
   <androidx.cardview.widget.CardView
@@ -79,8 +79,8 @@
       android:layout_height="0dp"
       android:layout_marginStart="@dimen/margin_medium"
       android:layout_marginEnd="@dimen/margin_medium"
-      android:layout_marginTop="@dimen/margin_small"
-      android:layout_marginBottom="@dimen/margin_alarge"
+      android:layout_marginTop="@dimen/margin_xsmall"
+      android:layout_marginBottom="@dimen/margin_blarge"
       app:cardUseCompatPadding="true"
       app:cardCornerRadius="@dimen/card_radius_small"
       app:cardElevation="@dimen/card_elevation1"
@@ -95,7 +95,7 @@
         android:fillViewport="true">
 
       <LinearLayout
-          android:background="@drawable/card_border2"
+          android:background="@drawable/card_border"
           android:id="@+id/scheduleContainer"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
             app:cardElevation="0dp">
 
           <LinearLayout
-              android:background="@drawable/card_border3"
+              android:background="@drawable/card_border5"
               app:cardBackgroundColor="@android:color/transparent"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
           >
 
         <LinearLayout
-            android:background="@drawable/card_border3"
+            android:background="@drawable/card_border5"
             app:cardBackgroundColor="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -227,7 +227,7 @@
           app:cardElevation="0dp">
 
         <LinearLayout
-            android:background="@drawable/card_border3"
+            android:background="@drawable/card_border5"
             app:cardBackgroundColor="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -283,7 +283,7 @@
           app:cardElevation="0dp">
 
       <LinearLayout
-          android:background="@drawable/card_border3"
+          android:background="@drawable/card_border5"
           app:cardBackgroundColor="@android:color/transparent"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"

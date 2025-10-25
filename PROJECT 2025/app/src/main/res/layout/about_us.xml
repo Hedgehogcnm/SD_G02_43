@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f7f2ee"
+    android:padding="@dimen/margin_medium">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/aboutTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="About Us"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#704533"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Member Grid -->
+    <GridLayout
+        android:id="@+id/memberGrid"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:columnCount="2"
+        android:rowCount="3"
+        android:useDefaultMargins="true"
+        android:alignmentMode="alignMargins"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@id/aboutTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Member 1 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            android:layout_margin="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/phua"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/circle_mask"
+                    android:clipToOutline="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PHUA YU CHENG"
+                    android:textStyle="bold"
+                    android:textColor="#704533"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A23DW1062"
+                    android:textColor="#937668"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Member 2 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            android:layout_margin="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/eq"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/circle_mask"
+                    android:clipToOutline="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="YAN EN QI"
+                    android:textStyle="bold"
+                    android:textColor="#704533"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A23DW0289"
+                    android:textColor="#937668"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Member 3 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            android:layout_margin="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/tamy"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/circle_mask"
+                    android:clipToOutline="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TAM YONG JUN"
+                    android:textStyle="bold"
+                    android:textColor="#704533"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A23DW0307"
+                    android:textColor="#937668"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Member 4 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            android:layout_margin="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/chai"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/circle_mask"
+                    android:clipToOutline="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CHAI CHENG ZU"
+                    android:textStyle="bold"
+                    android:textColor="#704533"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A23DW0217"
+                    android:textColor="#937668"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Member 5 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            android:layout_margin="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/kai"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/circle_mask"
+                    android:clipToOutline="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MAU KAI HING"
+                    android:textStyle="bold"
+                    android:textColor="#704533"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A23DW1150"
+                    android:textColor="#937668"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Member 3 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            android:layout_margin="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/pe"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/circle_mask"
+                    android:clipToOutline="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LIM PEI EN"
+                    android:textStyle="bold"
+                    android:textColor="#704533"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A23DW0237"
+                    android:textColor="#937668"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </GridLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

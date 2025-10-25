@@ -16,6 +16,7 @@
         android:layout_marginTop="@dimen/margin_large"
         android:layout_marginEnd="@dimen/margin_xlarge"
         android:src="@drawable/menu_setting"
+        app:tint="#704533"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -77,14 +78,13 @@
         android:layout_marginBottom="70dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
         app:layout_constraintTop_toBottomOf="@+id/menu_history"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
-            android:background="@drawable/card_border2"
+            android:background="@drawable/card_border"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
